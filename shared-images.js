@@ -116,9 +116,48 @@
     }
     await loadShared(true);
   }
+
+  const ADMIN_ALIAS = "custodio";
+  const ADMIN_EMAIL = "spenceralejandro10@gmail.com";
+  function ownerEmail(username) {
+    if (String(username || "").trim().toLowerCase() !== ADMIN_ALIAS) {
+      throw Error("Usuario o contraseña incorrectos.");
+    }
+    return ADMIN_EMAIL;
+  }
+  async function passwordLogin(username, password) {
+    const email = ownerEmail(username);
+    if (!password || typeof password !== "string") throw Error("Introduce tu contraseña.");
+    const response = await fetch(URL_BASE + "/auth/v1/token?grant_type=password", {
+      method:"POST",headers:authHeaders(),
+      body:JSON.stringify({email,password})
+    });
+    const data = await response.json().catch(()=>({}));
+    if (!response.ok || !data.access_token) throw Error("Usuario o contraseña incorrectos.");
+    if (String(data.user?.email||"").toLowerCase() !== ADMIN_EMAIL) throw Error("Cuenta no autorizada.");
+    saveSession(data);
+    return true;
+  }
+  async function setPassword(nextPassword) {
+    if (!session?.access_token) throw Error("Primero verifica tu identidad mediante el correo.");
+    if (typeof nextPassword !== "string" || nextPassword.length < 12 || nextPassword.length > 128) {
+      throw Error("La contraseña debe tener entre 12 y 128 caracteres.");
+    }
+    const token = await accessToken();
+    const res = await fetch(URL_BASE + "/auth/v1/user",{
+      method:"PUT",
+      headers:{...authHeaders(),Authorization:"Bearer "+token},
+      body:JSON.stringify({password:nextPassword})
+    });
+    if(!res.ok){
+      const result=await res.json().catch(()=>({}));
+      throw Error(result.msg||result.message||result.error_description||"No se pudo establecer la contraseña.");
+    }
+    return true;
+  }
+
   async function requestLogin(email) {
-    const addr = String(email || "").trim().toLowerCase();
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(addr)) throw Error("Escribe un correo válido.");
+    const addr = ownerEmail(email);
     const redirect = location.origin + location.pathname;
     const response = await fetch(URL_BASE + "/auth/v1/otp?redirect_to=" + encodeURIComponent(redirect), {
       method: "POST",
@@ -140,7 +179,7 @@
     return data;
   }
   async function verifyCode(email, token) {
-    const data = await verifyOneTime({ email: String(email || "").trim().toLowerCase(), token: String(token || "").trim(), type: "email" });
+    const data = await verifyOneTime({ email: ownerEmail(email), token: String(token || "").trim(), type: "email" });
     saveSession(data);
     return true;
   }
@@ -216,7 +255,7 @@
   }
   window.SharedImages = {
     init, loadShared, getShared, imageKey,
-    isLoggedIn, getSession, accessToken, requestLogin, verifyCode,
+    isLoggedIn, getSession, accessToken, requestLogin, verifyCode, passwordLogin, setPassword,
     logout, updateImage, removeImage, uploadImage,
     subscribe, getError: () => lastError
   };
