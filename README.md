@@ -18,7 +18,7 @@ Una vitrina sencilla para consultar cartas Pokémon, conocer la disponibilidad y
 
 ## Cómo entrar como administrador
 
-1. En la cabecera de la vitrina, pulsa **Gestión**. El formulario aparece inmediatamente. También puedes abrir el enlace directo de administración.
+1. Entra a la vitrina normalmente. El formulario de administración **no se abre solo**, incluso si la dirección contiene `?admin=1`. Pulsa **Gestión** cuando quieras ingresar; el formulario aparece únicamente tras ese clic.
 2. Usuario: `custodio`. Es un alias de una cuenta Supabase Auth autorizada en una tabla privada; no es una contraseña.
 3. En el primer acceso, abre **Primera vez o recuperación de acceso**, verifica la identidad con el correo del propietario y configura una contraseña de 12 o más caracteres.
 4. Los próximos accesos se hacen con el alias `custodio` y esa contraseña privada.
@@ -29,9 +29,9 @@ El botón de edición nunca se muestra al público. Las políticas RLS de Supaba
 ## Inventario sincronizado
 
 - **104 referencias y 249 unidades** importadas de la pestaña `Inventario` del Google Sheets original, con su nombre, numeración, colección, año, idioma y cantidad exactos.
-- Las cartas se ordenan por **colección más reciente a más antigua** en la galería, la tabla y el filtro de expansiones. Dentro de cada colección se conserva el orden del Excel.
+- Las cartas se ordenan por **colección más reciente a más antigua** en la galería, la tabla y el filtro de expansiones. Dentro de cada colección se conserva el orden del Excel. Las etiquetas visibles `BTCG-0001` a `BTCG-0104` son consecutivas según el orden completo de exhibición; los identificadores internos usados en imágenes, stock y carritos **no se modifican**.
 - El contenido se guarda en la tabla `pokemon_catalog` de Supabase (lectura pública y escritura restringida). `cards.js` es una copia de respaldo idéntica; no se altera el Google Sheets.
-- Los códigos de las cartas anteriores permanecen fijos. Se retiró solamente `BTCG-0054`, que correspondía al Alakazam duplicado, y se conserva su foto manual usando el identificador del Alakazam consolidado `BTCG-0037`. La última carta es `BTCG-0105`, aunque hay 104 registros.
+- Las etiquetas `BTCG` ahora se numeran en el orden visual. El identificador interno del duplicado anterior (54) queda retirado, pero se conservan las asociaciones de fotografías y el carrito con la fila consolidada de Alakazam (ID interno 37). Los códigos visibles pueden variar si el administrador cambia las colecciones o se modifica el orden de exhibición; cada lista exportada también incluye nombre, número, colección e idioma para reconocer la carta.
 - Las fotografías manuales almacenadas en Supabase siguen vinculadas a su ID aunque cambien nombre, colección o idioma.
 - Las fotografías que se asignaron **solo en el navegador anterior** permanecen en ese navegador. Al iniciar sesión como administrador desde ese **mismo navegador**, la web intenta sincronizarlas con Supabase sin borrar la copia local; también sigue disponible la opción de sincronización manual.
 
