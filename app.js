@@ -66,8 +66,17 @@
             img.hidden = false;
             if (placeholder) placeholder.hidden = true;
             if (status) {
-              status.textContent = result.status === "manual" ? "Imagen personalizada" : (card.language === "Español" && result.reason.includes("inglés") ? "Referencia en inglés" : "Imagen identificada");
-              status.classList.add("found");
+              if (result.reason.includes("SVG:")) {
+                status.textContent = "Imagen SVG · La colección en el Excel es distinta";
+                status.classList.add("attention");
+              } else if (result.reason.includes("expansión estaba vacía")) {
+                status.textContent = "Imagen identificada · Expansión inferida";
+                status.classList.add("attention");
+              } else {
+                status.textContent = result.status === "manual" ? "Imagen personalizada" : (card.language === "Español" && result.reason.includes("inglés") ? "Referencia en inglés" : "Imagen identificada");
+                status.classList.add("found");
+              }
+              status.title = result.reason || "";
             }
             return;
           }
