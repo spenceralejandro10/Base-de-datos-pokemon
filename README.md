@@ -26,15 +26,24 @@ Una vitrina sencilla para consultar cartas Pokémon, conocer la disponibilidad y
 
 El botón de edición nunca se muestra al público. Las políticas RLS de Supabase bloquean modificaciones anónimas o no autorizadas, independientemente de los botones de la interfaz.
 
+## Inventario sincronizado
+
+- **104 referencias y 249 unidades** importadas de la pestaña `Inventario` del Google Sheets original, con su nombre, numeración, colección, año, idioma y cantidad exactos.
+- Las cartas se ordenan por **colección más reciente a más antigua** en la galería, la tabla y el filtro de expansiones. Dentro de cada colección se conserva el orden del Excel.
+- El contenido se guarda en la tabla `pokemon_catalog` de Supabase (lectura pública y escritura restringida). `cards.js` es una copia de respaldo idéntica; no se altera el Google Sheets.
+- Los códigos de las cartas anteriores permanecen fijos. Se retiró solamente `BTCG-0054`, que correspondía al Alakazam duplicado, y se conserva su foto manual usando el identificador del Alakazam consolidado `BTCG-0037`. La última carta es `BTCG-0105`, aunque hay 104 registros.
+- Las fotografías manuales almacenadas en Supabase siguen vinculadas a su ID aunque cambien nombre, colección o idioma.
+- Las fotografías que se asignaron **solo en el navegador anterior** permanecen en ese navegador. Al iniciar sesión como administrador desde ese **mismo navegador**, la web intenta sincronizarlas con Supabase sin borrar la copia local; también sigue disponible la opción de sincronización manual.
+
 ## Datos y persistencia
 
-- La copia original del inventario de Google Sheets (55 referencias en `cards.js`) no se modifica.
+- El inventario original de Google Sheets (104 referencias) no se modifica.
 - Las imágenes que sube el administrador quedan en Supabase Storage y en `pokemon_image_overrides`.
 - La colección y el idioma corregidos en la vitrina se guardan en `pokemon_card_overrides`.
 - Las existencias y la disponibilidad se guardan en `pokemon_stock_overrides`.
 - Estos cambios se ven en todos los dispositivos tras actualizar la página.
 - El carrito es una lista local de cada visitante y se exporta como archivo TXT; no altera el stock.
-- Los cambios posteriores que hagas en Google Sheets no se importan automáticamente: `cards.js` debe actualizarse por separado.
+- Los cambios posteriores que hagas en Google Sheets no se importan automáticamente: se debe actualizar `pokemon_catalog` y `cards.js` como en esta sincronización.
 
 ## Archivos
 
