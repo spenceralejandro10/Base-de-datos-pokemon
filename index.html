@@ -6,12 +6,13 @@
   <meta name="theme-color" content="#17304f">
   <title>Mi colección Pokémon TCG — Galería e inventario</title>
   <meta name="description" content="Inventario visual de cartas Pokémon TCG con fotografías, búsqueda por nombre, número, idioma y colección.">
-  <link rel="stylesheet" href="./styles.css?v=5">
+  <link rel="stylesheet" href="./styles.css?v=8">
 </head>
 <body>
   <header class="top">
     <h1>Mi colección Pokémon TCG</h1>
-    <p class="sub">Inventario visual · Fotografías de cartas · Búsqueda por colección, número e idioma</p>
+    <p class="sub">Inventario visual · Fotografías compartidas · Precios TCGplayer y Cardmarket</p>
+    <div class="admin-actions"><button type="button" id="ownerAccess">Administrar imágenes</button><span id="sharedConnection">Cargando imágenes compartidas…</span></div>
   </header>
   <main class="wrap">
     <section class="stats" aria-label="Estadísticas">
@@ -24,18 +25,55 @@
       <select id="set" aria-label="Colección"><option value="">Todas las colecciones</option></select>
       <select id="lang" aria-label="Idioma"><option value="">Todos los idiomas</option></select>
       <select id="view" aria-label="Vista"><option value="grid">Galería</option><option value="table">Tabla con miniaturas</option></select>
+      <button id="refreshMarket" type="button" title="Consultar nuevamente las fuentes de precios">Actualizar precios</button>
     </div>
     <p class="notice">
-      Se conserva una copia de tu inventario original de Google Sheets, sin cambiar sus datos.
-      La búsqueda de imágenes contrasta colección, numeración y nombre con los catálogos de TCGdex y Pokémon TCG API.
-      Algunas cartas promocionales o con datos que no coincidan pueden quedar pendientes; puedes asignar una fotografía manualmente en tu navegador.
+      La colección mantiene una copia del inventario original sin modificar Google Sheets.
+      Las imágenes personalizadas se guardan en una base de datos compartida, visible desde cualquier dispositivo.
+      Los precios se consultan al cargar desde TCGdex / Pokémon TCG API, con referencias de TCGplayer (USD) y Cardmarket (EUR) según disponibilidad.
+      No son cotizaciones instantáneas ni ofertas garantizadas: revisa la variante, idioma, estado y fecha de actualización.
       <a href="https://docs.google.com/spreadsheets/d/1qFEBZ1OcQw6NUoF29ZvD-jfc9-l7KOHN_T3bxnXVqaI/edit" target="_blank" rel="noopener noreferrer">Abrir el inventario original</a>.
     </p>
     <div id="results" class="grid" aria-live="polite"></div>
   </main>
+  <dialog id="editorDialog" class="editor-dialog">
+    <div class="dialog-top">
+      <h2 id="editorTitle">Administrar imágenes</h2>
+      <button type="button" id="closeEditor" class="icon-button" aria-label="Cerrar">×</button>
+    </div>
+    <p id="editorMessage" class="editor-message" role="status"></p>
+    <div id="loginPanel">
+      <p>Para guardar fotografías visibles desde cualquier equipo, entra con el correo del propietario. Se enviará un enlace de acceso.</p>
+      <label for="ownerEmail">Correo del propietario</label>
+      <input type="email" id="ownerEmail" autocomplete="email" placeholder="correo@ejemplo.com">
+      <button type="button" id="sendOwnerLink" class="primary">Enviar enlace de acceso</button>
+      <p class="hint">Si el correo incluye un código de seis dígitos, también puedes escribirlo aquí.</p>
+      <label for="ownerCode">Código recibido (opcional)</label>
+      <input type="text" id="ownerCode" inputmode="numeric" autocomplete="one-time-code" placeholder="Código">
+      <button type="button" id="verifyOwnerCode">Entrar con código</button>
+    </div>
+    <div id="editPanel" hidden>
+      <p id="editorOwner" class="hint"></p>
+      <p id="editingCard"></p>
+      <div id="imageFields" hidden>
+        <label for="imageUrl">Asignar URL de imagen</label>
+        <input id="imageUrl" type="url" placeholder="https://ejemplo.com/carta.jpg">
+        <button type="button" id="saveImageUrl" class="primary">Guardar URL para todos</button>
+        <div class="or-label">O subir fotografía desde este dispositivo</div>
+        <input id="imageUpload" type="file" accept="image/jpeg,image/png,image/webp">
+        <button type="button" id="saveImageFile" class="primary">Subir y guardar imagen para todos</button>
+        <button type="button" id="removeImageShared" class="danger">Quitar imagen personalizada</button>
+      </div>
+      <hr>
+      <button type="button" id="migrateOldImages">Sincronizar imágenes antiguas de este equipo</button>
+      <button type="button" id="logoutEditor">Cerrar sesión</button>
+    </div>
+  </dialog>
   <footer class="footer">Catálogo personal Pokémon TCG · <a href="https://github.com/spenceralejandro10/Base-de-datos-pokemon" target="_blank" rel="noopener noreferrer">Repositorio de GitHub</a></footer>
-  <script src="./cards.js?v=5"></script>
-  <script src="./card-images.js?v=5"></script>
-  <script src="./app.js?v=5"></script>
+  <script src="./cards.js?v=8"></script>
+  <script src="./shared-images.js?v=8"></script>
+  <script src="./card-images.js?v=8"></script>
+  <script src="./market-prices.js?v=8"></script>
+  <script src="./app.js?v=8"></script>
 </body>
 </html>
