@@ -14,6 +14,14 @@ const adminMode=new URLSearchParams(location.search).get("admin")==="1"
 const owner=()=>{const user=shared.getSession()?.user;return shared.isLoggedIn()&&String(user?.email||"").toLowerCase()===OWNER&&!!user?.email_confirmed_at};
 let records=base.map(x=>({...x})),editing=null,epoch=0,busy=false,initialized=false;
 const CART_KEY="boveda-tcg-cart-v1";
+// Al consolidar el Alakazam repetido del Excel se retiró BTCG-0054.
+// No perder su fotografía local: conservar la copia original y asociarla
+// a BTCG-0037 cuando esta no tiene todavía una imagen propia.
+try {
+ const legacyAlakazam=localStorage.getItem("pokemon-image-54");
+ if(legacyAlakazam && !localStorage.getItem("pokemon-image-37"))
+  localStorage.setItem("pokemon-image-37",legacyAlakazam);
+}catch(_){};
 let cart=new Map();
 try {cart=new Map(JSON.parse(localStorage.getItem(CART_KEY)||"[]").filter(x=>Array.isArray(x)&&x.length===2&&Number.isInteger(x[0])&&Number.isInteger(x[1])&&x[1]>0))}catch(_){}
 const saveCart=()=>{localStorage.setItem(CART_KEY,JSON.stringify([...cart]));updateCartCount()};
@@ -50,7 +58,7 @@ const SET_MONTHS={
  "celebrations (classic collection)":10,"evolving skies":8,"darkness ablaze":8
 };
 const cleanSet=name=>String(name||"").normalize("NFD")
- .replace(/[\\u0300-\\u036f]/g,"").toLocaleLowerCase("es").trim();
+ .replace(/[\u0300-\u036f]/g,"").toLocaleLowerCase("es").trim();
 function collectionScore(name){
  if(!name)return -1;
  const matching=records.filter(c=>c.set===name);
