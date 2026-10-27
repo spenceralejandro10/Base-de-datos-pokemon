@@ -18,7 +18,9 @@
   const authHeaders = () => ({ apikey: KEY, "Content-Type": "application/json" });
   function imageKey(card) {
     const clean = text => String(text ?? "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim().toLowerCase();
-    return [card.id, clean(card.name), clean(card.number), clean(card.set), clean(card.language)].join("|");
+    // La imagen mantiene su identidad aunque el administrador cambie idioma o colección.
+    const original = (window.CARDS || []).find(item => Number(item.id) === Number(card.id)) || card;
+    return [original.id, clean(original.name), clean(original.number), clean(original.set), clean(original.language)].join("|");
   }
   function updateWatchers() {
     for (const callback of watchers) {
@@ -214,7 +216,7 @@
   }
   window.SharedImages = {
     init, loadShared, getShared, imageKey,
-    isLoggedIn, getSession, requestLogin, verifyCode,
+    isLoggedIn, getSession, accessToken, requestLogin, verifyCode,
     logout, updateImage, removeImage, uploadImage,
     subscribe, getError: () => lastError
   };
