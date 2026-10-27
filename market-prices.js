@@ -34,6 +34,13 @@ function cardmarketSearch(card){
 function productLink(id){
  return /^\d{4,12}$/.test(String(id||""))?"https://www.tcgplayer.com/product/"+id:null;
 }
+function safeTCGurl(address){
+ try {
+  const url=new URL(String(address||""));
+  return url.protocol==="https:" && /(^|\.)tcgplayer\.com$/i.test(url.hostname) &&
+   /^\/product\/\d{4,12}(?:\/|$)/.test(url.pathname) ? url.href : null;
+ }catch(_){return null}
+}
 function tcgRows(data,card){
  // Referencias de precios americanas en inglés. No atribuirlas a una impresión japonesa/española.
  if(card.language!=="Inglés")return [];
@@ -43,13 +50,16 @@ function tcgRows(data,card){
  const prices=source.prices||source;
  const rows=[];
  for(const [variant,values] of Object.entries(prices)){
-  if(!values||typeof values!=="object"||Array.isArray(values)||!numberOK(values.marketPrice))continue;
-  const direct=productLink(values.productId??source.productId);
+  if(!values||typeof values!=="object"||Array.isArray(values))continue;
+  // La API antigua llama «market» al Market Price; no usar «mid» como sustituto.
+  const marketValue=numberOK(values.marketPrice)?values.marketPrice:values.market;
+  if(!numberOK(marketValue))continue;
+  const direct=productLink(values.productId??source.productId)||safeTCGurl(source.url);
   // No publicamos un precio que no puede contrastarse con un producto concreto.
   if(!direct)continue;
   rows.push({
    market:"TCGplayer",variant:kinds[variant]||variant,
-   price:values.marketPrice,unit:"USD",
+   price:marketValue,unit:"USD",
    updated:dateLabel(updated),updatedAt:updated,
    url:direct,exactLink:true,priceType:"Market Price"
   });
@@ -60,9 +70,10 @@ function cardmarketRows(data,card){
  const source=data?.pricing?.cardmarket??data?.cardmarket;
  const updated=recent(source);
  if(!updated)return [];
- // Cardmarket indica tendencias, no el precio exacto de un ejemplar concreto.
+ // Dos formatos documentados: TCGdex (trend) y Pokémon TCG API (prices.trendPrice).
+ const prices=source.prices||source;
  const result=[];
- const pairs=[["Normal / tendencia",source.trend],["Holo / tendencia",source["trend-holo"]]];
+ const pairs=[["Normal / tendencia",prices.trend??prices.trendPrice],["Holo / tendencia",prices["trend-holo"]??prices.trendHoloPrice]];
  for(const [variant,price] of pairs){
   if(!numberOK(price))continue;
   result.push({
