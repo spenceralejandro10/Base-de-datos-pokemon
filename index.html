@@ -1,79 +1,92 @@
 <!doctype html>
 <html lang="es">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#17304f">
-  <title>Mi colección Pokémon TCG — Galería e inventario</title>
-  <meta name="description" content="Inventario visual de cartas Pokémon TCG con fotografías, búsqueda por nombre, número, idioma y colección.">
-  <link rel="stylesheet" href="./styles.css?v=8">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#17304f">
+<title>Bóveda TCG | Colección de cartas Pokémon</title>
+<meta name="description" content="Bienvenido a Bóveda TCG. Explora cartas Pokémon, consulta existencias, referencias de TCGplayer y crea tu lista de interés.">
+<link rel="stylesheet" href="./styles.css?v=11">
 </head>
 <body>
-  <header class="top">
-    <h1>Mi colección Pokémon TCG</h1>
-    <p class="sub">Inventario visual · Fotografías compartidas · Precios TCGplayer y Cardmarket</p>
-    <div class="admin-actions"><button type="button" id="ownerAccess">Administrar imágenes</button><span id="sharedConnection">Cargando imágenes compartidas…</span></div>
-  </header>
-  <main class="wrap">
-    <section class="stats" aria-label="Estadísticas">
-      <div class="stat"><strong id="total">—</strong><small>Registros del inventario</small></div>
-      <div class="stat"><strong id="copies">—</strong><small>Cartas en total</small></div>
-      <div class="stat"><strong id="shown">—</strong><small>Resultados de búsqueda</small></div>
-    </section>
-    <div class="toolbar">
-      <input id="q" type="search" autocomplete="off" placeholder="Buscar Pokémon, número o colección…" aria-label="Buscar cartas">
-      <select id="set" aria-label="Colección"><option value="">Todas las colecciones</option></select>
-      <select id="lang" aria-label="Idioma"><option value="">Todos los idiomas</option></select>
-      <select id="view" aria-label="Vista"><option value="grid">Galería</option><option value="table">Tabla con miniaturas</option></select>
-      <button id="refreshMarket" type="button" title="Consultar nuevamente las fuentes de precios">Actualizar precios</button>
-    </div>
-    <p class="notice">
-      La colección mantiene una copia del inventario original sin modificar Google Sheets.
-      Las imágenes personalizadas se guardan en una base de datos compartida, visible desde cualquier dispositivo.
-      Los precios se consultan al cargar desde TCGdex / Pokémon TCG API, con referencias de TCGplayer (USD) y Cardmarket (EUR) según disponibilidad.
-      No son cotizaciones instantáneas ni ofertas garantizadas: revisa la variante, idioma, estado y fecha de actualización.
-      <a href="https://docs.google.com/spreadsheets/d/1qFEBZ1OcQw6NUoF29ZvD-jfc9-l7KOHN_T3bxnXVqaI/edit" target="_blank" rel="noopener noreferrer">Abrir el inventario original</a>.
-    </p>
-    <div id="results" class="grid" aria-live="polite"></div>
-  </main>
-  <dialog id="editorDialog" class="editor-dialog">
-    <div class="dialog-top">
-      <h2 id="editorTitle">Administrar imágenes</h2>
-      <button type="button" id="closeEditor" class="icon-button" aria-label="Cerrar">×</button>
-    </div>
-    <p id="editorMessage" class="editor-message" role="status"></p>
-    <div id="loginPanel">
-      <p>Para guardar fotografías visibles desde cualquier equipo, entra con el correo del propietario. Se enviará un enlace de acceso.</p>
-      <label for="ownerEmail">Correo del propietario</label>
-      <input type="email" id="ownerEmail" autocomplete="email" placeholder="correo@ejemplo.com">
-      <button type="button" id="sendOwnerLink" class="primary">Enviar enlace de acceso</button>
-      <p class="hint">Si el correo incluye un código de seis dígitos, también puedes escribirlo aquí.</p>
-      <label for="ownerCode">Código recibido (opcional)</label>
-      <input type="text" id="ownerCode" inputmode="numeric" autocomplete="one-time-code" placeholder="Código">
-      <button type="button" id="verifyOwnerCode">Entrar con código</button>
-    </div>
-    <div id="editPanel" hidden>
-      <p id="editorOwner" class="hint"></p>
-      <p id="editingCard"></p>
-      <div id="imageFields" hidden>
-        <label for="imageUrl">Asignar URL de imagen</label>
-        <input id="imageUrl" type="url" placeholder="https://ejemplo.com/carta.jpg">
-        <button type="button" id="saveImageUrl" class="primary">Guardar URL para todos</button>
-        <div class="or-label">O subir fotografía desde este dispositivo</div>
-        <input id="imageUpload" type="file" accept="image/jpeg,image/png,image/webp">
-        <button type="button" id="saveImageFile" class="primary">Subir y guardar imagen para todos</button>
-        <button type="button" id="removeImageShared" class="danger">Quitar imagen personalizada</button>
-      </div>
-      <hr>
-      <button type="button" id="migrateOldImages">Sincronizar imágenes antiguas de este equipo</button>
-      <button type="button" id="logoutEditor">Cerrar sesión</button>
-    </div>
-  </dialog>
-  <footer class="footer">Catálogo personal Pokémon TCG · <a href="https://github.com/spenceralejandro10/Base-de-datos-pokemon" target="_blank" rel="noopener noreferrer">Repositorio de GitHub</a></footer>
-  <script src="./cards.js?v=8"></script>
-  <script src="./shared-images.js?v=8"></script>
-  <script src="./card-images.js?v=8"></script>
-  <script src="./market-prices.js?v=8"></script>
-  <script src="./app.js?v=8"></script>
+<header class="top">
+ <div class="brand"><div><p class="eyebrow">CATÁLOGO DE COLECCIÓN</p><h1>Bienvenido a Bóveda TCG</h1><p class="sub">Explora nuestra colección de cartas Pokémon. Descubre las piezas disponibles, consulta su referencia de mercado y prepara tu lista de interés.</p></div><button id="cartOpen" class="cart-trigger" type="button">Mi selección <span id="cartCount">0</span></button></div>
+ <div class="admin-actions"><button type="button" id="ownerAccess" hidden>Acceso del administrador</button><span id="sharedConnection" hidden></span></div>
+</header>
+<main class="wrap">
+ <section class="stats" aria-label="Inventario de la bóveda">
+ <div class="stat"><strong id="total">—</strong><small>Referencias</small></div>
+ <div class="stat"><strong id="copies">—</strong><small>Unidades en la colección</small></div>
+ <div class="stat"><strong id="shown">—</strong><small>Resultados</small></div>
+ </section>
+ <div class="toolbar" role="search">
+ <input id="q" type="search" placeholder="Buscar Pokémon, código de carta o colección…" aria-label="Buscar cartas" autocomplete="off">
+ <select id="set" aria-label="Colección"><option value="">Todas las colecciones</option></select>
+ <select id="lang" aria-label="Idioma"><option value="">Todos los idiomas</option></select>
+ <select id="availability" aria-label="Disponibilidad"><option value="all">Todas las cartas</option><option value="available">Solo disponibles</option><option value="soldout">No disponibles</option></select>
+ <select id="view" aria-label="Vista"><option value="grid">Galería</option><option value="table">Tabla</option></select>
+ <button id="resetFilters" type="button">Limpiar filtros</button>
+ </div>
+ <p class="notice">Precios de referencia de TCGplayer en USD, consultados desde catálogos externos cuando existen. <strong>No son precios finales de venta</strong> ni actualizaciones segundo a segundo. Usa «Ver en TCGplayer» para confirmar ofertas y variantes en el mercado. La selección de cartas no crea una compra ni reserva.</p>
+ <div id="results" class="grid" aria-live="polite"></div>
+</main>
+<dialog id="cartDialog" class="editor-dialog cart-dialog">
+ <div class="dialog-top"><h2>Mi selección de cartas</h2><button id="closeCart" class="icon-button" type="button" aria-label="Cerrar">×</button></div>
+ <p>Agrega las cartas que te interesen y descarga el archivo de texto. Puedes enviárselo al vendedor para consultar disponibilidad y condiciones.</p>
+ <div id="cartItems"></div>
+ <p id="cartSummary" class="cart-summary"></p>
+ <button id="downloadCart" type="button" class="primary">Descargar lista .txt</button>
+ <button id="copyCart" type="button">Copiar lista</button>
+ <button id="clearCart" type="button" class="danger">Vaciar selección</button>
+</dialog>
+<dialog id="editorDialog" class="editor-dialog">
+ <div class="dialog-top"><h2 id="editorTitle">Panel de administración</h2><button id="closeEditor" class="icon-button" type="button" aria-label="Cerrar">×</button></div>
+ <p id="editorMessage" class="editor-message" role="status"></p>
+ <div id="loginPanel">
+  <p>Solo el propietario puede editar las imágenes, las fichas y las existencias. Accede con el correo autorizado.</p>
+  <label for="ownerEmail">Correo de administrador</label><input id="ownerEmail" type="email" autocomplete="email" placeholder="correo@ejemplo.com">
+  <button id="sendOwnerLink" class="primary" type="button">Enviar acceso por correo</button>
+  <p class="hint">Si recibes un código de confirmación, introdúcelo aquí:</p>
+  <label for="ownerCode">Código</label><input id="ownerCode" inputmode="numeric" autocomplete="one-time-code" type="text" placeholder="Código de correo">
+  <button id="verifyOwnerCode" type="button">Entrar con código</button>
+  <button id="logoutUnauthorized" type="button" hidden>Cerrar sesión de otra cuenta</button>
+ </div>
+ <div id="editPanel" hidden>
+  <p id="editorOwner" class="hint"></p>
+  <p id="editingCard"></p>
+  <div id="adminCardFields" hidden>
+   <h3>Disponibilidad</h3>
+   <label for="adminQuantity">Unidades disponibles</label>
+   <input id="adminQuantity" type="number" min="0" max="100000" step="1">
+   <label class="inline-check"><input id="adminListed" type="checkbox"> Mostrar como disponible para solicitar</label>
+   <button id="saveStock" type="button" class="primary">Guardar cantidad y disponibilidad</button>
+   <h3>Ficha de la carta</h3>
+   <label for="adminSet">Colección</label><input id="adminSet" type="text" maxlength="140" placeholder="Nombre de la colección">
+   <label for="adminLanguage">Idioma</label>
+   <select id="adminLanguage"><option value="">Sin especificar</option><option>Inglés</option><option>Español</option><option>Japonés</option><option>Chino</option><option>Coreano</option><option>Francés</option><option>Alemán</option><option>Italiano</option><option>Portugués</option></select>
+   <label for="adminNote">Nota interna de verificación (opcional)</label><input id="adminNote" type="text" maxlength="500" placeholder="Observaciones">
+   <button id="saveCardInfo" type="button" class="primary">Guardar colección e idioma</button>
+   <button id="resetCardInfo" type="button">Restaurar ficha del Excel</button>
+   <h3>Imagen de la carta</h3>
+   <label for="imageUrl">URL HTTPS de imagen</label><input id="imageUrl" type="url" placeholder="https://…/imagen.jpg">
+   <button id="saveImageUrl" type="button" class="primary">Guardar imagen para todos</button>
+   <div class="or-label">O subir fotografía</div>
+   <input id="imageUpload" type="file" accept="image/jpeg,image/png,image/webp">
+   <button id="saveImageFile" type="button" class="primary">Subir fotografía</button>
+   <button id="removeImageShared" type="button" class="danger">Quitar imagen personalizada</button>
+  </div>
+  <hr>
+  <button id="migrateOldImages" type="button">Sincronizar imágenes antiguas de este equipo</button>
+  <button id="logoutEditor" type="button">Cerrar sesión</button>
+ </div>
+</dialog>
+<footer class="footer">Bóveda TCG · Catálogo personal de cartas Pokémon · Referencias de mercado externas, sin pagos en línea.</footer>
+<script src="./cards.js?v=11"></script>
+<script src="./shared-images.js?v=11"></script>
+<script src="./catalog-overrides.js?v=11"></script>
+<script src="./card-stock.js?v=11"></script>
+<script src="./card-images.js?v=11"></script>
+<script src="./market-prices.js?v=11"></script>
+<script src="./app.js?v=11"></script>
 </body>
 </html>
