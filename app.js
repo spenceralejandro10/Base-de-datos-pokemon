@@ -194,14 +194,14 @@ el("adminLoginForm").addEventListener("submit",async event=>{
 el("sendOwnerLink").addEventListener("click",async()=>{
  flash("Enviando acceso al correo del propietario…");
  try{
-  await shared.requestLogin(el("adminUsername").value||"spenceradmin");
+  await shared.requestLogin(el("adminUsername").value||"root");
   flash("Consulta el correo del propietario. Abre el enlace recibido o introduce el código para configurar tu contraseña.");
  }catch(e){flash(e.message,true)}
 });
 el("verifyOwnerCode").addEventListener("click",async()=>{
  flash("Verificando identidad…");
  try{
-  await shared.verifyCode(el("adminUsername").value||"spenceradmin",el("ownerCode").value);
+  await shared.verifyCode(el("adminUsername").value||"root",el("ownerCode").value);
   adminDisplay();
   if(!owner()){
    await shared.logout();
