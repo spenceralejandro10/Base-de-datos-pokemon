@@ -157,7 +157,12 @@
     if (!info) return pack("incomplete", "Número de carta pendiente o no reconocido.");
     const override = localStorage.getItem("pokemon-image-" + card.id);
     if (override && /^https:\/\//.test(override)) return pack("manual", "Imagen elegida por ti en este navegador", [override], "Manual");
-    const baseConfig = SETS[setKey(card.set)];
+    // Inferencias únicamente para la imagen, respaldadas por la numeración publicada:
+    // Venusaur ex 003/165 = expansión 151; Lapras ex 164 = promo SVP.
+    const inferred = !card.set && key(card.name) === "venusaur ex" && info.raw === "003/165"
+      ? SETS["151"]
+      : (!card.set && key(card.name) === "lapras ex" && info.raw === "164" ? SETS["scarlet & violet promo"] : null);
+    const baseConfig = SETS[setKey(card.set)] || inferred;
     if (!baseConfig && !info.promo) return pack("incomplete", "No se ha indicado una colección reconocible.");
     const config = info.promo ? { tcg: "swshp", old: "swshp" } : baseConfig;
     // El set con 49 cartas es SVG (Special Deck Set ex), no Shiny Treasure ex (190).
@@ -177,8 +182,12 @@
         }
       }
       const first = await viaTCGdex(card, config, info);
-      if (first?.images.length) return first;
+      if (first?.images.length) {
+        if (inferred) first.reason = "La expansión estaba vacía en el Excel; se identificó por nombre y número sin editar tus datos.";
+        return first;
+      }
       const second = await viaLegacy(card, config, info);
+      if (second && inferred) second.reason = "La expansión estaba vacía en el Excel; se identificó por nombre y número sin editar tus datos.";
       return second || first || pack("not-found", "Sin imagen confirmada para este nombre, número y expansión.");
     } catch (_) {
       return pack("error", "No se pudo consultar la base de datos de imágenes.");
