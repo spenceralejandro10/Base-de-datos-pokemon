@@ -20,9 +20,10 @@ Una vitrina sencilla para consultar cartas Pokémon, conocer la disponibilidad y
 
 1. Entra a la vitrina normalmente. El formulario de administración **no se abre solo**, incluso si la dirección contiene `?admin=1`. Pulsa **Gestión** cuando quieras ingresar; el formulario aparece únicamente tras ese clic.
 2. Usuario: `root`. Es un alias de una cuenta Supabase Auth autorizada en una tabla privada; no es una contraseña.
-3. **Importante:** el usuario `root` es un alias del correo autorizado de Supabase Auth, no una contraseña. La clave `123` no se configuró por ser insegura y porque el panel exige al menos 12 caracteres. En el primer acceso, abre **Primera vez o recuperación de acceso**, verifica la identidad con el correo del propietario y configura una contraseña segura de 12 o más caracteres.
-4. Los próximos accesos se hacen con el alias `root` y esa contraseña privada.
-5. Una vez autenticado, aparece **Editar carta**. Puedes subir una imagen, corregir colección/idioma, modificar cantidades y marcar una carta como no disponible.
+3. **Importante:** `root` es un alias del correo autorizado en Supabase Auth. En el primer acceso, abre **Primera vez o recuperación de acceso** y solicita un enlace nuevo a tu correo. Si el enlace redirige a `localhost:3000`, **no lo abras**: en Gmail usa «Copiar dirección del enlace», pégalo en el campo del panel y pulsa **Verificar enlace y crear contraseña**. Esto verifica el token directamente contra Supabase sin redirección. El enlace no se almacena en el servidor de GitHub ni en el inventario.
+4. Una vez validado, se abre **Crear o cambiar contraseña**. Crea una clave privada de 12 caracteres o más. La contraseña `123` no se configuró por ser insegura.
+5. Los próximos accesos se hacen con el alias `root` y esa contraseña privada.
+6. Una vez autenticado, aparece **Editar carta**. Puedes subir una imagen, corregir colección/idioma, modificar cantidades y marcar una carta como no disponible.
 
 El botón de edición nunca se muestra al público. Las políticas RLS de Supabase bloquean modificaciones anónimas o no autorizadas, independientemente de los botones de la interfaz.
 
