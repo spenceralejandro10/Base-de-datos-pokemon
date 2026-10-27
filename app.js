@@ -110,20 +110,60 @@ async function doAdmin(fn,message){
 el("ownerAccess").addEventListener("click",()=>showEditor());
 el("closeEditor").addEventListener("click",()=>editor.close());
 editor.addEventListener("click",e=>{if(e.target===editor)editor.close()});
+el("adminLoginForm").addEventListener("submit",async event=>{
+ event.preventDefault();
+ flash("Verificando credenciales…");
+ const username=el("adminUsername").value;
+ const password=el("adminPassword").value;
+ try{
+  await shared.passwordLogin(username,password);
+  el("adminPassword").value="";
+  adminDisplay();
+  if(!owner()){
+   await shared.logout();
+   adminDisplay();
+   flash("Esta cuenta no tiene permisos para administrar la bóveda.",true);
+  }else{
+   flash("Acceso confirmado. Puedes editar cartas y existencias.");
+   render();
+  }
+ }catch(_){flash("Usuario o contraseña incorrectos.",true);}
+});
 el("sendOwnerLink").addEventListener("click",async()=>{
- flash("Enviando acceso…");
- try{await shared.requestLogin(el("ownerEmail").value);flash("Consulta tu correo. Entra con el enlace o usa el código que recibas.")}
- catch(e){flash(e.message,true)}
+ flash("Enviando acceso al correo del propietario…");
+ try{
+  await shared.requestLogin(el("adminUsername").value||"custodio");
+  flash("Consulta el correo del propietario. Abre el enlace recibido o introduce el código para configurar tu contraseña.");
+ }catch(e){flash(e.message,true)}
 });
 el("verifyOwnerCode").addEventListener("click",async()=>{
- flash("Verificando acceso…");
+ flash("Verificando identidad…");
  try{
-  await shared.verifyCode(el("ownerEmail").value,el("ownerCode").value);
+  await shared.verifyCode(el("adminUsername").value||"custodio",el("ownerCode").value);
   adminDisplay();
-  if(!owner())flash("La cuenta autenticada no tiene privilegios de administrador.",true);
-  else flash("Acceso administrativo confirmado. Tus cambios serán visibles para todos.");
-  render();
+  if(!owner()){
+   await shared.logout();
+   adminDisplay();
+   flash("No se pudo verificar el administrador.",true);
+  }else{
+   flash("Identidad confirmada. Abre «Crear o cambiar contraseña» y establece tu clave para próximos ingresos.");
+   render();
+  }
  }catch(e){flash(e.message,true)}
+});
+el("setOwnerPassword").addEventListener("click",async()=>{
+ if(!owner()){flash("Debes verificar tu identidad primero.",true);return}
+ const pass=el("newAdminPassword").value;
+ const confirm=el("confirmAdminPassword").value;
+ if(pass!==confirm){flash("Las contraseñas no coinciden.",true);return}
+ if(pass.length<12){flash("La contraseña debe tener al menos 12 caracteres.",true);return}
+ flash("Guardando contraseña…");
+ try{
+  await shared.setPassword(pass);
+  el("newAdminPassword").value="";
+  el("confirmAdminPassword").value="";
+  flash("Contraseña configurada. En adelante podrás entrar con tu usuario y esta clave.");
+ }catch(e){flash(e.message||"No se pudo configurar la contraseña.",true)}
 });
 for(const id of ["logoutEditor","logoutUnauthorized"]){
  el(id).addEventListener("click",async()=>{
@@ -249,33 +289,71 @@ async function imageFor(c,img,placeholder,status,token){
  }catch(_){if(status)status.textContent="Imagen no disponible";}
 }
 async function showPrice(c,container,token){
+ const title=container.closest(".price-section")?.querySelector(".price-title");
+ const addLink=(href,text,variantClass="tcg-link")=>{
+  const link=document.createElement("a");
+  link.className=variantClass;
+  link.href=href;
+  link.target="_blank";
+  link.rel="noopener noreferrer";
+  link.textContent=text;
+  container.append(link);
+ };
  try{
   const prices=await market.resolve(c);
   if(token!==epoch||!container.isConnected)return;
   container.replaceChildren();
+  const selected=prices.market;
+  if(title)title.textContent=selected==="Cardmarket"?"Referencia Cardmarket · EUR":selected==="TCGplayer"?"Referencia TCGplayer · USD":"Consulta de mercado";
   if(!prices.statuses?.length){
-   const text=document.createElement("span");text.className="no-price";text.textContent="Sin precio de referencia.";
-   container.append(text);
-  }else{
-   const sorted=[...prices.statuses].sort((a,b)=>a.price-b.price);
-   for(const p of sorted){
-    const line=document.createElement("div");line.className="price-line";
-    const label=document.createElement("span");label.textContent=p.variant;
-    const value=document.createElement("b");value.textContent=market.display(p);
-    line.append(label,value);container.append(line);
-   }
-   const withDate=sorted.find(x=>x.updated);
-   if(withDate){const small=document.createElement("small");small.textContent="Fuente actualizada: "+withDate.updated;container.append(small)}
-   if(prices.reference){const note=document.createElement("small");note.textContent="Referencia en inglés; la edición de tu carta puede valer distinto.";container.append(note)}
+   const empty=document.createElement("span");
+   empty.className="no-price";
+   empty.textContent=prices.reason||"No hay precio contrastable.";
+   container.append(empty);
+   addLink(prices.url||market.searchUrl(c),"Buscar en TCGplayer");
+   addLink(prices.secondaryUrl||market.cardmarketSearch(c),"Buscar en Cardmarket","market-secondary-link");
+   return;
   }
-  const link=document.createElement("a");link.className="tcg-link";
-  link.href=prices.url||tcgQuery(c);link.target="_blank";link.rel="noopener noreferrer";
-  link.textContent=prices.statuses?.some(x=>x.exactLink)?"Ver carta en TCGplayer":"Buscar en TCGplayer";
-  container.append(link);
+  const sorted=[...prices.statuses].sort((a,b)=>a.price-b.price);
+  for(const row of sorted){
+   const line=document.createElement("div");
+   line.className="price-line";
+   const variant=document.createElement("span");
+   variant.textContent=row.variant;
+   const amount=document.createElement("a");
+   amount.className="market-amount";
+   amount.textContent=market.display(row);
+   amount.href=row.url;
+   amount.target="_blank";
+   amount.rel="noopener noreferrer";
+   amount.title="Comprobar este precio en "+row.market;
+   line.append(variant,amount);
+   container.append(line);
+  }
+  const last=sorted.find(x=>x.updated);
+  if(last){
+   const stamp=document.createElement("small");
+   stamp.className="market-updated";
+   stamp.textContent=(selected==="Cardmarket"?"Tendencia · ":"Market Price · ")+"actualizado: "+last.updated;
+   container.append(stamp);
+  }
+  if(selected==="Cardmarket"){
+   const fallback=document.createElement("small");
+   fallback.className="market-fallback";
+   fallback.textContent="Cardmarket se muestra porque TCGplayer no tiene una referencia verificable para esta carta.";
+   container.append(fallback);
+   addLink(prices.url||market.cardmarketSearch(c),"Ver precios en Cardmarket");
+  }else{
+   addLink(prices.url||market.searchUrl(c),"Comprobar en TCGplayer");
+  }
  }catch(_){
   container.replaceChildren();
-  const a=document.createElement("a");a.href=tcgQuery(c);a.target="_blank";a.rel="noopener noreferrer";a.textContent="Consultar en TCGplayer";
-  container.append(a);
+  if(title)title.textContent="Consulta de mercado";
+  const error=document.createElement("small");
+  error.textContent="No se pudo consultar el precio.";
+  container.append(error);
+  addLink(market.searchUrl(c),"Buscar en TCGplayer");
+  addLink(market.cardmarketSearch(c),"Buscar en Cardmarket","market-secondary-link");
  }
 }
 function editButton(c){
@@ -298,7 +376,7 @@ function galleryCard(c,token){
  item.innerHTML='<div class="art"><div class="placeholder"><span class="loader"></span><span>Buscando carta…</span></div><img hidden loading="lazy"><span class="pill">'+esc(cardCode(c))+'</span></div>'+
  '<div class="details"><h3>'+esc(c.name)+'</h3><div class="num">'+esc(c.number)+'</div><div class="meta">'+esc(c.set||"Colección por confirmar")+' · '+esc(c.language||"Idioma por confirmar")+'</div>'+
  '<div class="stock-status '+(a.available?"is-available":"is-soldout")+'">'+(a.available?"Disponible · "+a.quantity+" ud.":"No disponible")+'</div>'+
- '<div class="image-status">Buscando imagen…</div><div class="price-section"><div class="price-title">Referencia TCGplayer · USD</div><div class="pricing">Consultando mercado…</div></div><div class="links"></div></div>';
+ '<div class="image-status">Buscando imagen…</div><div class="price-section"><div class="price-title">Consultando precios</div><div class="pricing">Consultando mercado…</div></div><div class="links"></div></div>';
  item.querySelector(".links").append(cartButton(c));
  const admin=editButton(c);if(admin)item.querySelector(".links").append(admin);
  imageFor(c,item.querySelector(".art>img"),item.querySelector(".placeholder"),item.querySelector(".image-status"),token);
