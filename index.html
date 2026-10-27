@@ -6,7 +6,7 @@
 <meta name="theme-color" content="#17304f">
 <title>Bóveda TCG | Colección de cartas Pokémon</title>
 <meta name="description" content="Bienvenido a Bóveda TCG. Explora cartas Pokémon, consulta existencias, referencias de TCGplayer y crea tu lista de interés.">
-<link rel="stylesheet" href="./styles.css?v=11">
+<link rel="stylesheet" href="./styles.css?v=14">
 </head>
 <body>
 <header class="top">
@@ -27,7 +27,9 @@
  <select id="view" aria-label="Vista"><option value="grid">Galería</option><option value="table">Tabla</option></select>
  <button id="resetFilters" type="button">Limpiar filtros</button>
  </div>
- <p class="notice">Precios de referencia de TCGplayer en USD, consultados desde catálogos externos cuando existen. <strong>No son precios finales de venta</strong> ni actualizaciones segundo a segundo. Usa «Ver en TCGplayer» para confirmar ofertas y variantes en el mercado. La selección de cartas no crea una compra ni reserva.</p>
+ <section class="notice price-disclaimer" aria-label="Información de precios">
+ <strong>Información sobre precios:</strong> Los valores mostrados son referencias de mercado obtenidas de TCGplayer (USD). <strong>Solo cuando TCGplayer no ofrece un precio verificable</strong>, utilizamos Cardmarket (EUR), indicando claramente su procedencia. El precio definitivo se confirma al momento de concretar la compra y puede variar según el mercado, la condición y la disponibilidad de la carta. En algunos casos puede resultar más favorable para el comprador, incluso por uno o dos dólares. Ningún valor mostrado constituye una oferta vinculante. La selección de cartas no genera una reserva ni un pago.
+ </section>
  <div id="results" class="grid" aria-live="polite"></div>
 </main>
 <dialog id="cartDialog" class="editor-dialog cart-dialog">
@@ -43,16 +45,35 @@
  <div class="dialog-top"><h2 id="editorTitle">Panel de administración</h2><button id="closeEditor" class="icon-button" type="button" aria-label="Cerrar">×</button></div>
  <p id="editorMessage" class="editor-message" role="status"></p>
  <div id="loginPanel">
-  <p>Solo el propietario puede editar las imágenes, las fichas y las existencias. Accede con el correo autorizado.</p>
-  <label for="ownerEmail">Correo de administrador</label><input id="ownerEmail" type="email" autocomplete="email" placeholder="correo@ejemplo.com">
-  <button id="sendOwnerLink" class="primary" type="button">Enviar acceso por correo</button>
-  <p class="hint">Si recibes un código de confirmación, introdúcelo aquí:</p>
-  <label for="ownerCode">Código</label><input id="ownerCode" inputmode="numeric" autocomplete="one-time-code" type="text" placeholder="Código de correo">
-  <button id="verifyOwnerCode" type="button">Entrar con código</button>
+  <p>Acceso restringido al responsable de la bóveda. Los visitantes solo pueden consultar el catálogo y crear listas de interés.</p>
+  <form id="adminLoginForm" autocomplete="on">
+    <label for="adminUsername">Usuario</label>
+    <input id="adminUsername" name="username" type="text" autocomplete="username" placeholder="Usuario" required>
+    <label for="adminPassword">Contraseña</label>
+    <input id="adminPassword" name="password" type="password" autocomplete="current-password" placeholder="Contraseña" required>
+    <button id="adminLogin" type="submit" class="primary">Ingresar</button>
+  </form>
+  <details id="firstOwnerAccess">
+    <summary>Primera vez o recuperación de acceso</summary>
+    <p class="hint">Verificaremos la identidad por el correo del propietario registrado. Después podrás definir una contraseña segura.</p>
+    <button id="sendOwnerLink" type="button">Enviar código o enlace de verificación</button>
+    <label for="ownerCode">Código recibido</label>
+    <input id="ownerCode" inputmode="numeric" autocomplete="one-time-code" type="text" placeholder="Código del correo">
+    <button id="verifyOwnerCode" type="button">Verificar identidad</button>
+  </details>
   <button id="logoutUnauthorized" type="button" hidden>Cerrar sesión de otra cuenta</button>
  </div>
  <div id="editPanel" hidden>
   <p id="editorOwner" class="hint"></p>
+  <details class="password-setup">
+    <summary>Crear o cambiar contraseña</summary>
+    <p class="hint">Configura una contraseña de 12 caracteres o más. Supabase Auth la guarda de forma segura; no aparecerá en el código ni en el catálogo.</p>
+    <label for="newAdminPassword">Nueva contraseña</label>
+    <input id="newAdminPassword" type="password" autocomplete="new-password" minlength="12" placeholder="Mínimo 12 caracteres">
+    <label for="confirmAdminPassword">Confirmar contraseña</label>
+    <input id="confirmAdminPassword" type="password" autocomplete="new-password" minlength="12" placeholder="Repite la contraseña">
+    <button id="setOwnerPassword" type="button" class="primary">Guardar contraseña</button>
+  </details>
   <p id="editingCard"></p>
   <div id="adminCardFields" hidden>
    <h3>Disponibilidad</h3>
@@ -80,13 +101,13 @@
   <button id="logoutEditor" type="button">Cerrar sesión</button>
  </div>
 </dialog>
-<footer class="footer">Bóveda TCG · Catálogo personal de cartas Pokémon · Referencias de mercado externas, sin pagos en línea.</footer>
-<script src="./cards.js?v=11"></script>
-<script src="./shared-images.js?v=11"></script>
-<script src="./catalog-overrides.js?v=11"></script>
-<script src="./card-stock.js?v=11"></script>
-<script src="./card-images.js?v=11"></script>
-<script src="./market-prices.js?v=11"></script>
-<script src="./app.js?v=11"></script>
+<footer class="footer">Bóveda TCG · Catálogo personal de cartas Pokémon · Sin pagos en línea. <a href="?admin=1" class="vault-access" aria-label="Acceso a Bóveda">Acceso Bóveda</a></footer>
+<script src="./cards.js?v=14"></script>
+<script src="./shared-images.js?v=14"></script>
+<script src="./catalog-overrides.js?v=14"></script>
+<script src="./card-stock.js?v=14"></script>
+<script src="./card-images.js?v=14"></script>
+<script src="./market-prices.js?v=14"></script>
+<script src="./app.js?v=14"></script>
 </body>
 </html>
