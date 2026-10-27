@@ -1,77 +1,50 @@
 /*
- * Precios de referencia consultados en cada carga a TCGdex y, cuando procede,
- * Pokémon TCG API. NO es un precio de venta garantizado.
+ * Referencias de mercado TCGplayer recopiladas por TCGdex (o Pokémon TCG API).
+ * No son cotizaciones de venta instantáneas. Enlaces al producto exacto cuando
+ * la fuente ofrece un productId; si no, búsqueda por nombre + expansión + número.
  */
-(function () {
+(function(){
  "use strict";
- const memo = new Map();
- const fmt = (amount, unit) => new Intl.NumberFormat("es-CO", {
-   style: "currency", currency: unit, minimumFractionDigits: 2, maximumFractionDigits: 2
- }).format(amount);
- function valid(value) { return typeof value === "number" && Number.isFinite(value) && value > 0; }
- function tidyDate(value) {
-   if (!value) return "";
-   const date = typeof value === "number" ? new Date(value < 10000000000 ? value * 1000 : value) : new Date(value);
-   return Number.isNaN(date.getTime()) ? "" : date.toLocaleDateString("es-CO", { year: "numeric", month: "short", day: "numeric" });
+ const cache=new Map();
+ function format(n){return new Intl.NumberFormat("es-CO",{style:"currency",currency:"USD",minimumFractionDigits:2,maximumFractionDigits:2}).format(n);}
+ function valid(n){return typeof n==="number"&&Number.isFinite(n)&&n>0}
+ const searchUrl=card=>"https://www.tcgplayer.com/search/pokemon/product?productLineName=pokemon&q="+encodeURIComponent([card.name,card.number,card.set].filter(Boolean).join(" "))+"&view=grid";
+ const safeUrl=(s)=>{try{const u=new URL(s);return u.protocol==="https:"&&/(^|\.)tcgplayer\.com$/i.test(u.hostname)?u.href:null;}catch(_){return null}};
+ function ts(x){if(!x)return "";const d=new Date(typeof x==="number"?(x<1e10?x*1000:x):x);return Number.isNaN(d.getTime())?"":d.toLocaleDateString("es-CO",{day:"2-digit",month:"short",year:"numeric"});}
+ function collect(data,card){
+  const tcg=data?.pricing?.tcgplayer||data?.tcgplayer;
+  if(!tcg)return [];
+  const vars=tcg.prices||tcg;
+  const names={normal:"Normal",holofoil:"Holo","reverse-holofoil":"Reversa","1st-edition":"Primera edición","1st-edition-holofoil":"Primera edición holo",unlimited:"Ilimitada","unlimited-holofoil":"Ilimitada holo"};
+  const arr=[];
+  for(const [kind,price] of Object.entries(vars)){
+    if(!price||typeof price!=="object"||Array.isArray(price))continue;
+    const val=valid(price.marketPrice)?price.marketPrice:(valid(price.midPrice)?price.midPrice:null);
+    if(!val)continue;
+    const productId=price.productId??tcg.productId??null;
+    const direct=productId&&/^\d+$/.test(String(productId))?"https://www.tcgplayer.com/product/"+productId:null;
+    arr.push({market:"TCGplayer",variant:names[kind]||kind,price:val,unit:"USD",updated:ts(tcg.updated||tcg.updatedAt),url:direct||safeUrl(tcg.url)||searchUrl(card),exactLink:!!direct||!!safeUrl(tcg.url),source:"TCGdex / TCGplayer"});
+  }
+  return arr;
  }
- function normalize(data, site, reference) {
-   const result = { statuses: [], source: site, reference: !!reference };
-   const tcg = data?.pricing?.tcgplayer || data?.tcgplayer || null;
-   const cm = data?.pricing?.cardmarket || data?.cardmarket || null;
-   if (tcg) {
-     const prices = tcg.prices || tcg;
-     const labels = { normal: "Normal", holofoil: "Holo", "reverse-holofoil": "Reverso", reverse: "Reverso", "1st-edition": "1.ª edición", "1st-edition-holofoil": "1.ª edición holo", unlimited: "Ilimitada", "unlimited-holofoil": "Ilimitada holo" };
-     const entries = Object.entries(prices).filter(([name, variant]) => variant && typeof variant === "object" && !Array.isArray(variant) && (valid(variant.marketPrice) || valid(variant.midPrice)));
-     for (const [type, values] of entries) {
-       result.statuses.push({
-         market: "TCGplayer",
-         variant: labels[type] || type,
-         price: values.marketPrice ?? values.midPrice,
-         unit: tcg.unit || "USD",
-         updated: tidyDate(tcg.updated || tcg.updatedAt),
-         url: tcg.url || ""
-       });
-     }
-   }
-   if (cm) {
-     const normal = valid(cm.trend) ? cm.trend : cm.avg;
-     const foil = valid(cm["trend-holo"]) ? cm["trend-holo"] : cm["avg-holo"];
-     if (valid(normal)) result.statuses.push({ market: "Cardmarket", variant: "Normal / tendencia", price: normal, unit: cm.unit || "EUR", updated: tidyDate(cm.updated || cm.updatedAt), url: cm.url || "" });
-     if (valid(foil)) result.statuses.push({ market: "Cardmarket", variant: "Holo / tendencia", price: foil, unit: cm.unit || "EUR", updated: tidyDate(cm.updated || cm.updatedAt), url: cm.url || "" });
-   }
-   result.statuses = result.statuses.filter(x => valid(x.price));
-   return result;
+ async function compute(card){
+   const exact=await window.CardImages.resolveCatalog(card);
+   const fallback=searchUrl(card);
+   if(!exact?.catalog?.id)return {statuses:[],url:fallback,reason:"No hay coincidencia confirmada; consulta TCGplayer directamente."};
+   const meta=exact.catalog;
+   const endpoint=meta.kind==="tcgdex"?
+     "https://api.tcgdex.net/v2/"+encodeURIComponent(meta.language)+"/cards/"+encodeURIComponent(meta.id):
+     "https://api.pokemontcg.io/v2/cards/"+encodeURIComponent(meta.id);
+   const doc=await window.CardImages.loadCardJSON(endpoint);
+   const rows=collect(doc?.data||doc,card);
+   return {statuses:rows,url:rows[0]?.url||fallback,reference:!!meta.editionIsReference,
+     reason:rows.length?"":"TCGplayer aún no publica una referencia para esta carta o idioma."};
  }
- const cardIdKey = card => [card.id, card.name, card.number, card.set, card.language].join("|");
- async function compute(card) {
-   const match = await window.CardImages.resolveCatalog(card);
-   if (!match?.catalog?.id) {
-     return { statuses: [], reason: "No hay coincidencia verificable de colección y número; no se muestra un precio supuesto." };
-   }
-   const meta = match.catalog;
-   if (meta.kind === "tcgdex") {
-     const url = "https://api.tcgdex.net/v2/" + encodeURIComponent(meta.language) + "/cards/" + encodeURIComponent(meta.id);
-     const response = await window.CardImages.loadCardJSON(url);
-     if (!response) return { statuses: [], reason: "La fuente de precios no respondió." };
-     const prices = normalize(response, "TCGdex", meta.editionIsReference);
-     prices.cardId = meta.id;
-     prices.reason = prices.statuses.length ? "" : "Las fuentes no publican un precio para esta edición.";
-     return prices;
-   }
-   if (meta.kind === "legacy") {
-     const response = await window.CardImages.loadCardJSON("https://api.pokemontcg.io/v2/cards/" + encodeURIComponent(meta.id));
-     const prices = normalize(response?.data, "Pokémon TCG API", meta.editionIsReference);
-     prices.reason = prices.statuses.length ? "" : "Sin precios disponibles para esta carta.";
-     return prices;
-   }
-   return { statuses: [], reason: "No hay precios publicados para esta edición." };
+ async function resolve(card){
+   const k=[card.id,card.number,card.set,card.language].join("|");
+   if(!cache.has(k))cache.set(k,compute(card).catch(()=>({statuses:[],url:searchUrl(card),reason:"No se pudo consultar TCGplayer por el momento."})));
+   return cache.get(k);
  }
- async function resolve(card) {
-   const k = cardIdKey(card);
-   if (!memo.has(k)) memo.set(k, compute(card).catch(() => ({ statuses: [], reason: "La consulta de mercado falló temporalmente." })));
-   return memo.get(k);
- }
- function reset() { memo.clear(); }
- function display(status) { return fmt(status.price, status.unit); }
- window.CardPrices = { resolve, display, reset };
+ function reset(){cache.clear()}
+ window.CardPrices={resolve,display:row=>format(row.price),reset,searchUrl};
 })();
