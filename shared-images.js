@@ -12,6 +12,7 @@
   const SESSION_NAME = "pokemon-gallery-owner-session-v1";
   let session = null;
   let rows = new Map();
+  let imagesById = new Map();
   let lastError = "";
   let lastLoaded = 0;
   const watchers = new Set();
@@ -29,7 +30,7 @@
   }
   async function loadShared(force = false) {
     if (!force && Date.now() - lastLoaded < 25000) return rows;
-    const response = await fetch(URL_BASE + "/rest/v1/" + TABLE + "?select=card_key,image_url", {
+    const response = await fetch(URL_BASE + "/rest/v1/" + TABLE + "?select=card_key,image_url,updated_at&order=updated_at.desc", {
       headers: { apikey: KEY, Accept: "application/json" },
       cache: "no-store"
     });
@@ -39,14 +40,24 @@
       return rows;
     }
     const json = await response.json();
-    rows = new Map(json.filter(x => x.card_key && x.image_url).map(x => [x.card_key, x.image_url]));
+    const valid = json.filter(x => x.card_key && x.image_url);
+    rows = new Map(valid.map(x => [x.card_key, x.image_url]));
+    // También identificar la foto por ID inmutable: una corrección del Excel
+    // (colección, nombre o idioma) nunca debe hacer desaparecer la imagen manual.
+    imagesById = new Map();
+    for (const item of valid) {
+      const cardId = Number(String(item.card_key).split("|")[0]);
+      if (Number.isInteger(cardId) && !imagesById.has(cardId)) {
+        imagesById.set(cardId, item.image_url);
+      }
+    }
     lastLoaded = Date.now();
     lastError = "";
     updateWatchers();
     return rows;
   }
   function getShared(card) {
-    return rows.get(imageKey(card)) || null;
+    return rows.get(imageKey(card)) || imagesById.get(Number(card.id)) || null;
   }
   // Catálogo central: lectura pública en Supabase; cards.js sigue como respaldo sin conexión.
   async function loadCatalog() {
