@@ -100,10 +100,10 @@ async function doAdmin(fn,message){
  busy=true;flash("Guardando cambios…");
  try{
   await fn();
-  flash(message);
   await Promise.all([stock.refresh(true),meta.fetchOverrides(true),shared.loadShared(true)]);
   applyMeta();
   if(editing)showEditor(findCard(editing.id));
+  flash(message);
  }catch(e){flash(e.message||"No se pudo guardar el cambio.",true)}
  finally{busy=false}
 }
