@@ -39,3 +39,55 @@
 .editor-dialog hr{border:0;border-top:1px solid #e4eaf1;margin:19px 0 12px}
 #editingCard{font-size:13px;font-weight:700;color:#315377}
 @media(max-width:650px){#refreshMarket{width:100%}.art{height:228px}.price-line{flex-wrap:wrap;gap:3px}.price-line b{font-size:11px}}
+
+/* Bóveda TCG: vitrina, carrito y administración discreta */
+.brand{display:flex;align-items:center;justify-content:space-between;gap:28px}
+.eyebrow{font-size:11px;letter-spacing:.17em;font-weight:780;color:#acc8e2;margin:0 0 12px}
+.brand .sub{max-width:700px;line-height:1.65;font-size:15px}
+.cart-trigger{border:1px solid #7da3c9;background:#fff;color:#1b4167;padding:12px 18px;border-radius:12px;font-size:14px;font-weight:750;white-space:nowrap;box-shadow:0 3px 20px #0b223e20}
+.cart-trigger span{display:inline-block;min-width:23px;margin-left:7px;padding:3px 6px;background:#e8f2fb;border-radius:999px}
+.item .art>.pill{top:10px;left:10px;right:auto;font-size:10px;letter-spacing:.02em}
+.stock-status{font-size:12px;font-weight:750;border-radius:7px;padding:7px 10px;width:fit-content;margin-top:3px}
+.stock-status.is-available{color:#1f724e;background:#e9f8f0}
+.stock-status.is-soldout{color:#9b3d3d;background:#fff0f0}
+.item:has(.is-soldout) .art img{filter:saturate(.75)}
+.links .add-cart,.cart-row-controls button{font-size:11px;border:1px solid #1e628f;border-radius:8px;background:#1e628f;color:white;font-weight:700;padding:8px 11px;cursor:pointer}
+.links .add-cart{flex:1;min-width:140px}
+.links .add-cart:disabled{cursor:default;background:#eff2f6;border-color:#e0e5ed;color:#7b8b9a}
+.links .image-button,.links .tcg-link{flex:none}
+.tcg-link{display:block;margin-top:10px;font-size:12px;font-weight:800;text-decoration:none;color:#195a90;border:1px solid #cbdde9;border-radius:8px;padding:9px 11px;text-align:center;background:#f6faff}
+.tcg-link:hover{background:#e7f2fc}
+#resetFilters{font-size:12px;background:white;border:1px solid #9cb2c8;color:#22577e;border-radius:9px;padding:10px 14px;font-weight:750;white-space:nowrap}
+.price-lines,.pricing{width:100%}
+.market-group{max-width:100%}
+.price-line b{font-size:12px}
+.table-market{min-width:190px}
+.table-market .price-line{font-size:11px}
+.table-action{min-width:160px}
+.table-action button{display:block;margin:4px 0;border-radius:7px;border:1px solid #a1b8ce;background:#f5f9fc;color:#1f507c;padding:8px 12px;font-size:11px;font-weight:750}
+.table-action button:disabled{opacity:.55;cursor:not-allowed}
+.cart-dialog{width:min(570px,calc(100vw - 24px))}
+.cart-row{border-bottom:1px solid #e6ecf3;padding:13px 0;display:flex;justify-content:space-between;align-items:center;gap:12px}
+.cart-row strong{font-size:14px}
+.cart-row small{display:block;margin-top:5px;color:#75859b;font-size:11px}
+.cart-row-controls{display:flex;gap:7px;align-items:center;white-space:nowrap}
+.cart-row-controls button{min-width:26px;padding:6px 8px}
+.cart-row-controls button:disabled{opacity:.45;cursor:not-allowed}
+.cart-row-controls span{min-width:17px;text-align:center;font-weight:700;font-size:12px}
+.cart-summary{font-weight:750!important;color:#25486e!important}
+.editor-dialog h3{margin:18px 0 5px;font-size:15px;color:#1e4266;padding-bottom:6px;border-bottom:1px solid #e7edf5}
+.editor-dialog .inline-check{display:flex;align-items:center;gap:10px;margin:13px 0;font-weight:600}
+.editor-dialog input[type="number"],.editor-dialog select{width:100%;padding:11px;border:1px solid #c9d6e5;border-radius:8px;background:white;font-size:13px}
+.editor-dialog .inline-check input{width:auto}
+#ownerAccess{font-size:12px;padding:8px 12px}
+#ownerAccess[hidden]{display:none!important}
+#adminCardFields[hidden],#loginPanel[hidden],#editPanel[hidden]{display:none!important}
+@media(max-width:720px){
+ .brand{align-items:flex-start;flex-direction:column;gap:18px}
+ .cart-trigger{align-self:flex-start}
+ .cart-row{align-items:flex-start;flex-direction:column}
+ .cart-row-controls{align-self:flex-end}
+ #resetFilters{width:100%}
+ .item .art>.pill{font-size:9px}
+ .stock-status{font-size:11px}
+}
