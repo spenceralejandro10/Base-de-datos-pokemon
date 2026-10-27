@@ -15,6 +15,7 @@ async function refresh(force=false){
 }
 function get(card){const saved=overrides.get(Number(card.id));const q=saved?Number(saved.quantity_available):Number(card.quantity)||0;return {quantity:q,available:q>0&&(saved?!!saved.is_listed:true),override:!!saved,listed:saved?saved.is_listed:true};}
 async function save(card,amount,listed){
+ if(String(amount).trim()==="")throw Error("Escribe la cantidad exacta de cartas disponibles.");
  const quantity=Number(amount);
  if(!Number.isInteger(quantity)||quantity<0||quantity>100000)throw Error("La cantidad debe ser un número entero entre 0 y 100000.");
  const token=await window.SharedImages.accessToken();
