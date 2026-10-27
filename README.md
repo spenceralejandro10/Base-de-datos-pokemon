@@ -20,8 +20,8 @@ Una vitrina sencilla para consultar cartas Pokémon, conocer la disponibilidad y
 
 1. Entra a la vitrina normalmente. El formulario de administración **no se abre solo**, incluso si la dirección contiene `?admin=1`. Pulsa **Gestión** cuando quieras ingresar; el formulario aparece únicamente tras ese clic.
 2. Usuario: `root`. Es un alias de una cuenta Supabase Auth autorizada en una tabla privada; no es una contraseña.
-3. **Importante:** `root` es un alias del correo autorizado en Supabase Auth. En el primer acceso, abre **Primera vez o recuperación de acceso** y solicita un enlace nuevo a tu correo. Si el enlace redirige a `localhost:3000`, **no lo abras**: en Gmail usa «Copiar dirección del enlace», pégalo en el campo del panel y pulsa **Verificar enlace y crear contraseña**. Esto verifica el token directamente contra Supabase sin redirección. El enlace no se almacena en el servidor de GitHub ni en el inventario.
-4. Una vez validado, se abre **Crear o cambiar contraseña**. Crea una clave privada de 12 caracteres o más. La contraseña `123` no se configuró por ser insegura.
+3. **Configuración inicial sin correos:** el usuario raíz ya existe en Supabase Auth. El propietario puede configurar una contraseña segura directamente desde la administración privada de Supabase. El acceso por correo ha sido retirado del formulario para evitar la limitación de envíos. No se configuró la contraseña insegura `123`.
+4. Una vez establecida la contraseña, ingresa normalmente con `root` y la clave. Dentro de la sesión, «Crear o cambiar contraseña» permite actualizarla sin correos.
 5. Los próximos accesos se hacen con el alias `root` y esa contraseña privada.
 6. Una vez autenticado, aparece **Editar carta**. Puedes subir una imagen, corregir colección/idioma, modificar cantidades y marcar una carta como no disponible.
 
