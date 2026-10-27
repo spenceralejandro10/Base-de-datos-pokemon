@@ -1,6 +1,6 @@
 (function(){
 "use strict";
-const base=window.CARDS||[];
+let base=window.CARDS||[];
 const shared=window.SharedImages,meta=window.CatalogOverrides,stock=window.CardStock,market=window.CardPrices;
 const el=id=>document.getElementById(id);
 const q=el("q"),setFilter=el("set"),langFilter=el("lang"),availability=el("availability"),view=el("view"),results=el("results");
@@ -37,6 +37,37 @@ function cleanCart(){
  }
  if(changed)saveCart();else updateCartCount();
 }
+// Orden de lanzamiento de las expansiones. El año de cada carta siempre
+// proviene del Excel; la prioridad dentro de un mismo año es la expansión.
+const SET_MONTHS={
+ "30th celebration":12,
+ "journey together":3,"prismatic evolutions":1,
+ "stellar crown":9,"twilight masquerade":5,"temporal forces":3,"paldean fates":1,
+ "shiny treasure ex":12,"paradox rift":11,"special deck set ex (svg)":11,
+ "151":9,"obsidian flames":8,"pokemon card 151":6,"paldea evolved":6,
+ "scarlet & violet":3,"scarlet ex":1,"violet ex":1,
+ "crown zenith":1,"lost origin":9,"astral radiance":5,
+ "celebrations (classic collection)":10,"evolving skies":8,"darkness ablaze":8
+};
+const cleanSet=name=>String(name||"").normalize("NFD")
+ .replace(/[\\u0300-\\u036f]/g,"").toLocaleLowerCase("es").trim();
+function collectionScore(name){
+ if(!name)return -1;
+ const matching=records.filter(c=>c.set===name);
+ const lastYear=matching.reduce((n,c)=>Math.max(n,Number(c.year)||0),0);
+ return lastYear*100+(SET_MONTHS[cleanSet(name)]||0);
+}
+function orderCollections(names){
+ return names.sort((a,b)=>collectionScore(b)-collectionScore(a)||
+ a.localeCompare(b,"es"));
+}
+function orderedCards(list){
+ const groups=orderCollections([...new Set(records.map(c=>c.set).filter(Boolean))]);
+ const positions=new Map(groups.map((name,i)=>[name,i]));
+ return list.sort((a,b)=>(positions.get(a.set)??999)-(positions.get(b.set)??999)||
+ (Number(b.year)||0)-(Number(a.year)||0)||
+ (Number(a.ordinal)||0)-(Number(b.ordinal)||0));
+}
 function applyMeta(){
  records=meta.apply(base);
  updateStats();
@@ -50,7 +81,9 @@ function refreshOptions(){
   control.replaceChildren();
   const option=document.createElement("option");
   option.value="";option.textContent=key==="set"?"Todas las colecciones":"Todos los idiomas";control.append(option);
-  [...new Set(records.map(c=>c[key]).filter(Boolean))].sort((a,b)=>a.localeCompare(b,"es")).forEach(value=>{
+  (key==="set" ? orderCollections([...new Set(records.map(c=>c.set).filter(Boolean))])
+    : [...new Set(records.map(c=>c[key]).filter(Boolean))].sort((a,b)=>a.localeCompare(b,"es"))
+  ).forEach(value=>{
    const opt=document.createElement("option");opt.value=value;opt.textContent=value;control.append(opt);
   });
   control.value=[...control.options].some(x=>x.value===old)?old:"";
@@ -58,14 +91,14 @@ function refreshOptions(){
 }
 function filtering(){
  const search=q.value.trim().toLocaleLowerCase("es");
- return records.filter(c=>{
+ return orderedCards(records.filter(c=>{
   const a=available(c);
   if(setFilter.value&&setFilter.value!==c.set)return false;
   if(langFilter.value&&langFilter.value!==c.language)return false;
   if(availability.value==="available"&&!a.available)return false;
   if(availability.value==="soldout"&&a.available)return false;
   return !search||[cardCode(c),c.name,c.number,c.set,c.language,c.year,c.ordinal].join(" ").toLocaleLowerCase("es").includes(search);
- });
+ }));
 }
 function adminDisplay(){
  const access=el("ownerAccess");
@@ -378,12 +411,22 @@ meta.listen(()=>{if(initialized)applyMeta()});
 stock.listen(()=>{if(initialized){updateStats();cleanCart();render()}});
 refreshOptions();updateStats();render();
 if(adminMode&&!editor.open)showEditor();
-Promise.allSettled([shared.init(),meta.fetchOverrides(true),stock.refresh(true)]).then(()=>{
+function refreshPublishedCatalog(){
+ return shared.loadCatalog().then(catalog=>{
+  // Los IDs están anclados a las cartas, nunca se renumeran por su orden visual.
+  if(catalog.length>=base.length)base=catalog;
+  return true;
+ }).catch(()=>false);
+}
+Promise.allSettled([shared.init(),meta.fetchOverrides(true),stock.refresh(true),refreshPublishedCatalog()]).then(()=>{
  initialized=true;applyMeta();adminDisplay();
  if(adminMode&&!editor.open)showEditor();
 });
 document.addEventListener("visibilitychange",()=>{
- if(document.visibilityState==="visible")Promise.allSettled([shared.loadShared(true),meta.fetchOverrides(true),stock.refresh(true)]).then(applyMeta);
+ if(document.visibilityState==="visible")
+  Promise.allSettled([shared.loadShared(true),meta.fetchOverrides(true),
+    stock.refresh(true),refreshPublishedCatalog()]).then(applyMeta);
 });
-setInterval(()=>Promise.allSettled([shared.loadShared(true),meta.fetchOverrides(true),stock.refresh(true)]).then(applyMeta),90000);
+setInterval(()=>Promise.allSettled([shared.loadShared(true),meta.fetchOverrides(true),
+ stock.refresh(true),refreshPublishedCatalog()]).then(applyMeta),90000);
 })();
