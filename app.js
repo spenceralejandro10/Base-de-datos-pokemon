@@ -375,6 +375,7 @@ shared.subscribe(()=>{adminDisplay();if(initialized)render()});
 meta.listen(()=>{if(initialized)applyMeta()});
 stock.listen(()=>{if(initialized){updateStats();cleanCart();render()}});
 refreshOptions();updateStats();render();
+if(adminMode&&!editor.open)showEditor();
 Promise.allSettled([shared.init(),meta.fetchOverrides(true),stock.refresh(true)]).then(()=>{
  initialized=true;applyMeta();adminDisplay();
  if(adminMode&&!editor.open)showEditor();
