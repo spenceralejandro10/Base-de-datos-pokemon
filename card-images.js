@@ -111,6 +111,7 @@
   }
   async function viaTCGdex(card, config, details) {
     let mismatch = false;
+    let missingArtwork = false;
     for (const lang of languages(card, config.japanese)) {
       const setId = (lang === "ja" && setKey(card.set) === "pokemon card 151") ? "sv2a" : config.tcg;
       const base = "https://api.tcgdex.net/v2/" + lang;
@@ -136,9 +137,10 @@
         const foreign = (lang === "en" && card.language === "Español");
         return pack("verified", foreign ? "Referencia visual en inglés: mismo número y expansión" : "Imagen localizada por colección y número", images, "TCGdex", found.name);
       }
-      return pack("no-art", "La carta existe en el catálogo, pero no tiene imagen digital disponible.", [], "TCGdex", found.name);
+      missingArtwork = true;
+      continue;
     }
-    return mismatch ? pack("mismatch", "El nombre o el total de cartas no coincide con la expansión indicada.") : null;
+    return mismatch ? pack("mismatch", "El nombre o el total de cartas no coincide con la expansión indicada.") : (missingArtwork ? pack("no-art", "La carta existe en el catálogo, pero no tiene imagen digital disponible.") : null);
   }
   async function viaLegacy(card, config, details) {
     if (!config.old || card.language === "Japonés") return null;
