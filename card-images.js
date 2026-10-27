@@ -100,6 +100,7 @@
   function listByNumber(setData, details) {
     return (setData.cards || []).find(c => {
       const n = String(c.localId ?? c.id?.split("-").slice(-1)[0] ?? "");
+      if (details.promo) return n.toUpperCase().replace(/\s/g, "") === "SWSH" + details.local;
       return /^\d+$/.test(n) && String(Number(n)) === details.local;
     });
   }
@@ -141,7 +142,7 @@
   }
   async function viaLegacy(card, config, details) {
     if (!config.old || card.language === "Japonés") return null;
-    const id = config.old + "-" + details.local;
+    const id = config.old + "-" + (details.promo ? "SWSH" + details.local : details.local);
     const data = await loadJSON("https://api.pokemontcg.io/v2/cards/" + encodeURIComponent(id));
     const found = data?.data;
     if (!found || !nameFits(card.name, found.name, "en")) return null;
