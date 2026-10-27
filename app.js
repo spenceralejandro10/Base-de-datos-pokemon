@@ -7,6 +7,12 @@
   const stats = { total: byId("total"), copies: byId("copies"), shown: byId("shown") };
   const dialog = byId("editorDialog"), loginPanel = byId("loginPanel"), editPanel = byId("editPanel");
   const info = byId("editorMessage");
+  const ADMIN_EMAIL = "spenceralejandro10@gmail.com";
+  const adminMode = new URLSearchParams(location.search).get("admin") === "1";
+  const isOwner = () => {
+    const user = shared.getSession()?.user;
+    return shared.isLoggedIn() && String(user?.email || "").toLowerCase() === ADMIN_EMAIL && !!user?.email_confirmed_at;
+  };
   const esc = val => String(val ?? "").replace(/[&<>"']/g, c => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c]));
   let activeCard = null;
   let generation = 0;
@@ -29,19 +35,24 @@
     info.className="editor-message"+(error?" error":"");
   };
   function updateLoginDisplay() {
-    const logged=shared.isLoggedIn();
-    loginPanel.hidden=logged;
-    editPanel.hidden=!logged;
-    byId("imageFields").hidden=!logged||!activeCard;
+    const owner=isOwner();
+    const connected=shared.isLoggedIn();
+    byId("ownerAccess").hidden=!(adminMode||owner);
+    loginPanel.hidden=owner;
+    editPanel.hidden=!owner;
+    byId("logoutUnauthorized").hidden=!connected||owner;
+    byId("imageFields").hidden=!owner||!activeCard;
     byId("editingCard").textContent=activeCard?"Editando: "+activeCard.name+" · "+activeCard.number:"Selecciona una carta para cambiar su imagen.";
-    byId("editorOwner").textContent=logged?"Sesión activa: "+(shared.getSession()?.user?.email||"propietario"):"";
-    byId("ownerAccess").textContent=logged?"Administrar imágenes · conectado":"Administrar imágenes";
+    byId("editorOwner").textContent=owner?"Sesión activa: "+(shared.getSession()?.user?.email||"propietario"):"";
+    byId("ownerAccess").textContent=owner?"Administrar imágenes · conectado":"Acceso del administrador";
     byId("editorTitle").textContent=activeCard?"Imagen de "+activeCard.name:"Administrar imágenes";
     if(activeCard)byId("imageUrl").value=shared.getShared(activeCard)||"";
   }
   function showEditor(card=null) {
+    if(!adminMode&&!isOwner())return;
     activeCard=card;
     setMessage("");
+    if(shared.isLoggedIn()&&!isOwner())setMessage("Esta cuenta no tiene permisos de administrador. Cierra sesión y accede con la cuenta autorizada.",true);
     updateLoginDisplay();
     if(!dialog.open)dialog.showModal();
   }
@@ -74,6 +85,7 @@
     }catch(e){setMessage(e.message,true)}
   });
   byId("logoutEditor").addEventListener("click",async()=>withFeedback(()=>shared.logout(),"Sesión cerrada."));
+  byId("logoutUnauthorized").addEventListener("click",async()=>withFeedback(()=>shared.logout(),"Sesión anterior cerrada."));
   byId("saveImageUrl").addEventListener("click",()=>{
     if(!activeCard)return;
     const c=activeCard;
@@ -151,6 +163,7 @@
   }
 
   function makeImageButton(card){
+    if(!isOwner())return null;
     const button=document.createElement("button");
     button.type="button";
     button.className="image-button";
@@ -229,7 +242,8 @@
     const el=document.createElement("article");
     el.className="item";
     el.innerHTML='<div class="art"><div class="placeholder"><span class="loader"></span><span>Buscando imagen…</span></div><img hidden loading="lazy"><span class="pill">×'+esc(card.quantity)+'</span></div><div class="details"><h3>'+esc(card.name)+'</h3><div class="num">'+esc(card.number)+'</div><div class="meta">'+esc(card.set||"Colección no indicada")+' · '+esc(card.language||"Sin idioma")+'<br>'+esc(card.year||"Año no indicado")+'</div><div class="image-status">Consultando imagen…</div><div class="price-section"><div class="price-title">Precios de mercado</div><div class="pricing">Consultando TCGplayer y Cardmarket…</div></div><div class="links"><a target="_blank" rel="noopener noreferrer" href="'+searchUrl(card)+'">Buscar carta</a></div></div>';
-    el.querySelector(".links").append(makeImageButton(card));
+    const editButton=makeImageButton(card);
+    if(editButton)el.querySelector(".links").append(editButton);
     const art=el.querySelector(".art");
     placeImage(card,art.querySelector("img"),art.querySelector(".placeholder"),el.querySelector(".image-status"),token);
     placePrices(card,el.querySelector(".pricing"),token,false);
@@ -289,7 +303,7 @@
     firstLoad=true;
     updateLoginDisplay();
     render();
-    if(shared.isLoggedIn())migrateLegacy(true).catch(()=>{});
+    if(isOwner())migrateLegacy(true).catch(()=>{});
   }).catch(error=>{
     byId("sharedConnection").textContent="Sin conexión con imágenes compartidas";
     console.warn("Catálogo compartido:",error.message);
