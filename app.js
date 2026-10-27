@@ -224,7 +224,7 @@ function listText(){
   const c=findCard(id);if(!c)continue;total+=quantity;
   lines.push(cardCode(c)+" | "+c.name+" | "+c.number+" | "+(c.set||"Sin colección")+" | "+(c.language||"Sin idioma")+" | Unidades solicitadas: "+quantity);
  }
- lines.push("","REFERENCIAS DISTINTAS: "+cart.size,"UNIDADES SOLICITADAS: "+total,"","Las referencias de TCGplayer (USD) y, solo cuando faltan, de Cardmarket (EUR) son informativas. El precio final se confirma antes de la compra; puede variar, incluso a favor del comprador.");
+ lines.push("","REFERENCIAS DISTINTAS: "+cart.size,"UNIDADES SOLICITADAS: "+total,"","Consulta los precios en TCGplayer. El precio final se confirma antes de la compra y puede variar a favor del comprador.");
  return lines.join("\r\n");
 }
 function drawCart(){
@@ -288,74 +288,17 @@ async function imageFor(c,img,placeholder,status,token){
   if(placeholder?.classList?.contains("placeholder"))placeholder.textContent="Imagen pendiente";
  }catch(_){if(status)status.textContent="Imagen no disponible";}
 }
-async function showPrice(c,container,token){
- const title=container.closest(".price-section")?.querySelector(".price-title");
- const addLink=(href,text,variantClass="tcg-link")=>{
-  const link=document.createElement("a");
-  link.className=variantClass;
-  link.href=href;
-  link.target="_blank";
-  link.rel="noopener noreferrer";
-  link.textContent=text;
-  container.append(link);
- };
- try{
-  const prices=await market.resolve(c);
-  if(token!==epoch||!container.isConnected)return;
-  container.replaceChildren();
-  const selected=prices.market;
-  if(title)title.textContent=selected==="Cardmarket"?"Referencia Cardmarket · EUR":selected==="TCGplayer"?"Referencia TCGplayer · USD":"Consulta de mercado";
-  if(!prices.statuses?.length){
-   const empty=document.createElement("span");
-   empty.className="no-price";
-   empty.textContent=prices.reason||"No hay precio contrastable.";
-   container.append(empty);
-   addLink(prices.url||market.searchUrl(c),"Buscar en TCGplayer");
-   addLink(prices.secondaryUrl||market.cardmarketSearch(c),"Buscar en Cardmarket","market-secondary-link");
-   return;
-  }
-  const sorted=[...prices.statuses].sort((a,b)=>a.price-b.price);
-  for(const row of sorted){
-   const line=document.createElement("div");
-   line.className="price-line";
-   const variant=document.createElement("span");
-   variant.textContent=row.variant;
-   const amount=document.createElement("a");
-   amount.className="market-amount";
-   amount.textContent=market.display(row);
-   amount.href=row.url;
-   amount.target="_blank";
-   amount.rel="noopener noreferrer";
-   amount.title="Comprobar este precio en "+row.market;
-   line.append(variant,amount);
-   container.append(line);
-  }
-  const last=sorted.find(x=>x.updated);
-  if(last){
-   const stamp=document.createElement("small");
-   stamp.className="market-updated";
-   stamp.textContent=(selected==="Cardmarket"?"Tendencia · ":"Market Price · ")+"actualizado: "+last.updated;
-   container.append(stamp);
-  }
-  if(selected==="Cardmarket"){
-   const fallback=document.createElement("small");
-   fallback.className="market-fallback";
-   fallback.textContent="Cardmarket se muestra porque TCGplayer no tiene una referencia verificable para esta carta.";
-   container.append(fallback);
-   addLink(prices.url||market.cardmarketSearch(c),"Ver precios en Cardmarket");
-  }else{
-   addLink(prices.url||market.searchUrl(c),"Comprobar en TCGplayer");
-  }
- }catch(_){
-  container.replaceChildren();
-  if(title)title.textContent="Consulta de mercado";
-  const error=document.createElement("small");
-  error.textContent="No se pudo consultar el precio.";
-  container.append(error);
-  addLink(market.searchUrl(c),"Buscar en TCGplayer");
-  addLink(market.cardmarketSearch(c),"Buscar en Cardmarket","market-secondary-link");
- }
+function tcgLink(c) {
+ const a=document.createElement("a");
+ a.className="tcg-link";
+ a.href=market.searchUrl(c);
+ a.target="_blank";
+ a.rel="noopener noreferrer";
+ a.textContent="Ver en TCGplayer";
+ a.title="Consultar el precio de esta carta en TCGplayer";
+ return a;
 }
+
 function editButton(c){
  if(!owner())return null;
  const button=document.createElement("button");button.type="button";button.className="image-button";
@@ -370,29 +313,37 @@ function cartButton(c){
  button.addEventListener("click",()=>{addToCart(c);render()});
  return button;
 }
-function galleryCard(c,token){
+function galleryCard(c,token) {
  const a=available(c);
- const item=document.createElement("article");item.className="item";
- item.innerHTML='<div class="art"><div class="placeholder"><span class="loader"></span><span>Buscando carta…</span></div><img hidden loading="lazy"><span class="pill">'+esc(cardCode(c))+'</span></div>'+
- '<div class="details"><h3>'+esc(c.name)+'</h3><div class="num">'+esc(c.number)+'</div><div class="meta">'+esc(c.set||"Colección por confirmar")+' · '+esc(c.language||"Idioma por confirmar")+'</div>'+
+ const item=document.createElement("article");
+ item.className="item";
+ const details=[c.set,c.language].filter(Boolean).join(" · ");
+ item.innerHTML='<div class="art"><div class="placeholder"><span class="loader"></span><span>Cargando imagen…</span></div><img hidden loading="lazy"><span class="pill">'+esc(cardCode(c))+'</span></div>'+
+ '<div class="details"><h3>'+esc(c.name)+'</h3><div class="num">'+esc(c.number)+'</div>'+
+ (details?'<div class="meta">'+esc(details)+'</div>':'')+
  '<div class="stock-status '+(a.available?"is-available":"is-soldout")+'">'+(a.available?"Disponible · "+a.quantity+" ud.":"No disponible")+'</div>'+
- '<div class="image-status">Buscando imagen…</div><div class="price-section"><div class="price-title">Consultando precios</div><div class="pricing">Consultando mercado…</div></div><div class="links"></div></div>';
- item.querySelector(".links").append(cartButton(c));
- const admin=editButton(c);if(admin)item.querySelector(".links").append(admin);
- imageFor(c,item.querySelector(".art>img"),item.querySelector(".placeholder"),item.querySelector(".image-status"),token);
- showPrice(c,item.querySelector(".pricing"),token);
+ '<div class="links"></div></div>';
+ const actions=item.querySelector(".links");
+ actions.append(tcgLink(c),cartButton(c));
+ const admin=editButton(c);if(admin)actions.append(admin);
+ imageFor(c,item.querySelector(".art>img"),item.querySelector(".placeholder"),null,token);
  return item;
 }
-function tableCard(c,token){
- const a=available(c);const tr=document.createElement("tr");
+
+function tableCard(c,token) {
+ const a=available(c);
+ const tr=document.createElement("tr");
  tr.innerHTML='<td class="thumbnail"><div class="mini-art"><img hidden loading="lazy"><span>—</span></div></td>'+
- [cardCode(c),c.name,c.number,c.set,c.language,a.quantity,a.available?"Disponible":"No disponible"].map((x,i)=>'<td'+(i===2?' class="num-col"':"")+'>'+esc(x)+'</td>').join("")+
+ [cardCode(c),c.name,c.number,c.set,c.language,a.quantity,a.available?"Disponible":"No disponible"]
+ .map((x,i)=>'<td'+(i===2?' class="num-col"':"")+'>'+esc(x)+'</td>').join("")+
  '<td class="table-market"></td><td class="table-action"></td>';
- const admin=editButton(c);tr.querySelector(".table-action").append(cartButton(c));if(admin)tr.querySelector(".table-action").append(admin);
+ tr.querySelector(".table-market").append(tcgLink(c));
+ tr.querySelector(".table-action").append(cartButton(c));
+ const admin=editButton(c);if(admin)tr.querySelector(".table-action").append(admin);
  imageFor(c,tr.querySelector(".mini-art img"),tr.querySelector(".mini-art span"),null,token);
- showPrice(c,tr.querySelector(".table-market"),token);
  return tr;
 }
+
 function render(){
  epoch++;const token=epoch;
  const arr=filtering();
@@ -403,7 +354,7 @@ function render(){
  if(view.value==="table"){
   const scroller=document.createElement("div");scroller.className="table-scroll";
   const table=document.createElement("table");table.className="data-table";
-  table.innerHTML="<thead><tr>"+["Imagen","ID","Carta","Número","Colección","Idioma","Unidades","Estado","TCGplayer USD","Interés"].map(x=>"<th>"+x+"</th>").join("")+"</tr></thead>";
+  table.innerHTML="<thead><tr>"+["Imagen","ID","Carta","Número","Colección","Idioma","Unidades","Estado","Consultar precio","Interés"].map(x=>"<th>"+x+"</th>").join("")+"</tr></thead>";
   const body=document.createElement("tbody");
   for(const c of arr)body.append(tableCard(c,token));
   table.append(body);scroller.append(table);results.append(scroller);
@@ -426,6 +377,7 @@ stock.listen(()=>{if(initialized){updateStats();cleanCart();render()}});
 refreshOptions();updateStats();render();
 Promise.allSettled([shared.init(),meta.fetchOverrides(true),stock.refresh(true)]).then(()=>{
  initialized=true;applyMeta();adminDisplay();
+ if(adminMode&&!editor.open)showEditor();
 });
 document.addEventListener("visibilitychange",()=>{
  if(document.visibilityState==="visible")Promise.allSettled([shared.loadShared(true),meta.fetchOverrides(true),stock.refresh(true)]).then(applyMeta);
