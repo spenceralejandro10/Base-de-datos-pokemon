@@ -147,3 +147,15 @@ button.manage-entry:hover,button.manage-entry:focus-visible{
   background:#ffffff13;
   color:#fff;
 }
+
+/* Recuperación de acceso: enlaces copiados del correo se procesan localmente */
+#ownerMagicLink {
+ width:100%; min-width:0; font-size:12px; overflow:hidden;
+ border:1px solid #cad6e5; background:#fff; border-radius:8px;
+ padding:11px 12px;
+}
+#ownerLinkHelp { line-height:1.65; }
+#ownerLinkHelp strong { font-weight:700; color:#223f5f; }
+.email-code-option { margin-top:15px; padding:10px 0 0; border-top:1px solid #e1eaf4; }
+.email-code-option summary { color:#466988; font-size:12px; font-weight:650; cursor:pointer; }
+#verifyOwnerLink { margin-top:12px; }
