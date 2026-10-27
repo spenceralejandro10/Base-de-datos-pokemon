@@ -107,7 +107,7 @@
         const verified = await verifyOneTime({ token_hash: searchParams.get("token_hash"), type: searchParams.get("type") });
         if (verified?.access_token) saveSession(verified);
       } finally {
-        history.replaceState(null, "", location.pathname);
+        history.replaceState(null, "", location.pathname + "?admin=1");
       }
     }
     if (session?.access_token && !session.user) {
@@ -158,7 +158,8 @@
 
   async function requestLogin(email) {
     const addr = ownerEmail(email);
-    const redirect = location.origin + location.pathname;
+    // Al volver del enlace de verificación, abrir directamente el panel privado.
+    const redirect = location.origin + location.pathname + "?admin=1";
     const response = await fetch(URL_BASE + "/auth/v1/otp?redirect_to=" + encodeURIComponent(redirect), {
       method: "POST",
       headers: authHeaders(),
