@@ -192,26 +192,38 @@ el("adminLoginForm").addEventListener("submit",async event=>{
  }catch(_){flash("Usuario o contraseña incorrectos.",true);}
 });
 el("sendOwnerLink").addEventListener("click",async()=>{
- flash("Enviando acceso al correo del propietario…");
+ flash("Solicitando enlace nuevo al correo del propietario…");
  try{
   await shared.requestLogin(el("adminUsername").value||"root");
-  flash("Consulta el correo del propietario. Abre el enlace recibido o introduce el código para configurar tu contraseña.");
+  flash("Solicitado. En Gmail copia la dirección del enlace nuevo SIN abrirlo, pégala aquí y pulsa «Verificar enlace y crear contraseña».");
  }catch(e){flash(e.message,true)}
+});
+function afterEmailVerification(){
+ adminDisplay();
+ if(!owner()){
+  void shared.logout().then(()=>{adminDisplay();flash("Esta cuenta no está autorizada.",true)});
+  return;
+ }
+ el("ownerMagicLink").value="";
+ const details=editor.querySelector(".password-setup");
+ if(details)details.open=true;
+ flash("Correo verificado. Introduce ahora una contraseña nueva de 12 caracteres o más y pulsa «Guardar contraseña».");
+ el("newAdminPassword").focus();
+ render();
+ void syncManualImages(true).catch(()=>{});
+}
+el("verifyOwnerLink").addEventListener("click",async()=>{
+ flash("Verificando enlace directamente con Supabase…");
+ try {
+  await shared.verifyEmailLink(el("adminUsername").value||"root",el("ownerMagicLink").value);
+  afterEmailVerification();
+ }catch(e){flash((e.message||"Error de verificación")+". Si está vencido, solicita un enlace nuevo y no lo abras antes de copiarlo.",true)}
 });
 el("verifyOwnerCode").addEventListener("click",async()=>{
  flash("Verificando identidad…");
  try{
   await shared.verifyCode(el("adminUsername").value||"root",el("ownerCode").value);
-  adminDisplay();
-  if(!owner()){
-   await shared.logout();
-   adminDisplay();
-   flash("No se pudo verificar el administrador.",true);
-  }else{
-   flash("Identidad confirmada. Abre «Crear o cambiar contraseña» y establece tu clave para próximos ingresos.");
-   render();
-   void syncManualImages(true).catch(()=>{});
-  }
+  afterEmailVerification();
  }catch(e){flash(e.message,true)}
 });
 el("setOwnerPassword").addEventListener("click",async()=>{
