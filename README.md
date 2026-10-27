@@ -28,8 +28,8 @@ El botón de edición nunca se muestra al público. Las políticas RLS de Supaba
 
 ## Inventario sincronizado
 
-- **104 referencias y 249 unidades** importadas de la pestaña `Inventario` del Google Sheets original, con su nombre, numeración, colección, año, idioma y cantidad exactos.
-- Las cartas se ordenan por **colección más reciente a más antigua** en la galería, la tabla y el filtro de expansiones. Dentro de cada colección se conserva el orden del Excel. Las etiquetas visibles `BTCG-0001` a `BTCG-0104` son consecutivas según el orden completo de exhibición; los identificadores internos usados en imágenes, stock y carritos **no se modifican**.
+- **158 referencias y 383 unidades** importadas de la pestaña `Inventario` del Google Sheets original, con su nombre, numeración, colección, año, idioma y cantidad exactos.
+- Las cartas se ordenan por **colección más reciente a más antigua** en la galería, la tabla y el filtro de expansiones. Dentro de cada colección se conserva el orden del Excel. Las etiquetas visibles `BTCG-0001` a `BTCG-0158` son consecutivas según el orden completo de exhibición; los identificadores internos usados en imágenes, stock y carritos **no se modifican**.
 - El contenido se guarda en la tabla `pokemon_catalog` de Supabase (lectura pública y escritura restringida). `cards.js` es una copia de respaldo idéntica; no se altera el Google Sheets.
 - Las etiquetas `BTCG` ahora se numeran en el orden visual. El identificador interno del duplicado anterior (54) queda retirado, pero se conservan las asociaciones de fotografías y el carrito con la fila consolidada de Alakazam (ID interno 37). Los códigos visibles pueden variar si el administrador cambia las colecciones o se modifica el orden de exhibición; cada lista exportada también incluye nombre, número, colección e idioma para reconocer la carta.
 - Las fotografías manuales almacenadas en Supabase siguen vinculadas a su ID aunque cambien nombre, colección o idioma.
@@ -37,7 +37,7 @@ El botón de edición nunca se muestra al público. Las políticas RLS de Supaba
 
 ## Datos y persistencia
 
-- El inventario original de Google Sheets (104 referencias) no se modifica.
+- El inventario original de Google Sheets (158 referencias) no se modifica.
 - Las imágenes que sube el administrador quedan en Supabase Storage y en `pokemon_image_overrides`.
 - La colección y el idioma corregidos en la vitrina se guardan en `pokemon_card_overrides`.
 - Las existencias y la disponibilidad se guardan en `pokemon_stock_overrides`.
