@@ -158,7 +158,7 @@
     await loadShared(true);
   }
 
-  const ADMIN_ALIAS = "spenceradmin";
+  const ADMIN_ALIAS = "root";
   const ADMIN_EMAIL = "spenceralejandro10@gmail.com";
   function ownerEmail(username) {
     if (String(username || "").trim().toLowerCase() !== ADMIN_ALIAS) {
