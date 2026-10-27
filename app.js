@@ -224,7 +224,7 @@ function listText(){
   const c=findCard(id);if(!c)continue;total+=quantity;
   lines.push(cardCode(c)+" | "+c.name+" | "+c.number+" | "+(c.set||"Sin colección")+" | "+(c.language||"Sin idioma")+" | Unidades solicitadas: "+quantity);
  }
- lines.push("","REFERENCIAS DISTINTAS: "+cart.size,"UNIDADES SOLICITADAS: "+total,"","Los precios de TCGplayer son de referencia y deben confirmarse; no son el precio acordado de venta.");
+ lines.push("","REFERENCIAS DISTINTAS: "+cart.size,"UNIDADES SOLICITADAS: "+total,"","Las referencias de TCGplayer (USD) y, solo cuando faltan, de Cardmarket (EUR) son informativas. El precio final se confirma antes de la compra; puede variar, incluso a favor del comprador.");
  return lines.join("\r\n");
 }
 function drawCart(){
