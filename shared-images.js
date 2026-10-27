@@ -57,7 +57,10 @@
     return rows;
   }
   function getShared(card) {
-    return rows.get(imageKey(card)) || imagesById.get(Number(card.id)) || null;
+    const id=Number(card.id);
+    // BTCG-0054 era un Alakazam duplicado; su foto anterior corresponde a BTCG-0037.
+    return rows.get(imageKey(card)) || imagesById.get(id) ||
+      (id===37 ? imagesById.get(54) : null) || null;
   }
   // Catálogo central: lectura pública en Supabase; cards.js sigue como respaldo sin conexión.
   async function loadCatalog() {
