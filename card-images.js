@@ -135,7 +135,9 @@
       const images = imageLinks(picture);
       if (images.length) {
         const foreign = (lang === "en" && card.language === "Español");
-        return pack("verified", foreign ? "Referencia visual en inglés: mismo número y expansión" : "Imagen localizada por colección y número", images, "TCGdex", found.name);
+        const selected = pack("verified", foreign ? "Referencia visual en inglés: mismo número y expansión" : "Imagen localizada por colección y número", images, "TCGdex", found.name);
+        selected.catalog = { kind: "tcgdex", id: found.id || (setId + "-" + found.localId), language: lang, editionIsReference: foreign };
+        return selected;
       }
       missingArtwork = true;
       continue;
@@ -150,13 +152,14 @@
     if (!found || !nameFits(card.name, found.name, "en")) return null;
     if (details.suffix != null && Number(found.set?.printedTotal) && Number(found.set.printedTotal) !== details.suffix) return null;
     const url = found.images?.small || found.images?.large;
-    return url ? pack("verified", "Imagen por número y colección", [url, found.images?.large].filter(Boolean), "Pokémon TCG API", found.name) : null;
+    if (!url) return null;
+    const selected = pack("verified", "Imagen por número y colección", [url, found.images?.large].filter(Boolean), "Pokémon TCG API", found.name);
+    selected.catalog = { kind: "legacy", id, language: "en", editionIsReference: card.language === "Español" };
+    return selected;
   }
-  async function resolve(card) {
+  async function resolveCatalog(card) {
     const info = numberDetails(card);
     if (!info) return pack("incomplete", "Número de carta pendiente o no reconocido.");
-    const override = localStorage.getItem("pokemon-image-" + card.id);
-    if (override && /^https:\/\//.test(override)) return pack("manual", "Imagen elegida por ti en este navegador", [override], "Manual");
     // Inferencias únicamente para la imagen, respaldadas por la numeración publicada:
     // Venusaur ex 003/165 = expansión 151; Lapras ex 164 = promo SVP.
     const inferred = !card.set && key(card.name) === "venusaur ex" && info.raw === "003/165"
@@ -199,5 +202,12 @@
     if (text) localStorage.setItem("pokemon-image-" + card.id, text);
     else localStorage.removeItem("pokemon-image-" + card.id);
   }
-  window.CardImages = { resolve, setManual, setConfig: SETS };
+  async function resolve(card) {
+    const shared = window.SharedImages?.getShared(card);
+    if (shared) return pack("shared", "Imagen guardada en la base de datos: visible desde cualquier equipo", [shared], "Supabase");
+    const override = localStorage.getItem("pokemon-image-" + card.id);
+    if (override && /^https:\/\//.test(override)) return pack("local", "Imagen anterior guardada solo en este equipo; sincronízala como propietario", [override], "Local");
+    return resolveCatalog(card);
+  }
+  window.CardImages = { resolve, resolveCatalog, loadCardJSON: loadJSON, setManual, setConfig: SETS };
 })();
