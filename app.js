@@ -8,7 +8,9 @@ const info=el("editorMessage"),editor=el("editorDialog"),cartDialog=el("cartDial
 const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const cardCode=c=>"BTCG-"+String(c.id).padStart(4,"0");
 const OWNER="spenceralejandro10@gmail.com";
-const adminMode=new URLSearchParams(location.search).get("admin")==="1";
+const adminMode=new URLSearchParams(location.search).get("admin")==="1"
+  || new URLSearchParams(location.search).has("token_hash")
+  || location.hash.includes("access_token=");
 const owner=()=>{const user=shared.getSession()?.user;return shared.isLoggedIn()&&String(user?.email||"").toLowerCase()===OWNER&&!!user?.email_confirmed_at};
 let records=base.map(x=>({...x})),editing=null,epoch=0,busy=false,initialized=false;
 const CART_KEY="boveda-tcg-cart-v1";
@@ -335,7 +337,7 @@ function tableCard(c,token) {
  const tr=document.createElement("tr");
  tr.innerHTML='<td class="thumbnail"><div class="mini-art"><img hidden loading="lazy"><span>—</span></div></td>'+
  [cardCode(c),c.name,c.number,c.set,c.language,a.quantity,a.available?"Disponible":"No disponible"]
- .map((x,i)=>'<td'+(i===2?' class="num-col"':"")+'>'+esc(x)+'</td>').join("")+
+ .map((x,i)=>'<td'+(i===2?' class="num-col"':"")+'>'+esc(x==null||x===""?"—":x)+'</td>').join("")+
  '<td class="table-market"></td><td class="table-action"></td>';
  tr.querySelector(".table-market").append(tcgLink(c));
  tr.querySelector(".table-action").append(cartButton(c));
