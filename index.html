@@ -6,7 +6,7 @@
 <meta name="theme-color" content="#17304f">
 <title>Bóveda TCG | Colección de cartas Pokémon</title>
 <meta name="description" content="Bienvenido a Bóveda TCG. Explora cartas Pokémon, consulta existencias, referencias de TCGplayer y crea tu lista de interés.">
-<link rel="stylesheet" href="./styles.css?v=25">
+<link rel="stylesheet" href="./styles.css?v=26">
 </head>
 <body>
 <header class="top">
@@ -60,10 +60,17 @@
   <details id="firstOwnerAccess">
     <summary>Primera vez o recuperación de acceso</summary>
     <p class="hint">Verificaremos la identidad por el correo del propietario registrado. Después podrás definir una contraseña segura.</p>
-    <button id="sendOwnerLink" type="button">Enviar código o enlace de verificación</button>
-    <label for="ownerCode">Código recibido</label>
-    <input id="ownerCode" inputmode="numeric" autocomplete="one-time-code" type="text" placeholder="Código del correo">
-    <button id="verifyOwnerCode" type="button">Verificar identidad</button>
+    <button id="sendOwnerLink" type="button">Recibir enlace de acceso</button>
+    <p class="hint" id="ownerLinkHelp">Abre Gmail y copia la dirección del enlace recibido (clic derecho sobre el botón del correo → Copiar dirección del enlace). <strong>No abras el enlace</strong> si apunta a localhost. Pégalo aquí para verificarlo sin salir de esta página.</p>
+    <label for="ownerMagicLink">Enlace recibido en el correo</label>
+    <input id="ownerMagicLink" type="url" inputmode="url" autocomplete="off" spellcheck="false" placeholder="https://…supabase.co/auth/v1/verify?token=…">
+    <button id="verifyOwnerLink" type="button" class="primary">Verificar enlace y crear contraseña</button>
+    <details class="email-code-option">
+      <summary>¿Recibiste un código numérico en lugar de un enlace?</summary>
+      <label for="ownerCode">Código recibido</label>
+      <input id="ownerCode" inputmode="numeric" autocomplete="one-time-code" type="text" placeholder="Código del correo">
+      <button id="verifyOwnerCode" type="button">Verificar código</button>
+    </details>
   </details>
   <button id="logoutUnauthorized" type="button" hidden>Cerrar sesión de otra cuenta</button>
  </div>
@@ -106,12 +113,12 @@
  </div>
 </dialog>
 <footer class="footer">Bóveda TCG · Colección Pokémon · Sin pagos en línea.</footer>
-<script src="./cards.js?v=25"></script>
-<script src="./shared-images.js?v=25"></script>
-<script src="./catalog-overrides.js?v=25"></script>
-<script src="./card-stock.js?v=25"></script>
-<script src="./card-images.js?v=25"></script>
-<script src="./market-prices.js?v=25"></script>
-<script src="./app.js?v=25"></script>
+<script src="./cards.js?v=26"></script>
+<script src="./shared-images.js?v=26"></script>
+<script src="./catalog-overrides.js?v=26"></script>
+<script src="./card-stock.js?v=26"></script>
+<script src="./card-images.js?v=26"></script>
+<script src="./market-prices.js?v=26"></script>
+<script src="./app.js?v=26"></script>
 </body>
 </html>
