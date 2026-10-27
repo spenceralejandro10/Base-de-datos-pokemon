@@ -19,9 +19,9 @@ Una vitrina sencilla para consultar cartas Pokémon, conocer la disponibilidad y
 ## Cómo entrar como administrador
 
 1. Entra a la vitrina normalmente. El formulario de administración **no se abre solo**, incluso si la dirección contiene `?admin=1`. Pulsa **Gestión** cuando quieras ingresar; el formulario aparece únicamente tras ese clic.
-2. Usuario: `spenceradmin`. Es un alias de una cuenta Supabase Auth autorizada en una tabla privada; no es una contraseña.
-3. En el primer acceso, abre **Primera vez o recuperación de acceso**, verifica la identidad con el correo del propietario y configura una contraseña de 12 o más caracteres.
-4. Los próximos accesos se hacen con el alias `spenceradmin` y esa contraseña privada.
+2. Usuario: `root`. Es un alias de una cuenta Supabase Auth autorizada en una tabla privada; no es una contraseña.
+3. **Importante:** el usuario `root` es un alias del correo autorizado de Supabase Auth, no una contraseña. La clave `123` no se configuró por ser insegura y porque el panel exige al menos 12 caracteres. En el primer acceso, abre **Primera vez o recuperación de acceso**, verifica la identidad con el correo del propietario y configura una contraseña segura de 12 o más caracteres.
+4. Los próximos accesos se hacen con el alias `root` y esa contraseña privada.
 5. Una vez autenticado, aparece **Editar carta**. Puedes subir una imagen, corregir colección/idioma, modificar cantidades y marcar una carta como no disponible.
 
 El botón de edición nunca se muestra al público. Las políticas RLS de Supabase bloquean modificaciones anónimas o no autorizadas, independientemente de los botones de la interfaz.
