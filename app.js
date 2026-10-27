@@ -6,7 +6,11 @@ const el=id=>document.getElementById(id);
 const q=el("q"),setFilter=el("set"),langFilter=el("lang"),availability=el("availability"),view=el("view"),results=el("results");
 const info=el("editorMessage"),editor=el("editorDialog"),cartDialog=el("cartDialog");
 const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
-const cardCode=c=>"BTCG-"+String(c.id).padStart(4,"0");
+// Etiquetas públicas consecutivas según el orden de exhibición.
+ // El ID interno queda intacto para proteger fotografías, existencias y carritos.
+const publicCodes=new Map();
+const cardCode=c=>publicCodes.get(Number(c.id))||
+  "BTCG-"+String(c.id).padStart(4,"0");
 const OWNER="spenceralejandro10@gmail.com";
 const adminMode=new URLSearchParams(location.search).get("admin")==="1"
   || new URLSearchParams(location.search).has("token_hash")
@@ -82,8 +86,15 @@ function orderedCards(list){
  (Number(b.year)||0)-(Number(a.year)||0)||
  (Number(a.ordinal)||0)-(Number(b.ordinal)||0));
 }
+function rebuildPublicCodes(){
+ publicCodes.clear();
+ // Se numeran TODAS las cartas en el orden general, no solo las filtradas.
+ orderedCards([...records]).forEach((card,index)=>
+   publicCodes.set(Number(card.id),"BTCG-"+String(index+1).padStart(4,"0")));
+}
 function applyMeta(){
  records=meta.apply(base);
+ rebuildPublicCodes();
  updateStats();
  refreshOptions();
  cleanCart();
@@ -127,7 +138,7 @@ function adminDisplay(){
  el("editorTitle").textContent=editing?"Administrar "+editing.name:"Administración de Bóveda TCG";
 }
 function showEditor(card){
- if(!owner()&&!adminMode)return;
+ // Solo se abre por un clic en «Gestión» o «Editar carta».
  editing=card||null;flash("");
  if(shared.isLoggedIn()&&!owner())flash("Esta cuenta no es administradora. Cierra sesión y utiliza el correo autorizado.",true);
  adminDisplay();
@@ -157,6 +168,7 @@ async function doAdmin(fn,message){
  finally{busy=false}
 }
 el("ownerAccess").addEventListener("click",()=>showEditor());
+el("managementEntry").addEventListener("click",()=>showEditor());
 el("closeEditor").addEventListener("click",()=>editor.close());
 editor.addEventListener("click",e=>{if(e.target===editor)editor.close()});
 el("adminLoginForm").addEventListener("submit",async event=>{
@@ -436,8 +448,8 @@ adminDisplay();
 shared.subscribe(()=>{adminDisplay();if(initialized)render()});
 meta.listen(()=>{if(initialized)applyMeta()});
 stock.listen(()=>{if(initialized){updateStats();cleanCart();render()}});
+rebuildPublicCodes();
 refreshOptions();updateStats();render();
-if(adminMode&&!editor.open)showEditor();
 function refreshPublishedCatalog(){
  return shared.loadCatalog().then(catalog=>{
   // Los IDs están anclados a las cartas, nunca se renumeran por su orden visual.
@@ -447,7 +459,6 @@ function refreshPublishedCatalog(){
 }
 Promise.allSettled([shared.init(),meta.fetchOverrides(true),stock.refresh(true),refreshPublishedCatalog()]).then(()=>{
  initialized=true;applyMeta();adminDisplay();
- if(adminMode&&!editor.open)showEditor();
  if(owner())void syncManualImages(true).catch(()=>{});
 });
 document.addEventListener("visibilitychange",()=>{
