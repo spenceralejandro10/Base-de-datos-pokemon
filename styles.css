@@ -91,3 +91,23 @@
  .item .art>.pill{font-size:9px}
  .stock-status{font-size:11px}
 }
+
+/* Transparencia de precios y acceso administrativo */
+.price-disclaimer{background:#f7fafd;border:1px solid #d7e5f1;border-left:3px solid #426d9a;border-radius:10px;padding:14px 18px;line-height:1.7;color:#475c72;font-size:13px;margin-bottom:24px}
+.price-disclaimer strong{color:#1a405e}
+.market-amount{color:#1c704d;font-weight:750;font-size:12px;text-decoration:none;white-space:nowrap}
+.market-amount:hover{text-decoration:underline}
+.market-updated{font-size:10px;color:#738095;display:block;margin-top:5px}
+.market-fallback{display:block;color:#7d6334;font-size:10px;line-height:1.45;margin-top:8px}
+.market-secondary-link{display:block;text-align:center;font-size:11px;margin-top:7px;color:#65768c;font-weight:700;text-decoration:none;border-radius:7px;border:1px solid #e1e8ef;background:#fff;padding:8px 10px}
+.market-secondary-link:hover{background:#f5f7fb}
+.vault-access{display:inline-block;color:#70829a;text-decoration:none;margin-left:14px;font-size:10px;letter-spacing:.02em}
+.vault-access:hover{text-decoration:underline;color:#314d67}
+#firstOwnerAccess{border-top:1px solid #e5ebf2;margin-top:17px;padding-top:14px}
+#firstOwnerAccess summary,.password-setup summary{font-weight:650;font-size:12px;color:#416383;cursor:pointer}
+#adminLoginForm{display:flex;flex-direction:column;align-items:flex-start}
+#adminLoginForm input{width:100%;padding:11px;border:1px solid #c9d6e5;border-radius:8px;background:#fff;font-size:13px}
+#adminLoginForm button{margin-top:14px}
+.password-setup{border:1px solid #e3eaf2;border-radius:8px;padding:12px;margin:12px 0}
+.password-setup input{width:100%;border:1px solid #cbd9e7;padding:10px;border-radius:8px}
+@media(max-width:700px){.price-disclaimer{font-size:12px;padding:12px}.market-amount{font-size:11px}}
