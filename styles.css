@@ -111,3 +111,23 @@
 .password-setup{border:1px solid #e3eaf2;border-radius:8px;padding:12px;margin:12px 0}
 .password-setup input{width:100%;border:1px solid #cbd9e7;padding:10px;border-radius:8px}
 @media(max-width:700px){.price-disclaimer{font-size:12px;padding:12px}.market-amount{font-size:11px}}
+
+/* Presentación limpia: solo enlace de precio, sin cotizaciones ni mensajes técnicos */
+.header-actions{display:flex;align-items:center;gap:12px;flex-shrink:0}
+.manage-entry{font-size:12px;font-weight:600;color:#d5e4f4;text-decoration:none;padding:9px 10px;border-radius:8px;border:1px solid #668caf66;white-space:nowrap}
+.manage-entry:hover,.manage-entry:focus-visible{background:#ffffff13;color:#fff;border-color:#b2d2ee}
+.simple-price-note{background:transparent;border:0;border-bottom:1px solid #e2e9f0;border-radius:0;padding:0 2px 16px;color:#64748b;font-size:12px;line-height:1.6;margin-bottom:20px}
+.simple-price-note strong{color:#294763}
+.item .details{gap:7px}
+.item .links{display:flex;flex-wrap:wrap;gap:8px;align-items:stretch;padding-top:11px}
+.links .tcg-link{display:flex;align-items:center;justify-content:center;flex:1;min-width:132px;margin:0;border-radius:8px;padding:10px 11px;color:#1c5988;border:1px solid #bed3e8;background:#f6fafd;font-size:12px;line-height:1.2}
+.links .tcg-link:hover{background:#eaf4ff}
+.links .add-cart{flex:1;min-width:140px;padding:10px 11px;font-size:12px;line-height:1.3}
+.table-market .tcg-link{white-space:nowrap;padding:7px 11px;margin:0;display:inline-block;font-size:12px}
+@media(max-width:720px){
+ .brand{gap:12px}
+ .header-actions{width:100%;display:flex;justify-content:space-between;flex-wrap:wrap}
+ .manage-entry{font-size:12px;padding:10px}
+ .simple-price-note{font-size:11px}
+ .links .tcg-link,.links .add-cart{min-width:0;flex:1 1 100%;font-size:11px}
+}
