@@ -1,60 +1,43 @@
 # Bóveda TCG
 
-Vitrina de cartas Pokémon TCG con catálogo visual, buscador, enlaces a TCGplayer, existencias, carrito de interés y administración restringida.
+Una vitrina sencilla para consultar cartas Pokémon, conocer la disponibilidad y seleccionar las cartas de interés.
 
-**Vitrina pública:** https://spenceralejandro10.github.io/Base-de-datos-pokemon/
+**Sitio público:** https://spenceralejandro10.github.io/Base-de-datos-pokemon/
 
-**Panel del administrador:** https://spenceralejandro10.github.io/Base-de-datos-pokemon/?admin=1
+**Administración:** https://spenceralejandro10.github.io/Base-de-datos-pokemon/?admin=1
 
-**Usuario administrativo:** `custodio`. La contraseña se configura de forma privada tras verificar el correo del propietario; no se guarda ni se publica en este repositorio.
+## Qué puede hacer un visitante
 
-**Inventario original:** https://docs.google.com/spreadsheets/d/1qFEBZ1OcQw6NUoF29ZvD-jfc9-l7KOHN_T3bxnXVqaI/edit
+- Ver las imágenes y los datos de las cartas de la colección.
+- Buscar por nombre, código de carta, colección e idioma.
+- Filtrar por disponibilidad o limpiar todos los filtros.
+- Abrir **Ver en TCGplayer**, que busca la carta por nombre, número y colección directamente en TCGplayer.
+- Agregar cartas al carrito de interés y descargar o copiar la selección con códigos y cantidades.
 
-## Vista pública
+**La web no publica cifras de precios, no utiliza Cardmarket, no procesa pagos y no reserva productos.** El precio final de la venta se confirma con el vendedor y puede variar a favor del comprador.
 
-- Galería y tabla de cartas con ID fijo en formato `BTCG-0001`, `BTCG-0002`, etc.
-- Búsqueda por carta, número, colección, idioma y código interno.
-- Filtros de disponibilidad y botón **Limpiar filtros** para regresar a la vista completa.
-- Precio de referencia **TCGplayer en USD** exclusivamente si existe Market Price reciente y un enlace de producto verificable. Si no existe, se busca **Cardmarket en EUR** y se presenta la tendencia. Nunca se muestran ambas fuentes como precios alternativos de la misma carta.
-- **Comprobar en TCGplayer** cuando se encuentra una ficha exacta. Si se usa Cardmarket como respaldo, la página muestra **Ver precios en Cardmarket**; de lo contrario, ofrece enlaces de búsqueda sin inventar precios.
-- **Agregar a mi selección** limita las unidades solicitadas a las disponibles.
-- Carrito de interés con **Descargar lista .txt** / **Copiar lista**. La lista incluye identificadores y cantidades. **No cobra, no crea pedidos, no reserva ni descuenta stock.**
-- Los visitantes nunca ven botones de edición ni pueden escribir en Supabase.
+## Cómo entrar como administrador
 
-## Administración
+1. En la cabecera de la vitrina, pulsa **Gestión**. El formulario aparece inmediatamente. También puedes abrir el enlace directo de administración.
+2. Usuario: `custodio`. Es un alias de una cuenta Supabase Auth autorizada en una tabla privada; no es una contraseña.
+3. En el primer acceso, abre **Primera vez o recuperación de acceso**, verifica la identidad con el correo del propietario y configura una contraseña de 12 o más caracteres.
+4. Los próximos accesos se hacen con el alias `custodio` y esa contraseña privada.
+5. Una vez autenticado, aparece **Editar carta**. Puedes subir una imagen, corregir colección/idioma, modificar cantidades y marcar una carta como no disponible.
 
-El acceso está disimulado como el enlace discreto **Acceso Bóveda** en el pie de la web. Abre la dirección del **panel del administrador**, introduce el usuario `custodio` y tu contraseña. **En el primer ingreso**, pulsa «Primera vez o recuperación de acceso» para recibir la verificación en el correo autorizado; una vez confirmado, abre «Crear o cambiar contraseña». Este paso lo debe completar el propietario: todavía no existe una contraseña preestablecida. Supabase Auth gestiona su almacenamiento seguro y las políticas de base de datos hacen cumplir la autorización.
+El botón de edición nunca se muestra al público. Las políticas RLS de Supabase bloquean modificaciones anónimas o no autorizadas, independientemente de los botones de la interfaz.
 
-Desde **Editar carta**, el propietario puede:
+## Datos y persistencia
 
-- Subir una fotografía o asignar una URL HTTPS. Las imágenes quedan persistidas en Supabase y visibles desde cualquier equipo.
-- Escribir o corregir la colección, idioma y nota de verificación para esta vitrina.
-- Establecer las unidades disponibles y marcar una carta como **No disponible**.
-- Restaurar colección e idioma desde los registros originales de Google Sheets.
-- Importar imágenes antiguas guardadas solamente en el navegador actual.
+- La copia original del inventario de Google Sheets (55 referencias en `cards.js`) no se modifica.
+- Las imágenes que sube el administrador quedan en Supabase Storage y en `pokemon_image_overrides`.
+- La colección y el idioma corregidos en la vitrina se guardan en `pokemon_card_overrides`.
+- Las existencias y la disponibilidad se guardan en `pokemon_stock_overrides`.
+- Estos cambios se ven en todos los dispositivos tras actualizar la página.
+- El carrito es una lista local de cada visitante y se exporta como archivo TXT; no altera el stock.
+- Los cambios posteriores que hagas en Google Sheets no se importan automáticamente: `cards.js` debe actualizarse por separado.
 
-**Importante:** todas las modificaciones se guardan en tablas independientes de Supabase con RLS: `pokemon_image_overrides`, `pokemon_card_overrides` y `pokemon_stock_overrides`. El documento original de Google Sheets no se reescribe. Los cambios publicados son visibles desde distintos computadores o celulares después de actualizar la página (y periódicamente mientras permanezca abierta).
+## Archivos
 
-La cuenta permitida está validada **en la base de datos**, no solo por el botón oculto. El cliente utiliza una clave pública de Supabase; no incluye claves privilegiadas de servicio.
+`index.html` página, `styles.css` diseño, `cards.js` inventario, `card-images.js` imágenes, `market-prices.js` enlaces TCGplayer, `shared-images.js` autenticación e imágenes, `catalog-overrides.js` fichas, `card-stock.js` existencias, `app.js` galería y carrito.
 
-## Archivo e infraestructura
-
-- `index.html` — página de la vitrina y panel.
-- `styles.css` — diseño responsive.
-- `cards.js` — copia del inventario de Google Sheets (importación estática de 55 referencias).
-- `card-images.js` — imágenes de cartas buscadas en catálogos.
-- `market-prices.js` — precios de referencia TCGplayer y enlaces.
-- `shared-images.js` — login y fotografías persistidas.
-- `catalog-overrides.js` — colección e idioma corregidos en la vitrina.
-- `card-stock.js` — existencias y disponibilidad.
-- `app.js` — galerías, filtros, carrito, panel administrativo.
-
-El carrito se guarda temporalmente en **el navegador de cada visitante**, no como un pedido en un servidor. Su selección puede exportarse como archivo TXT y compartirse con el vendedor.
-
-**Nota:** los cambios que se hagan posteriormente en Google Sheets no actualizan `cards.js` automáticamente. Es necesario importar nuevamente los registros de la hoja sin sobrescribir los ajustes publicados por el administrador. Las imágenes y existencias sí están alojadas en Supabase.
-
-**Precios:** datos de mercado consultados mediante TCGdex o Pokémon TCG API. Se muestra Market Price (nunca midPrice) de TCGplayer únicamente cuando dispone de fecha reciente, productId/enlace exacto e identificación inglesa compatible. Solo si falta, se ofrece la tendencia de Cardmarket en EUR. Datos con más de siete días no se anuncian como precios actuales. No equivalen a ofertas garantizadas, cotizaciones al segundo ni precios finales de Bóveda TCG. El precio final se confirma antes de cerrar la venta y puede ser incluso uno o dos dólares menor, según la situación del mercado. Se deben comprobar estado, versión e idioma.
-
-## GitHub Pages
-
-Publicar la rama `main` desde `/(root)`.
+El sitio se publica con GitHub Pages desde `main` y `/(root)`.
