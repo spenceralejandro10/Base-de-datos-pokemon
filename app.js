@@ -24,6 +24,12 @@ try {
 }catch(_){};
 let cart=new Map();
 try {cart=new Map(JSON.parse(localStorage.getItem(CART_KEY)||"[]").filter(x=>Array.isArray(x)&&x.length===2&&Number.isInteger(x[0])&&Number.isInteger(x[1])&&x[1]>0))}catch(_){}
+// El carrito que contenía el Alakazam repetido ahora apunta a su fila consolidada.
+if(cart.has(54)){
+ cart.set(37,(cart.get(37)||0)+cart.get(54));
+ cart.delete(54);
+ try{localStorage.setItem(CART_KEY,JSON.stringify([...cart]))}catch(_){}
+}
 const saveCart=()=>{localStorage.setItem(CART_KEY,JSON.stringify([...cart]));updateCartCount()};
 function flash(text,error=false){info.textContent=text;info.className="editor-message"+(error?" error":"")}
 function available(c){return stock.get(c)}
@@ -169,6 +175,7 @@ el("adminLoginForm").addEventListener("submit",async event=>{
   }else{
    flash("Acceso confirmado. Puedes editar cartas y existencias.");
    render();
+   void syncManualImages(true).catch(()=>{});
   }
  }catch(_){flash("Usuario o contraseña incorrectos.",true);}
 });
@@ -191,6 +198,7 @@ el("verifyOwnerCode").addEventListener("click",async()=>{
   }else{
    flash("Identidad confirmada. Abre «Crear o cambiar contraseña» y establece tu clave para próximos ingresos.");
    render();
+   void syncManualImages(true).catch(()=>{});
   }
  }catch(e){flash(e.message,true)}
 });
@@ -224,20 +232,31 @@ el("saveImageFile").addEventListener("click",()=>{if(editing)doAdmin(()=>shared.
 el("removeImageShared").addEventListener("click",()=>{
  if(editing&&confirm("¿Eliminar la imagen personalizada de "+editing.name+"?"))doAdmin(()=>shared.removeImage(editing),"Imagen personalizada eliminada.");
 });
-el("migrateOldImages").addEventListener("click",()=>{
- if(!owner())return;
- const list=base.filter(c=>/^https:\/\//.test(localStorage.getItem("pokemon-image-"+c.id)||"")&&!shared.getShared(c));
- if(!list.length){flash("No hay imágenes antiguas pendientes.");return}
- if(!confirm("¿Compartir "+list.length+" imágenes antiguas guardadas en este navegador?"))return;
- doAdmin(async()=>{
-  let failed=0;
+let syncingManualImages=false;
+async function syncManualImages(silent=false){
+ if(!owner()||syncingManualImages)return;
+ const list=base.filter(c=>/^https:\/\//i.test(localStorage.getItem("pokemon-image-"+c.id)||"")
+  && !shared.getShared(c));
+ if(!list.length){
+  if(!silent)flash("Todas las imágenes manuales de este navegador ya están sincronizadas.");
+  return;
+ }
+ syncingManualImages=true;
+ let saved=0,failed=0;
+ try{
   for(const c of list){
-   try{await shared.updateImage(c,localStorage.getItem("pokemon-image-"+c.id));localStorage.removeItem("pokemon-image-"+c.id)}
-   catch(_){failed++}
+   try {
+    // Subir el enlace de imagen a la base de datos, pero conservar la copia local.
+    await shared.updateImage(c,localStorage.getItem("pokemon-image-"+c.id));
+    saved++;
+   }catch(_){failed++}
   }
-  if(failed)throw Error(failed+" imágenes no se pudieron sincronizar; las demás están guardadas.");
- },"Imágenes antiguas sincronizadas.");
-});
+  if(saved)await shared.loadShared(true);
+  if(!silent)flash(saved+" imágenes sincronizadas"+(failed?" · "+failed+" pendientes.":"."),!!failed);
+  if(initialized)render();
+ }finally{syncingManualImages=false}
+}
+el("migrateOldImages").addEventListener("click",()=>{void syncManualImages(false).catch(e=>flash(e.message,true))});
 
 function addToCart(c){
  const a=available(c);
@@ -429,6 +448,7 @@ function refreshPublishedCatalog(){
 Promise.allSettled([shared.init(),meta.fetchOverrides(true),stock.refresh(true),refreshPublishedCatalog()]).then(()=>{
  initialized=true;applyMeta();adminDisplay();
  if(adminMode&&!editor.open)showEditor();
+ if(owner())void syncManualImages(true).catch(()=>{});
 });
 document.addEventListener("visibilitychange",()=>{
  if(document.visibilityState==="visible")
