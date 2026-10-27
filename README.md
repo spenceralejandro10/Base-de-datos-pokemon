@@ -1,37 +1,58 @@
-# Mi colección Pokémon TCG
+# Bóveda TCG
 
-Galería web de cartas Pokémon que utiliza una copia del inventario de Google Sheets (el archivo original no se modifica).
+Vitrina de cartas Pokémon TCG con catálogo visual, buscador, enlaces a TCGplayer, existencias, carrito de interés y administración restringida.
 
-**Página:** https://spenceralejandro10.github.io/Base-de-datos-pokemon/
+**Vitrina pública:** https://spenceralejandro10.github.io/Base-de-datos-pokemon/
 
-**Excel original:** https://docs.google.com/spreadsheets/d/1qFEBZ1OcQw6NUoF29ZvD-jfc9-l7KOHN_T3bxnXVqaI/edit
+**Panel del administrador:** https://spenceralejandro10.github.io/Base-de-datos-pokemon/?admin=1
 
-## Archivos
+**Inventario original:** https://docs.google.com/spreadsheets/d/1qFEBZ1OcQw6NUoF29ZvD-jfc9-l7KOHN_T3bxnXVqaI/edit
 
-- `index.html` — página web.
-- `styles.css` — aspecto y adaptación móvil.
-- `cards.js` — copia de los registros actuales del inventario.
-- `card-images.js` — identificación de cartas e imágenes a partir de número, colección e idioma.
-- `app.js` — buscador, filtros, galería y tabla con miniaturas.
+## Vista pública
 
-## Cómo se obtienen las imágenes
+- Galería y tabla de cartas con ID fijo en formato `BTCG-0001`, `BTCG-0002`, etc.
+- Búsqueda por carta, número, colección, idioma y código interno.
+- Filtros de disponibilidad y botón **Limpiar filtros** para regresar a la vista completa.
+- Precio de referencia **TCGplayer en USD** por variante cuando la fuente publica datos, junto con su última fecha de actualización.
+- **Ver carta en TCGplayer** cuando la API tiene un `productId` verificable; de lo contrario, **Buscar en TCGplayer** con nombre, número y expansión.
+- **Agregar a mi selección** limita las unidades solicitadas a las disponibles.
+- Carrito de interés con **Descargar lista .txt** / **Copiar lista**. La lista incluye identificadores y cantidades. **No cobra, no crea pedidos, no reserva ni descuenta stock.**
+- Los visitantes nunca ven botones de edición ni pueden escribir en Supabase.
 
-1. Se buscan la colección y el número exacto en **TCGdex**, en el idioma correspondiente (inglés, español o japonés).
-2. Se comprueba la identidad y el total de cartas de la colección; cuando hay traducciones se contrasta el número.
-3. Si no existe imagen disponible, se intenta con la antigua Pokémon TCG API.
-4. Cuando la colección o numeración no es suficiente, se muestra un aviso en lugar de una imagen de otra carta.
-5. **Asignar imagen** permite indicar una fotografía manual; esa preferencia se guarda **solo en el navegador actual** (localStorage), no se sube a GitHub.
+## Administración
 
-### Correcciones visuales sin tocar Google Sheets
+Abre la dirección del **panel del administrador** y autentícate con el correo de administrador autorizado por la base de datos.
 
-Las tres cartas japonesas `003/049` (Venusaur ex), `009/049` (Charizard ex) y `016/049` (Blastoise ex) se buscan en el set **SVG: Venusaur, Charizard & Blastoise Special Deck Set ex**, aunque la copia del Excel las tenga clasificadas como `Shiny Treasure ex`. La web muestra una advertencia sobre la discrepancia; **los datos originales permanecen intactos**.
+Desde **Editar carta**, el propietario puede:
 
-La carta `Venusaur ex 003/165` (151) y la carta `Lapras ex 164` (SVP Promo) también cuentan con una asignación de colección *solo para localizar sus imágenes*, porque esas colecciones quedaron en blanco en el Excel.
+- Subir una fotografía o asignar una URL HTTPS. Las imágenes quedan persistidas en Supabase y visibles desde cualquier equipo.
+- Escribir o corregir la colección, idioma y nota de verificación para esta vitrina.
+- Establecer las unidades disponibles y marcar una carta como **No disponible**.
+- Restaurar colección e idioma desde los registros originales de Google Sheets.
+- Importar imágenes antiguas guardadas solamente en el navegador actual.
 
-## Actualizaciones
+**Importante:** todas las modificaciones se guardan en tablas independientes de Supabase con RLS: `pokemon_image_overrides`, `pokemon_card_overrides` y `pokemon_stock_overrides`. El documento original de Google Sheets no se reescribe. Los cambios publicados son visibles desde distintos computadores o celulares después de actualizar la página (y periódicamente mientras permanezca abierta).
 
-Actualmente `cards.js` es una **copia estática** del Google Sheets. Los cambios manuales posteriores en Google Sheets **no se sincronizan automáticamente** con GitHub Pages; hay que actualizar `cards.js` leyendo la hoja original. No se debe editar el inventario original desde esta web.
+La cuenta permitida está validada **en la base de datos**, no solo por el botón oculto. El cliente utiliza una clave pública de Supabase; no incluye claves privilegiadas de servicio.
 
-## Publicación
+## Archivo e infraestructura
 
-GitHub Pages debe usar `main` y la carpeta `/(root)`. Cualquier nuevo commit sobre los archivos de la rama publicada iniciará un despliegue.
+- `index.html` — página de la vitrina y panel.
+- `styles.css` — diseño responsive.
+- `cards.js` — copia del inventario de Google Sheets (importación estática de 55 referencias).
+- `card-images.js` — imágenes de cartas buscadas en catálogos.
+- `market-prices.js` — precios de referencia TCGplayer y enlaces.
+- `shared-images.js` — login y fotografías persistidas.
+- `catalog-overrides.js` — colección e idioma corregidos en la vitrina.
+- `card-stock.js` — existencias y disponibilidad.
+- `app.js` — galerías, filtros, carrito, panel administrativo.
+
+El carrito se guarda temporalmente en **el navegador de cada visitante**, no como un pedido en un servidor. Su selección puede exportarse como archivo TXT y compartirse con el vendedor.
+
+**Nota:** los cambios que se hagan posteriormente en Google Sheets no actualizan `cards.js` automáticamente. Es necesario importar nuevamente los registros de la hoja sin sobrescribir los ajustes publicados por el administrador. Las imágenes y existencias sí están alojadas en Supabase.
+
+**Precios:** datos de mercado consultados mediante TCGdex o Pokémon TCG API. No equivalen a precios garantizados, cotizaciones instante por instante ni ofertas de Bóveda TCG. Las ediciones japonesas o los registros con datos insuficientes pueden carecer de precio de referencia en TCGplayer.
+
+## GitHub Pages
+
+Publicar la rama `main` desde `/(root)`.
