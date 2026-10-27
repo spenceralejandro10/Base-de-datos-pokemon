@@ -1,50 +1,81 @@
 /*
- * Referencias de mercado TCGplayer recopiladas por TCGdex (o Pokémon TCG API).
- * No son cotizaciones de venta instantáneas. Enlaces al producto exacto cuando
- * la fuente ofrece un productId; si no, búsqueda por nombre + expansión + número.
+ * Bóveda TCG — TCGplayer (USD).
+ * Precio orientativo de mercado, no precio instantáneo de venta.
+ * No sustituir marketPrice por midPrice, lowestListing ni lowPrice.
+ * No mezclar precios del mercado inglés con versiones en español/japonés.
  */
 (function(){
- "use strict";
- const cache=new Map();
- function format(n){return new Intl.NumberFormat("es-CO",{style:"currency",currency:"USD",minimumFractionDigits:2,maximumFractionDigits:2}).format(n);}
- function valid(n){return typeof n==="number"&&Number.isFinite(n)&&n>0}
- const searchUrl=card=>"https://www.tcgplayer.com/search/pokemon/product?productLineName=pokemon&q="+encodeURIComponent([card.name,card.number,card.set].filter(Boolean).join(" "))+"&view=grid";
- const safeUrl=(s)=>{try{const u=new URL(s);return u.protocol==="https:"&&/(^|\.)tcgplayer\.com$/i.test(u.hostname)?u.href:null;}catch(_){return null}};
- function ts(x){if(!x)return "";const d=new Date(typeof x==="number"?(x<1e10?x*1000:x):x);return Number.isNaN(d.getTime())?"":d.toLocaleDateString("es-CO",{day:"2-digit",month:"short",year:"numeric"});}
- function collect(data,card){
-  const tcg=data?.pricing?.tcgplayer||data?.tcgplayer;
-  if(!tcg)return [];
-  const vars=tcg.prices||tcg;
-  const names={normal:"Normal",holofoil:"Holo","reverse-holofoil":"Reversa","1st-edition":"Primera edición","1st-edition-holofoil":"Primera edición holo",unlimited:"Ilimitada","unlimited-holofoil":"Ilimitada holo"};
-  const arr=[];
-  for(const [kind,price] of Object.entries(vars)){
-    if(!price||typeof price!=="object"||Array.isArray(price))continue;
-    const val=valid(price.marketPrice)?price.marketPrice:(valid(price.midPrice)?price.midPrice:null);
-    if(!val)continue;
-    const productId=price.productId??tcg.productId??null;
-    const direct=productId&&/^\d+$/.test(String(productId))?"https://www.tcgplayer.com/product/"+productId:null;
-    arr.push({market:"TCGplayer",variant:names[kind]||kind,price:val,unit:"USD",updated:ts(tcg.updated||tcg.updatedAt),url:direct||safeUrl(tcg.url)||searchUrl(card),exactLink:!!direct||!!safeUrl(tcg.url),source:"TCGdex / TCGplayer"});
-  }
-  return arr;
+"use strict";
+const cache=new Map();
+const MAX_AGE=7*24*60*60*1000; // más antiguo = mejor no mostrarlo
+const format=number=>new Intl.NumberFormat("es-CO",{style:"currency",currency:"USD",minimumFractionDigits:2,maximumFractionDigits:2}).format(number);
+const safeNumber=value=>typeof value==="number"&&Number.isFinite(value)&&value>0&&value<1000000;
+const norm=text=>String(text||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().trim();
+const variants={"normal":"Normal","holofoil":"Holo","reverse-holofoil":"Reversa","1st-edition":"1.ª edición","1st-edition-holofoil":"1.ª edición holo","unlimited":"Ilimitada","unlimited-holofoil":"Ilimitada holo"};
+function searchUrl(card){
+ const query=[card.name,card.number,card.set].filter(Boolean).join(" ");
+ return "https://www.tcgplayer.com/search/pokemon/product?productLineName=pokemon&q="+encodeURIComponent(query)+"&view=grid";
+}
+function parseTime(input){
+ if(!input)return null;
+ const date=new Date(typeof input==="number"?(input<1e10?input*1000:input):input);
+ const n=date.getTime();
+ return Number.isFinite(n)?n:null;
+}
+function directProduct(id){
+ return /^\d{4,12}$/.test(String(id||""))?"https://www.tcgplayer.com/product/"+id:null;
+}
+function inspect(data,card){
+ const source=data?.pricing?.tcgplayer??data?.tcgplayer;
+ if(!source||typeof source!=="object")return {rows:[],why:"TCGplayer no publica datos para esta edición."};
+ const ms=parseTime(source.updated??source.updatedAt);
+ if(ms===null)return {rows:[],why:"Precio sin fecha de actualización verificable; se omite para evitar cifras desactualizadas."};
+ const age=Date.now()-ms;
+ if(age>MAX_AGE||age<-(24*60*60*1000))return {rows:[],why:"Último precio recibido hace más de 7 días; consulta el valor actual en TCGplayer."};
+ const options=source.prices||source;
+ const rows=[];
+ for(const [name,detail] of Object.entries(options)){
+  if(!detail||typeof detail!=="object"||Array.isArray(detail))continue;
+  // Únicamente el precio marketPrice, nunca midPrice / lowPrice.
+  if(!safeNumber(detail.marketPrice))continue;
+  const link=directProduct(detail.productId??source.productId);
+  // Sin productId no podemos comprobar que la cotización se corresponda con la ficha enlazada.
+  if(!link)continue;
+  rows.push({
+   market:"TCGplayer",
+   variant:variants[norm(name)]||name,
+   price:detail.marketPrice,
+   unit:"USD",
+   updatedAt:ms,
+   updated:new Date(ms).toLocaleDateString("es-CO",{year:"numeric",month:"short",day:"numeric"}),
+   url:link,
+   exactLink:true,
+   source:"TCGdex / TCGplayer",
+   priceType:"Market Price"
+  });
  }
- async function compute(card){
-   const exact=await window.CardImages.resolveCatalog(card);
-   const fallback=searchUrl(card);
-   if(!exact?.catalog?.id)return {statuses:[],url:fallback,reason:"No hay coincidencia confirmada; consulta TCGplayer directamente."};
-   const meta=exact.catalog;
-   const endpoint=meta.kind==="tcgdex"?
-     "https://api.tcgdex.net/v2/"+encodeURIComponent(meta.language)+"/cards/"+encodeURIComponent(meta.id):
-     "https://api.pokemontcg.io/v2/cards/"+encodeURIComponent(meta.id);
-   const doc=await window.CardImages.loadCardJSON(endpoint);
-   const rows=collect(doc?.data||doc,card);
-   return {statuses:rows,url:rows[0]?.url||fallback,reference:!!meta.editionIsReference,
-     reason:rows.length?"":"TCGplayer aún no publica una referencia para esta carta o idioma."};
- }
- async function resolve(card){
-   const k=[card.id,card.number,card.set,card.language].join("|");
-   if(!cache.has(k))cache.set(k,compute(card).catch(()=>({statuses:[],url:searchUrl(card),reason:"No se pudo consultar TCGplayer por el momento."})));
-   return cache.get(k);
- }
- function reset(){cache.clear()}
- window.CardPrices={resolve,display:row=>format(row.price),reset,searchUrl};
+ return {rows,why:rows.length?"":"No hay Market Price reciente con enlace verificable para esta carta."};
+}
+async function compute(card){
+ const fallback=searchUrl(card);
+ // TCGplayer ofrece principalmente la impresión inglesa. No usar su precio para la versión japonesa o española.
+ if(card.language!=="Inglés")return {statuses:[],url:fallback,reason:"No hay precio TCGplayer fiable para el idioma de esta carta. Revisa el mercado directamente.",reference:false};
+ const match=await window.CardImages.resolveCatalog(card);
+ if(!match?.catalog?.id)return {statuses:[],url:fallback,reason:"No se ha confirmado la colección y numeración exactas.",reference:false};
+ const meta=match.catalog;
+ if(meta.language!=="en"||meta.editionIsReference)return {statuses:[],url:fallback,reason:"La referencia encontrada no coincide con el idioma de esta edición.",reference:true};
+ const url=meta.kind==="tcgdex"?
+   "https://api.tcgdex.net/v2/en/cards/"+encodeURIComponent(meta.id):
+   "https://api.pokemontcg.io/v2/cards/"+encodeURIComponent(meta.id);
+ const doc=await window.CardImages.loadCardJSON(url);
+ if(!doc)return {statuses:[],url:fallback,reason:"No se pudo verificar el precio en la fuente.",reference:false};
+ const price=inspect(doc.data||doc,card);
+ return {statuses:price.rows,url:price.rows[0]?.url||fallback,reference:false,reason:price.why};
+}
+function resolve(card){
+ const k=[card.id,card.name,card.number,card.set,card.language].join("|");
+ if(!cache.has(k))cache.set(k,compute(card).catch(()=>({statuses:[],url:searchUrl(card),reason:"La consulta de TCGplayer no respondió."})));
+ return cache.get(k);
+}
+window.CardPrices={resolve,display:p=>format(p.price),reset:()=>cache.clear(),searchUrl};
 })();
