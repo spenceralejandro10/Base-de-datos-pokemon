@@ -48,6 +48,33 @@
   function getShared(card) {
     return rows.get(imageKey(card)) || null;
   }
+  // Catálogo central: lectura pública en Supabase; cards.js sigue como respaldo sin conexión.
+  async function loadCatalog() {
+    const url = URL_BASE + "/rest/v1/pokemon_catalog?select=id,ordinal,name,card_number,set_name,release_year,language,quantity&order=id.asc";
+    const response = await fetch(url, {
+      headers: { apikey: KEY, Accept: "application/json" },
+      cache: "no-store"
+    });
+    if (!response.ok) throw Error("No se pudo consultar la base de datos del catálogo.");
+    const data = await response.json();
+    if (!Array.isArray(data) || !data.length) throw Error("El catálogo central no tiene registros.");
+    const cards = data.map(row => ({
+      id: Number(row.id),
+      ordinal: String(row.ordinal ?? ""),
+      name: String(row.name ?? ""),
+      number: String(row.card_number ?? ""),
+      set: String(row.set_name ?? ""),
+      year: String(row.release_year ?? ""),
+      language: String(row.language ?? ""),
+      quantity: Number(row.quantity)
+    }));
+    if (cards.some(c => !Number.isInteger(c.id) || c.id < 1 || !c.name ||
+      !Number.isInteger(c.quantity) || c.quantity < 0) ||
+      new Set(cards.map(c => c.id)).size !== cards.length) {
+      throw Error("El catálogo central contiene registros no válidos.");
+    }
+    return cards;
+  }
   function readSession() {
     try { return JSON.parse(localStorage.getItem(SESSION_NAME) || "null"); }
     catch (_) { return null; }
@@ -255,7 +282,7 @@
     return () => watchers.delete(callback);
   }
   window.SharedImages = {
-    init, loadShared, getShared, imageKey,
+    init, loadShared, loadCatalog, getShared, imageKey,
     isLoggedIn, getSession, accessToken, requestLogin, verifyCode, passwordLogin, setPassword,
     logout, updateImage, removeImage, uploadImage,
     subscribe, getError: () => lastError
