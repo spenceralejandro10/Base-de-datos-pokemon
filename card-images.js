@@ -160,7 +160,22 @@
     const baseConfig = SETS[setKey(card.set)];
     if (!baseConfig && !info.promo) return pack("incomplete", "No se ha indicado una colección reconocible.");
     const config = info.promo ? { tcg: "swshp", old: "swshp" } : baseConfig;
+    // El set con 49 cartas es SVG (Special Deck Set ex), no Shiny Treasure ex (190).
+    // Este ajuste afecta SOLO a la imagen: el Excel original no se toca.
+    const jp49 = card.language === "Japonés" && info.suffix === 49 &&
+      ["venusaur ex", "charizard ex", "blastoise ex"].includes(key(card.name)) &&
+      setKey(card.set) === "shiny treasure ex";
     try {
+      if (jp49) {
+        for (const specialId of ["SVG", "svG", "svg"]) {
+          const match = await viaTCGdex(card, { tcg: specialId, old: null, japanese: true }, info);
+          if (match?.images?.length) {
+            match.reason = "Arte de SVG: Venusaur, Charizard & Blastoise Special Deck Set ex (el Excel dice Shiny Treasure ex)";
+            match.source = "TCGdex (SVG)";
+            return match;
+          }
+        }
+      }
       const first = await viaTCGdex(card, config, info);
       if (first?.images.length) return first;
       const second = await viaLegacy(card, config, info);
