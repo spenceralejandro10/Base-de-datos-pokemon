@@ -204,7 +204,7 @@
     const response = await fetch(URL_BASE + "/auth/v1/otp?redirect_to=" + encodeURIComponent(redirect), {
       method: "POST",
       headers: authHeaders(),
-      body: JSON.stringify({ email: addr, create_user: true })
+      body: JSON.stringify({ email: addr, create_user: false })
     });
     if (!response.ok) {
       const data = await response.json().catch(() => ({}));
@@ -221,8 +221,38 @@
     return data;
   }
   async function verifyCode(email, token) {
-    const data = await verifyOneTime({ email: ownerEmail(email), token: String(token || "").trim(), type: "email" });
+    const addr = ownerEmail(email);
+    const data = await verifyOneTime({ email: addr, token: String(token || "").trim(), type: "email" });
+    if (!data.access_token || String(data.user?.email || "").toLowerCase() !== addr) {
+      throw Error("No se pudo validar esta cuenta.");
+    }
     saveSession(data);
+    return true;
+  }
+  // Verifica un enlace de Supabase directamente desde el navegador sin hacer clic
+  // en un redirect_to roto (p. ej. localhost:3000). El token nunca se guarda ni
+  // se envía al repositorio: únicamente a la API Auth de este proyecto.
+  async function verifyEmailLink(username, rawLink) {
+    const addr = ownerEmail(username);
+    let parsed;
+    try { parsed = new URL(String(rawLink || "").trim()); }
+    catch (_) { throw Error("Pega el enlace completo que recibiste por correo."); }
+    if (parsed.protocol !== "https:" ||
+        parsed.origin !== URL_BASE ||
+        parsed.pathname !== "/auth/v1/verify") {
+      throw Error("El enlace debe proceder de Supabase para esta Bóveda.");
+    }
+    const tokenHash = parsed.searchParams.get("token_hash") || parsed.searchParams.get("token");
+    const kind = parsed.searchParams.get("type");
+    if (!tokenHash || !["magiclink", "email", "recovery", "signup", "invite"].includes(kind)) {
+      throw Error("El correo no contiene un enlace de verificación compatible.");
+    }
+    const result = await verifyOneTime({ token_hash: tokenHash, type: kind });
+    if (!result.access_token || !result.refresh_token ||
+        String(result.user?.email || "").toLowerCase() !== addr) {
+      throw Error("No se pudo confirmar el correo del administrador.");
+    }
+    saveSession(result);
     return true;
   }
   async function logout() {
@@ -297,7 +327,7 @@
   }
   window.SharedImages = {
     init, loadShared, loadCatalog, getShared, imageKey,
-    isLoggedIn, getSession, accessToken, requestLogin, verifyCode, passwordLogin, setPassword,
+    isLoggedIn, getSession, accessToken, requestLogin, verifyCode, verifyEmailLink, passwordLogin, setPassword,
     logout, updateImage, removeImage, uploadImage,
     subscribe, getError: () => lastError
   };
