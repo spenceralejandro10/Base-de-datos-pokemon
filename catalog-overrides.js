@@ -1,7 +1,6 @@
 /*
   Correcciones de idioma y colección visibles en todos los dispositivos.
-  Google Sheets sigue intacto. Únicamente el propietario verificado
-  puede guardar o eliminar cambios gracias a RLS de Supabase.
+  Google Sheets sigue intacto. La edición compartida es pública.
 */
 (function () {
   "use strict";
@@ -56,7 +55,6 @@
     return overrides.get(Number(card.id)) || null;
   }
   async function save(card, values) {
-    const token = await window.SharedImages.accessToken();
     const set = String(values.set || "").trim();
     const lang = String(values.language || "").trim();
     const note = String(values.validation_note || "").trim();
@@ -68,13 +66,12 @@
       language: lang || null,
       validation_note: note || null,
       updated_at: new Date().toISOString(),
-      updated_by: window.SharedImages.getSession()?.user?.id
+      updated_by: null
     };
     const response = await fetch(URL_BASE + "/rest/v1/" + TABLE + "?on_conflict=card_id", {
       method: "POST",
       headers: {
         apikey: KEY,
-        Authorization: "Bearer " + token,
         "Content-Type": "application/json",
         Prefer: "resolution=merge-duplicates,return=representation"
       },
@@ -82,19 +79,16 @@
     });
     if (!response.ok) {
       const json = await response.json().catch(() => ({}));
-      throw Error(response.status === 401 || response.status === 403
-        ? "Solo el administrador autenticado puede corregir fichas."
-        : (json.message || "No se pudo guardar la corrección."));
+      throw Error(json.message || "No se pudo guardar la corrección.");
     }
     overrides.set(Number(card.id), payload);
     emit();
     return payload;
   }
   async function remove(card) {
-    const token = await window.SharedImages.accessToken();
     const response = await fetch(URL_BASE + "/rest/v1/" + TABLE + "?card_id=eq." + encodeURIComponent(String(card.id)), {
       method: "DELETE",
-      headers: { apikey: KEY, Authorization: "Bearer " + token }
+      headers: { apikey: KEY }
     });
     if (!response.ok) throw Error("No se pudo restaurar la ficha del inventario.");
     overrides.delete(Number(card.id));
