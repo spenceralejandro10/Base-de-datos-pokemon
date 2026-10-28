@@ -32,6 +32,8 @@
     "ruler of the black flame": { tcg: "SV3", old: null, japanese: true },
     "crimson haze": { tcg: "SV5a", old: null, japanese: true },
     "brilliant stars": { tcg: "swsh9", old: "swsh9" },
+    "brilliant stars trainer gallery": { tcg: "swsh9tg", old: null },
+    "astral radiance trainer gallery": { tcg: "swsh10tg", old: null },
     "fusion strike": { tcg: "swsh8", old: "swsh8" },
     "30th celebration": { tcg: "30th", old: null },
     "30th celebration - classic collection": { tcg: "30th-c", old: null, matchByUniqueName: true },
@@ -85,6 +87,8 @@
   }
   function numberDetails(card) {
     const raw = String(card.number || "").trim();
+    const trainer = raw.match(/^TG(\d+)\/TG(\d+)$/i);
+    if (trainer) return { raw, local: "TG" + String(Number(trainer[1])).padStart(2,"0"), suffix: Number(trainer[2]), promo: false, trainer: true };
     const match = raw.match(/^(\d+)(?:\/(\d+))?$/);
     if (match) return { raw, local: String(Number(match[1])), suffix: match[2] ? Number(match[2]) : null, promo: false };
     const promo = raw.match(/^SWSH\s*0*(\d+)$/i);
@@ -119,6 +123,7 @@
     return (setData.cards || []).find(c => {
       const n = String(c.localId ?? c.id?.split("-").slice(-1)[0] ?? "");
       if (details.promo) return n.toUpperCase().replace(/\s/g, "") === "SWSH" + details.local;
+      if (details.trainer) return n.toUpperCase() === details.local.toUpperCase();
       return /^\d+$/.test(n) && String(Number(n)) === details.local;
     });
   }
