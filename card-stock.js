@@ -18,13 +18,12 @@ async function save(card,amount,listed){
  if(String(amount).trim()==="")throw Error("Escribe la cantidad exacta de cartas disponibles.");
  const quantity=Number(amount);
  if(!Number.isInteger(quantity)||quantity<0||quantity>100000)throw Error("La cantidad debe ser un número entero entre 0 y 100000.");
- const token=await window.SharedImages.accessToken();
- const payload={card_id:Number(card.id),quantity_available:quantity,is_listed:!!listed,updated_by:window.SharedImages.getSession().user.id,updated_at:new Date().toISOString()};
+ const payload={card_id:Number(card.id),quantity_available:quantity,is_listed:!!listed,updated_by:null,updated_at:new Date().toISOString()};
  const response=await fetch(BASE+"/rest/v1/pokemon_stock_overrides?on_conflict=card_id",{
  method:"POST",
- headers:{apikey:KEY,Authorization:"Bearer "+token,"Content-Type":"application/json",Prefer:"resolution=merge-duplicates,return=representation"},
+ headers:{apikey:KEY,"Content-Type":"application/json",Prefer:"resolution=merge-duplicates,return=representation"},
  body:JSON.stringify(payload)});
- if(!response.ok){const detail=await response.json().catch(()=>({}));throw Error(response.status===403?"Solo el administrador puede modificar existencias.":detail.message||"Error al guardar existencias.");}
+ if(!response.ok){const detail=await response.json().catch(()=>({}));throw Error(detail.message||"Error al guardar existencias.");}
  overrides.set(Number(card.id),payload);emit();return payload;
 }
 function listen(fn){subscribers.add(fn);return()=>subscribers.delete(fn)}
