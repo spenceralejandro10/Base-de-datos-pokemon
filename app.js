@@ -11,11 +11,7 @@ const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&
 const publicCodes=new Map();
 const cardCode=c=>publicCodes.get(Number(c.id))||
   "BTCG-"+String(c.id).padStart(4,"0");
-const OWNER="spenceralejandro10@gmail.com";
-const adminMode=new URLSearchParams(location.search).get("admin")==="1"
-  || new URLSearchParams(location.search).has("token_hash")
-  || location.hash.includes("access_token=");
-const owner=()=>{const user=shared.getSession()?.user;return shared.isLoggedIn()&&String(user?.email||"").toLowerCase()===OWNER&&!!user?.email_confirmed_at};
+let editingMode=false;
 let records=base.map(x=>({...x})),editing=null,epoch=0,busy=false,initialized=false;
 const CART_KEY="boveda-tcg-cart-v1";
 // Al consolidar el Alakazam repetido del Excel se retiró BTCG-0054.
@@ -126,91 +122,51 @@ function filtering(){
  }));
 }
 function adminDisplay(){
- const access=el("ownerAccess");
- access.hidden=!(adminMode||owner());
- access.textContent=owner()?"Panel de administración":"Acceso del administrador";
- el("loginPanel").hidden=owner();
- el("editPanel").hidden=!owner();
- el("logoutUnauthorized").hidden=!shared.isLoggedIn()||owner();
- el("adminCardFields").hidden=!owner()||!editing;
- el("editingCard").textContent=editing?"Carta "+cardCode(editing)+" · "+editing.name+" · "+editing.number:"Selecciona «Editar» en una carta para modificar su ficha.";
- el("editorOwner").textContent=owner()?"Cuenta autorizada: "+(shared.getSession()?.user?.email||""):"";
- el("editorTitle").textContent=editing?"Administrar "+editing.name:"Administración de Bóveda TCG";
+ const button=el("managementEntry");
+ button.textContent=editingMode?"Volver a cliente":"Modo administrador";
+ button.setAttribute("aria-pressed",String(editingMode));
+ button.setAttribute("aria-label",editingMode?"Desactivar herramientas de edición":"Activar herramientas de edición");
+ el("editingBanner").hidden=!editingMode;
+ document.body.classList.toggle("editing-mode",editingMode);
 }
 function showEditor(card){
- // Solo se abre por un clic en «Gestión» o «Editar carta».
- editing=card||null;flash("");
- if(shared.isLoggedIn()&&!owner())flash("Esta cuenta no es administradora. Cierra sesión y utiliza el correo autorizado.",true);
- adminDisplay();
- if(editing&&owner()){
-  const a=available(editing);
-  el("adminQuantity").value=String(a.quantity);
-  el("adminListed").checked=a.listed;
-  el("adminSet").value=editing.set||"";
-  el("adminLanguage").value=editing.language||"";
-  el("adminNote").value=editing.adminNote||"";
-  el("imageUrl").value=shared.getShared(editing)||"";
-  el("imageUpload").value="";
- }
+ if(!editingMode||!card)return;
+ editing=findCard(card.id)||card;
+ flash("");
+ const a=available(editing);
+ el("adminQuantity").value=String(a.quantity);
+ el("adminListed").checked=a.listed;
+ el("adminSet").value=editing.set||"";
+ el("adminLanguage").value=editing.language||"";
+ el("adminNote").value=editing.adminNote||"";
+ el("imageUrl").value=shared.getShared(editing)||localStorage.getItem("pokemon-image-"+editing.id)||"";
+ el("imageUpload").value="";
+ el("editingCard").textContent=cardCode(editing)+" · "+editing.name+" · "+editing.number;
+ el("editorTitle").textContent="Editar "+editing.name;
  if(!editor.open)editor.showModal();
 }
 async function doAdmin(fn,message){
  if(busy)return;
- if(!owner()){flash("Sin autorización para modificar la bóveda.",true);return}
+ if(!editingMode){flash("Activa Modo administrador para editar.",true);return}
  busy=true;flash("Guardando cambios…");
  try{
   await fn();
   await Promise.all([stock.refresh(true),meta.fetchOverrides(true),shared.loadShared(true)]);
   applyMeta();
-  if(editing)showEditor(findCard(editing.id));
+  if(editing)showEditor(editing);
   flash(message);
  }catch(e){flash(e.message||"No se pudo guardar el cambio.",true)}
  finally{busy=false}
 }
-el("ownerAccess").addEventListener("click",()=>showEditor());
-el("managementEntry").addEventListener("click",()=>showEditor());
+el("managementEntry").addEventListener("click",()=>{
+ editingMode=!editingMode;
+ if(!editingMode&&editor.open)editor.close();
+ if(!editingMode)editing=null;
+ adminDisplay();
+ render();
+});
 el("closeEditor").addEventListener("click",()=>editor.close());
 editor.addEventListener("click",e=>{if(e.target===editor)editor.close()});
-el("adminLoginForm").addEventListener("submit",async event=>{
- event.preventDefault();
- flash("Verificando credenciales…");
- const username=el("adminUsername").value;
- const password=el("adminPassword").value;
- try{
-  await shared.passwordLogin(username,password);
-  el("adminPassword").value="";
-  adminDisplay();
-  if(!owner()){
-   await shared.logout();
-   adminDisplay();
-   flash("Esta cuenta no tiene permisos para administrar la bóveda.",true);
-  }else{
-   flash("Acceso confirmado. Puedes editar cartas y existencias.");
-   render();
-   void syncManualImages(true).catch(()=>{});
-  }
- }catch(_){flash("Usuario o contraseña incorrectos.",true);}
-});
-el("setOwnerPassword").addEventListener("click",async()=>{
- if(!owner()){flash("Debes verificar tu identidad primero.",true);return}
- const pass=el("newAdminPassword").value;
- const confirm=el("confirmAdminPassword").value;
- if(pass!==confirm){flash("Las contraseñas no coinciden.",true);return}
- if(pass.length<12){flash("La contraseña debe tener al menos 12 caracteres.",true);return}
- flash("Guardando contraseña…");
- try{
-  await shared.setPassword(pass);
-  el("newAdminPassword").value="";
-  el("confirmAdminPassword").value="";
-  flash("Contraseña configurada. En adelante podrás entrar con tu usuario y esta clave.");
- }catch(e){flash(e.message||"No se pudo configurar la contraseña.",true)}
-});
-for(const id of ["logoutEditor","logoutUnauthorized"]){
- el(id).addEventListener("click",async()=>{
-  try{await shared.logout();adminDisplay();render();flash("Sesión cerrada.")}
-  catch(e){flash(e.message,true)}
- });
-}
 el("saveStock").addEventListener("click",()=>{if(editing)doAdmin(()=>stock.save(editing,el("adminQuantity").value,el("adminListed").checked),"Cantidad y estado publicados correctamente.")});
 el("saveCardInfo").addEventListener("click",()=>{if(editing)doAdmin(()=>meta.save(editing,{set:el("adminSet").value,language:el("adminLanguage").value,validation_note:el("adminNote").value}),"Colección e idioma publicados correctamente.")});
 el("resetCardInfo").addEventListener("click",()=>{
@@ -223,7 +179,7 @@ el("removeImageShared").addEventListener("click",()=>{
 });
 let syncingManualImages=false;
 async function syncManualImages(silent=false){
- if(!owner()||syncingManualImages)return;
+ if(!editingMode||syncingManualImages)return;
  const list=base.filter(c=>/^https:\/\//i.test(localStorage.getItem("pokemon-image-"+c.id)||"")
   && !shared.getShared(c));
  if(!list.length){
@@ -351,7 +307,7 @@ function tcgLink(c) {
 }
 
 function editButton(c){
- if(!owner())return null;
+ if(!editingMode)return null;
  const button=document.createElement("button");button.type="button";button.className="image-button";
  button.textContent="Editar carta";button.addEventListener("click",()=>showEditor(c));return button;
 }
@@ -422,7 +378,7 @@ el("resetFilters").addEventListener("click",()=>{
 });
 updateCartCount();
 adminDisplay();
-shared.subscribe(()=>{adminDisplay();if(initialized)render()});
+shared.subscribe(()=>{if(initialized)render()});
 meta.listen(()=>{if(initialized)applyMeta()});
 stock.listen(()=>{if(initialized){updateStats();cleanCart();render()}});
 rebuildPublicCodes();
@@ -436,7 +392,7 @@ function refreshPublishedCatalog(){
 }
 Promise.allSettled([shared.init(),meta.fetchOverrides(true),stock.refresh(true),refreshPublishedCatalog()]).then(()=>{
  initialized=true;applyMeta();adminDisplay();
- if(owner())void syncManualImages(true).catch(()=>{});
+ 
 });
 document.addEventListener("visibilitychange",()=>{
  if(document.visibilityState==="visible")
