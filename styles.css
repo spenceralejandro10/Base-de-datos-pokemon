@@ -159,3 +159,32 @@ button.manage-entry:hover,button.manage-entry:focus-visible{
 .email-code-option { margin-top:15px; padding:10px 0 0; border-top:1px solid #e1eaf4; }
 .email-code-option summary { color:#466988; font-size:12px; font-weight:650; cursor:pointer; }
 #verifyOwnerLink { margin-top:12px; }
+
+/* Modo administrador sin ventanas de acceso ni contraseña */
+.editing-banner {
+ margin:0 0 16px;
+ font-size:12px;
+ line-height:1.5;
+ color:#6c4c19;
+ background:#fff8e8;
+ border:1px solid #f0dfb2;
+ padding:12px 14px;
+ border-radius:8px;
+}
+button.manage-entry[aria-pressed="true"] {
+ background:#fff;
+ color:#153c62;
+ border-color:#d4e3f2;
+ font-weight:800;
+}
+body.editing-mode .image-button {
+ font-size:12px;
+ padding:10px 12px;
+ background:#edf5ff;
+ color:#194c77;
+ border:1px solid #bcd3e9;
+}
+body.editing-mode .item { border-color:#cbddeb; }
+@media(max-width:720px) {
+ .editing-banner { font-size:11px; }
+}
