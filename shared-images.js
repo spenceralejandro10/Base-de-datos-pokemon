@@ -100,6 +100,34 @@ async function updateImage(card,imageUrl){
  updateWatchers();
  return url;
 }
+// Solo añade fotos oficiales verificadas; nunca sustituye una foto guardada a mano.
+async function saveCatalogImage(card,imageUrl){
+  if(getShared(card)) return false;
+  const url=String(imageUrl||"").trim();
+  if(!/^https:\/\/(?:assets\.tcgdex\.net|images\.pokemontcg\.io)\//i.test(url) || url.length>2048){
+    throw Error("La imagen automática no procede de un catálogo autorizado.");
+  }
+  const payload={
+    card_key:imageKey(card), image_url:url, image_source:"tcgdex-auto",
+    updated_by:null, updated_at:new Date().toISOString()
+  };
+  const response=await fetch(URL_BASE+"/rest/v1/"+TABLE+"?on_conflict=card_key",{
+    method:"POST",
+    headers:{apikey:KEY,"Content-Type":"application/json",
+      Prefer:"resolution=ignore-duplicates,return=minimal"},
+    body:JSON.stringify(payload)
+  });
+  if(!response.ok){
+    const detail=await response.json().catch(()=>({}));
+    throw Error(detail.message||"No se pudo guardar la foto automática.");
+  }
+  // La lectura de confirmación se realiza al terminar el lote; sin repintar
+  // todas las cartas repetidamente durante cada subida.
+  rows.set(payload.card_key,url);
+  imagesById.set(Number(card.id),url);
+  return true;
+}
+
 async function removeImage(card){
  const id=Number(card.id),primary=imageKey(card);
  const keys=[...rows.keys()].filter(key=>key===primary||Number(key.split("|")[0])===id);
@@ -131,5 +159,5 @@ async function uploadImage(card,file){
  return url;
 }
 function subscribe(callback){watchers.add(callback);return()=>watchers.delete(callback)}
-window.SharedImages={init,loadShared,loadCatalog,getShared,imageKey,updateImage,removeImage,uploadImage,subscribe,getError:()=>lastError};
+window.SharedImages={init,loadShared,loadCatalog,getShared,imageKey,updateImage,saveCatalogImage,removeImage,uploadImage,subscribe,getError:()=>lastError};
 })();
