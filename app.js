@@ -285,9 +285,10 @@ function listText(){
  let total=0;
  for(const [id,quantity] of cart){
   const c=findCard(id);if(!c)continue;total+=quantity;
-  lines.push(cardCode(c)+" | "+c.name+" | "+c.number+" | "+(c.set||"Sin colección")+" | "+(c.language||"Sin idioma")+" | Referencia por carta: "+market.amount(market.quote(c))+" | Unidades solicitadas: "+quantity);
+  const quote=market.quote(c);
+  lines.push(cardCode(c)+" | "+c.name+" | "+c.number+" | "+(c.set||"Sin colección")+" | "+(c.language||"Sin idioma")+" | Referencia por carta: "+market.amount(quote)+" | Estado de la oferta: "+(quote.offer?.condition||"Por confirmar")+" | Unidades solicitadas: "+quantity);
  }
- lines.push("","REFERENCIAS DISTINTAS: "+cart.size,"UNIDADES SOLICITADAS: "+total,"",market.rateText(),"Referencia TCGplayer Direct Low del archivo diario convertida a COP, sin envío. La oferta destacada puede variar según estado, idioma y momento de consulta. El precio final se confirma antes de la compra.");
+ lines.push("","REFERENCIAS DISTINTAS: "+cart.size,"UNIDADES SOLICITADAS: "+total,"",market.rateText(),"Oferta destacada de TCGplayer convertida a COP, sin envío. La condición indicada corresponde a la oferta de referencia. El precio final se confirma antes de la compra.");
  return lines.join("\r\n");
 }
 function drawCart(){
@@ -424,6 +425,7 @@ function tableCard(c,token) {
 
 function render(){
  epoch++;const token=epoch;
+ market.clearView();
  if(el("exchangeRate"))el("exchangeRate").textContent=market.rateText();
  const arr=filtering();
  el("shown").textContent=arr.length;

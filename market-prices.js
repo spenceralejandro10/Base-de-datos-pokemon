@@ -1,4 +1,4 @@
-/* TCGplayer Direct Low vía TCGCSV. Nunca sustituye Direct por Market Price. */
+/* Oferta destacada real de TCGplayer (Spotlight), con o sin Direct. */
 (function () {
   "use strict";
   const norm=s=>String(s||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().replace(/[^a-z0-9]+/g," ").trim();
@@ -24,14 +24,17 @@
     "cloe":"lacey","e nigma":"iono","ferrocuello":"iron jugulis","furioseta":"brute bonnet",
     "calyrex jinete glacial vmax":"ice rider calyrex vmax"};
   const seed=window.MARKET_SNAPSHOT||{groups:{}};
-  const listeners=new Set(),DAY=86400000;
+  const listeners=new Set(),DAY=86400000,HOUR=3600000;
+  const offers=new Map(),pending=new Set(),attempts=new Map(),queue=[],watched=new Map();
+  let active=0,emitTimer=null;
   const formatCOP=n=>new Intl.NumberFormat("es-CO",{style:"currency",currency:"COP",maximumFractionDigits:0}).format(n)+" COP";
   const formatUSD=n=>"US$"+Number(n).toFixed(2);
   const date=s=>new Date(s).toLocaleDateString("es-CO",{timeZone:"America/Bogota"});
   let fx=seed.fx||null;
-  function read(key){try{return JSON.parse(localStorage.getItem("boveda-direct-v2-"+key))}catch(_){return null}}
-  function save(key,value){try{localStorage.setItem("boveda-direct-v2-"+key,JSON.stringify(value))}catch(_){}}
+  function read(key){try{return JSON.parse(localStorage.getItem("boveda-spotlight-v3-"+key))}catch(_){return null}}
+  function save(key,value){try{localStorage.setItem("boveda-spotlight-v3-"+key,JSON.stringify(value))}catch(_){}}
   function emit(){for(const cb of listeners){try{cb()}catch(_){}}}
+  function emitSoon(){if(!emitTimer)emitTimer=setTimeout(()=>{emitTimer=null;emit()},200)}
   async function json(url){
     const response=await fetch(url,{signal:AbortSignal.timeout(15000)});
     if(!response.ok)throw Error("Precio no disponible");
@@ -48,7 +51,7 @@
   }
   function getGroup(group){
     // TCGCSV blocks browser CORS; consume the shared, server-generated snapshot.
-    return seed.source==="directLowPrice"?seed.groups[group.join("-")]:null;
+    return seed.source==="spotlight"?seed.groups[group.join("-")]:null;
   }
   const baseName=s=>norm(String(s).replace(/\s*[-–]\s*[A-Z]*\d+(?:\s*\/\s*[A-Z]*\d+)?/i,""));
   function match(card,data){
@@ -61,18 +64,66 @@
     const exact=candidates.filter(p=>baseName(p.name)===name);
     return exact.length?exact:candidates;
   }
-  function quote(card){
+  function productFor(card){
     const group=groupFor(card);
-    if(!group)return{status:"missing",reason:"Precio por confirmar"};
+    if(!group)return null;
     const data=getGroup(group),matches=match(card,data);
-    if(matches.length!==1)return{status:"missing",reason:"Precio Direct por confirmar"};
-    const product=matches[0],variants=product.prices||[],usd=variants.map(v=>v.usd).filter(v=>Number.isFinite(v)&&v>0);
-    if(!usd.length)return{status:"missing",reason:"Sin oferta TCGplayer Direct",url:"https://www.tcgplayer.com/product/"+product.id};
+    if(matches.length!==1)return null;
+    return {id:matches[0].id,language:norm(card.language)==="japones"?"Japanese":"English"};
+  }
+  const offerKey=product=>product.id+"|"+product.language;
+  function validOffer(value,product){
+    return value?.source==="tcgplayer-spotlight"&&Number(value.productId)===product.id&&value.language===product.language&&
+      Number.isFinite(value.price)&&value.price>0&&Number.isFinite(Date.parse(value.updatedAt));
+  }
+  function getOffer(product){
+    const key=offerKey(product);
+    if(!offers.has(key)){
+      const cached=read(key),fallback=seed.offers?.[key];
+      const chosen=validOffer(cached,product)&&(!validOffer(fallback,product)||cached.updatedAt>fallback.updatedAt)?cached:fallback;
+      offers.set(key,validOffer(chosen,product)?chosen:null);
+    }
+    return offers.get(key);
+  }
+  function refreshOffer(product){
+    const key=offerKey(product),current=getOffer(product);
+    if(pending.has(key)||(current&&Date.now()-Date.parse(current.updatedAt)<HOUR)||Date.now()-(attempts.get(key)||0)<15*60000)return;
+    attempts.set(key,Date.now());pending.add(key);queue.push(product);pump();
+  }
+  function pump(){
+    while(active<2&&queue.length){
+      const product=queue.shift();active++;
+      fetch("https://data.tcgplayer.com/spotlight/search/"+product.id,{
+        method:"POST",headers:{"Content-Type":"application/json","x-version":"1.0"},
+        body:JSON.stringify(product.language==="Japanese"?{filters:{term:{language:["Japanese"]}}}:{}),
+        signal:AbortSignal.timeout(12000)
+      }).then(response=>{if(!response.ok)throw Error("Consulta fallida");return response.json()}).then(data=>{
+        const item=data.spotlight;
+        if(!item||Number(item.productId)!==product.id||item.language!==product.language||!(item.price>0))return;
+        const offer={source:"tcgplayer-spotlight",productId:product.id,price:item.price,condition:item.condition,
+          printing:item.printing,language:item.language,sellerName:item.sellerName,directSeller:!!item.directSeller,
+          shippingPrice:item.shippingPrice,listingId:item.listingId,updatedAt:new Date().toISOString()};
+        if(!validOffer(offer,product))return;
+        offers.set(offerKey(product),offer);save(offerKey(product),offer);emitSoon();
+      }).catch(()=>{}).finally(()=>{pending.delete(offerKey(product));active--;pump()});
+    }
+  }
+  const observer=typeof IntersectionObserver!=="undefined"?new IntersectionObserver(entries=>{
+    for(const entry of entries)if(entry.isIntersecting){
+      const product=watched.get(entry.target);observer.unobserve(entry.target);watched.delete(entry.target);
+      if(product)refreshOffer(product);
+    }
+  },{rootMargin:"300px"}):null;
+  function clearView(){observer?.disconnect();watched.clear()}
+  function quote(card){
+    const product=productFor(card);
+    if(!product)return{status:"missing",reason:"Precio por confirmar"};
+    const url="https://www.tcgplayer.com/product/"+product.id,offer=getOffer(product);
+    if(!offer)return{status:"missing",reason:"Oferta por confirmar",url};
     const rate=Number(fx?.cop),validRate=rate>0&&Date.now()-Date.parse(fx?.updatedAt)<7*DAY;
-    const min=Math.min(...usd),max=Math.max(...usd);
-    return{status:"ready",min,max,copMin:validRate?min*rate:null,copMax:validRate?max*rate:null,
-      url:"https://www.tcgplayer.com/product/"+product.id,updatedAt:data.updatedAt,
-      stale:Date.now()-Date.parse(data.updatedAt)>2*DAY,reference:norm(card.language)==="espanol",variants,fx};
+    return{status:"ready",min:offer.price,max:offer.price,copMin:validRate?offer.price*rate:null,copMax:validRate?offer.price*rate:null,
+      url,updatedAt:offer.updatedAt,stale:Date.now()-Date.parse(offer.updatedAt)>DAY,
+      reference:norm(card.language)==="espanol",offer,fx};
   }
   function searchUrl(card) {
     const terms = [card.name, card.number, card.set].map(s => String(s || "").trim()).filter(Boolean);
@@ -86,14 +137,19 @@
   }
   function element(card){
     const q=quote(card),box=document.createElement("div");box.className="card-market-price";
-    const label=document.createElement("small");label.textContent="TCGplayer Direct · por carta";
+    const label=document.createElement("small");label.textContent="Oferta TCGplayer · por carta";
     const value=document.createElement("strong");value.textContent=amount(q);box.append(label,value);
     if(q.status==="ready"){
       const detail=document.createElement("small");
-      detail.textContent=formatUSD(q.min)+(q.min!==q.max?" – "+formatUSD(q.max)+" · Según acabado":" · "+q.variants[0].finish);
+      const conditions={"Near Mint":"Casi nueva","Lightly Played":"Poco usada","Moderately Played":"Uso moderado","Heavily Played":"Muy usada","Damaged":"Dañada"};
+      detail.textContent=formatUSD(q.min)+" · "+(conditions[q.offer.condition]||q.offer.condition||"");
       const updated=document.createElement("small");updated.textContent=(q.stale?"Último dato: ":"Consulta: ")+date(q.updatedAt)+(q.reference?" · Referencia en inglés":"");
       box.append(detail,updated);
-      box.title=q.variants.map(v=>v.finish+": "+formatUSD(v.usd)).join(" · ")+". Direct Low del archivo diario, sin envío; la oferta destacada puede variar por estado, idioma y momento de consulta.";
+      box.title="Oferta destacada de "+q.offer.sellerName+" · "+q.offer.printing+(q.offer.directSeller?" · TCGplayer Direct":"")+". Sin envío. El estado corresponde a la oferta de referencia; el precio final de tu carta se confirma antes de comprar.";
+    }
+    const product=productFor(card);
+    if(product&&(!q.offer||Date.now()-Date.parse(q.updatedAt)>HOUR)){
+      if(observer){watched.set(box,product);observer.observe(box)}else refreshOffer(product);
     }
     return box;
   }
@@ -107,5 +163,5 @@
     }catch(_){}
   }
   function rateText(){return fx?.cop>0?"1 USD = "+formatCOP(fx.cop)+" · cambio del "+date(fx.updatedAt):"Consultando cambio USD/COP…"}
-  window.CardPrices={searchUrl,quote,element,amount,formatCOP,rateText,init,subscribe:fn=>listeners.add(fn)};
+  window.CardPrices={searchUrl,productFor,quote,element,clearView,amount,formatCOP,rateText,init,subscribe:fn=>listeners.add(fn)};
 })();
