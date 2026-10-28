@@ -5,34 +5,34 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#17304f">
 <title>Bóveda TCG | Colección de cartas Pokémon</title>
-<meta name="description" content="Bienvenido a Bóveda TCG. Explora cartas Pokémon, consulta existencias, referencias de TCGplayer y crea tu lista de interés.">
-<link rel="stylesheet" href="./styles.css?v=27">
+<meta name="description" content="Explora Bóveda TCG: colección Pokémon, disponibilidad y selección de cartas.">
+<link rel="stylesheet" href="./styles.css?v=30">
 </head>
 <body>
 <header class="top">
  <div class="brand">
-   <div><p class="eyebrow">COLECCIÓN DE CARTAS POKÉMON</p><h1>Bóveda TCG</h1><p class="sub">Explora nuestra colección, revisa las cartas disponibles y guarda tus favoritas.</p></div>
-   <div class="header-actions">
-     <button id="managementEntry" type="button" class="manage-entry" aria-label="Abrir acceso a la administración de Bóveda TCG">Gestión</button>
-     <button id="cartOpen" class="cart-trigger" type="button">Mi selección <span id="cartCount">0</span></button>
-   </div>
+  <div><p class="eyebrow">COLECCIÓN DE CARTAS POKÉMON</p><h1>Bóveda TCG</h1><p class="sub">Explora nuestra colección, revisa las cartas disponibles y guarda tus favoritas.</p></div>
+  <div class="header-actions">
+   <button id="managementEntry" type="button" class="manage-entry" aria-label="Activar herramientas de edición" aria-pressed="false">Modo administrador</button>
+   <button id="cartOpen" class="cart-trigger" type="button">Mi selección <span id="cartCount">0</span></button>
+  </div>
  </div>
- <div class="admin-actions" hidden><button type="button" id="ownerAccess" hidden>Administrar</button></div>
 </header>
 <main class="wrap">
  <section class="stats" aria-label="Inventario de la bóveda">
- <div class="stat"><strong id="total">—</strong><small>Referencias</small></div>
- <div class="stat"><strong id="copies">—</strong><small>Unidades en la colección</small></div>
- <div class="stat"><strong id="shown">—</strong><small>Resultados</small></div>
+  <div class="stat"><strong id="total">—</strong><small>Referencias</small></div>
+  <div class="stat"><strong id="copies">—</strong><small>Unidades en la colección</small></div>
+  <div class="stat"><strong id="shown">—</strong><small>Resultados</small></div>
  </section>
  <div class="toolbar" role="search">
- <input id="q" type="search" placeholder="Buscar Pokémon, código de carta o colección…" aria-label="Buscar cartas" autocomplete="off">
- <select id="set" aria-label="Colección"><option value="">Todas las colecciones</option></select>
- <select id="lang" aria-label="Idioma"><option value="">Todos los idiomas</option></select>
- <select id="availability" aria-label="Disponibilidad"><option value="all">Todas las cartas</option><option value="available">Solo disponibles</option><option value="soldout">No disponibles</option></select>
- <select id="view" aria-label="Vista"><option value="grid">Galería</option><option value="table">Tabla</option></select>
- <button id="resetFilters" type="button">Limpiar filtros</button>
+  <input id="q" type="search" placeholder="Buscar Pokémon, código de carta o colección…" aria-label="Buscar cartas" autocomplete="off">
+  <select id="set" aria-label="Colección"><option value="">Todas las colecciones</option></select>
+  <select id="lang" aria-label="Idioma"><option value="">Todos los idiomas</option></select>
+  <select id="availability" aria-label="Disponibilidad"><option value="all">Todas las cartas</option><option value="available">Solo disponibles</option><option value="soldout">No disponibles</option></select>
+  <select id="view" aria-label="Vista"><option value="grid">Galería</option><option value="table">Tabla</option></select>
+  <button id="resetFilters" type="button">Limpiar filtros</button>
  </div>
+ <p id="editingBanner" class="editing-banner" hidden>Modo administrador activo: pulsa <strong>Editar carta</strong> para cambiar fotos, cantidades o fichas. Estos cambios son públicos y cualquier visitante puede editarlos.</p>
  <p class="notice simple-price-note">Consulta el precio de cada carta directamente en <strong>TCGplayer</strong>. El precio final se confirma al realizar la compra y puede variar, incluso a favor del comprador. La selección no implica compra ni reserva.</p>
  <div id="results" class="grid" aria-live="polite"></div>
 </main>
@@ -46,70 +46,40 @@
  <button id="clearCart" type="button" class="danger">Vaciar selección</button>
 </dialog>
 <dialog id="editorDialog" class="editor-dialog">
- <div class="dialog-top"><h2 id="editorTitle">Panel de administración</h2><button id="closeEditor" class="icon-button" type="button" aria-label="Cerrar">×</button></div>
+ <div class="dialog-top"><h2 id="editorTitle">Editar carta</h2><button id="closeEditor" class="icon-button" type="button" aria-label="Cerrar">×</button></div>
  <p id="editorMessage" class="editor-message" role="status"></p>
- <div id="loginPanel">
-  <p>Acceso restringido al responsable de la bóveda. Los visitantes solo pueden consultar el catálogo y crear listas de interés.</p>
-  <form id="adminLoginForm" autocomplete="on">
-    <label for="adminUsername">Usuario</label>
-    <input id="adminUsername" name="username" type="text" autocomplete="username" placeholder="root" value="root" required>
-    <label for="adminPassword">Contraseña</label>
-    <input id="adminPassword" name="password" type="password" autocomplete="current-password" placeholder="Contraseña" required>
-    <button id="adminLogin" type="submit" class="primary">Ingresar</button>
-  </form>
-  <details id="firstOwnerAccess">
-    <summary>Configurar o recuperar la contraseña</summary>
-    <p class="hint">Esta es una configuración exclusiva del propietario del proyecto. No es necesario solicitar correos para acceder normalmente.</p>
-    <a class="setup-link" href="https://supabase.com/dashboard/project/cnivcnexsqobipvqxero/sql/new" target="_blank" rel="noopener noreferrer">Abrir administración del proyecto</a>
-    <p class="hint">La contraseña se establece una sola vez desde la administración del proyecto. Después, simplemente ingresa con <strong>root</strong> y tu clave.</p>
-  </details>
-  <button id="logoutUnauthorized" type="button" hidden>Cerrar sesión de otra cuenta</button>
+ <p id="editingCard"></p>
+ <div id="adminCardFields">
+  <h3>Disponibilidad</h3>
+  <label for="adminQuantity">Unidades disponibles</label>
+  <input id="adminQuantity" type="number" min="0" max="100000" step="1">
+  <label class="inline-check"><input id="adminListed" type="checkbox"> Mostrar como disponible</label>
+  <button id="saveStock" type="button" class="primary">Guardar cantidad y disponibilidad</button>
+  <h3>Ficha de la carta</h3>
+  <label for="adminSet">Colección</label><input id="adminSet" type="text" maxlength="140" placeholder="Nombre de la colección">
+  <label for="adminLanguage">Idioma</label>
+  <select id="adminLanguage"><option value="">Sin especificar</option><option>Inglés</option><option>Español</option><option>Japonés</option><option>Chino</option><option>Coreano</option><option>Francés</option><option>Alemán</option><option>Italiano</option><option>Portugués</option></select>
+  <label for="adminNote">Observaciones (opcional)</label><input id="adminNote" type="text" maxlength="500" placeholder="Observaciones">
+  <button id="saveCardInfo" type="button" class="primary">Guardar colección e idioma</button>
+  <button id="resetCardInfo" type="button">Restaurar ficha del Excel</button>
+  <h3>Imagen de la carta</h3>
+  <label for="imageUrl">URL HTTPS de imagen</label><input id="imageUrl" type="url" placeholder="https://…/imagen.jpg">
+  <button id="saveImageUrl" type="button" class="primary">Guardar imagen para todos</button>
+  <div class="or-label">O subir fotografía</div>
+  <input id="imageUpload" type="file" accept="image/jpeg,image/png,image/webp">
+  <button id="saveImageFile" type="button" class="primary">Subir fotografía</button>
+  <button id="removeImageShared" type="button" class="danger">Quitar imagen personalizada</button>
  </div>
- <div id="editPanel" hidden>
-  <p id="editorOwner" class="hint"></p>
-  <details class="password-setup">
-    <summary>Crear o cambiar contraseña</summary>
-    <p class="hint">Configura una contraseña de 12 caracteres o más. Supabase Auth la guarda de forma segura; no aparecerá en el código ni en el catálogo.</p>
-    <label for="newAdminPassword">Nueva contraseña</label>
-    <input id="newAdminPassword" type="password" autocomplete="new-password" minlength="12" placeholder="Mínimo 12 caracteres">
-    <label for="confirmAdminPassword">Confirmar contraseña</label>
-    <input id="confirmAdminPassword" type="password" autocomplete="new-password" minlength="12" placeholder="Repite la contraseña">
-    <button id="setOwnerPassword" type="button" class="primary">Guardar contraseña</button>
-  </details>
-  <p id="editingCard"></p>
-  <div id="adminCardFields" hidden>
-   <h3>Disponibilidad</h3>
-   <label for="adminQuantity">Unidades disponibles</label>
-   <input id="adminQuantity" type="number" min="0" max="100000" step="1">
-   <label class="inline-check"><input id="adminListed" type="checkbox"> Mostrar como disponible para solicitar</label>
-   <button id="saveStock" type="button" class="primary">Guardar cantidad y disponibilidad</button>
-   <h3>Ficha de la carta</h3>
-   <label for="adminSet">Colección</label><input id="adminSet" type="text" maxlength="140" placeholder="Nombre de la colección">
-   <label for="adminLanguage">Idioma</label>
-   <select id="adminLanguage"><option value="">Sin especificar</option><option>Inglés</option><option>Español</option><option>Japonés</option><option>Chino</option><option>Coreano</option><option>Francés</option><option>Alemán</option><option>Italiano</option><option>Portugués</option></select>
-   <label for="adminNote">Nota interna de verificación (opcional)</label><input id="adminNote" type="text" maxlength="500" placeholder="Observaciones">
-   <button id="saveCardInfo" type="button" class="primary">Guardar colección e idioma</button>
-   <button id="resetCardInfo" type="button">Restaurar ficha del Excel</button>
-   <h3>Imagen de la carta</h3>
-   <label for="imageUrl">URL HTTPS de imagen</label><input id="imageUrl" type="url" placeholder="https://…/imagen.jpg">
-   <button id="saveImageUrl" type="button" class="primary">Guardar imagen para todos</button>
-   <div class="or-label">O subir fotografía</div>
-   <input id="imageUpload" type="file" accept="image/jpeg,image/png,image/webp">
-   <button id="saveImageFile" type="button" class="primary">Subir fotografía</button>
-   <button id="removeImageShared" type="button" class="danger">Quitar imagen personalizada</button>
-  </div>
-  <hr>
-  <button id="migrateOldImages" type="button">Sincronizar imágenes antiguas de este equipo</button>
-  <button id="logoutEditor" type="button">Cerrar sesión</button>
- </div>
+ <hr>
+ <button id="migrateOldImages" type="button">Sincronizar imágenes antiguas de este equipo</button>
 </dialog>
 <footer class="footer">Bóveda TCG · Colección Pokémon · Sin pagos en línea.</footer>
-<script src="./cards.js?v=27"></script>
-<script src="./shared-images.js?v=27"></script>
-<script src="./catalog-overrides.js?v=27"></script>
-<script src="./card-stock.js?v=27"></script>
-<script src="./card-images.js?v=27"></script>
-<script src="./market-prices.js?v=27"></script>
-<script src="./app.js?v=27"></script>
+<script src="./cards.js?v=30"></script>
+<script src="./shared-images.js?v=30"></script>
+<script src="./catalog-overrides.js?v=30"></script>
+<script src="./card-stock.js?v=30"></script>
+<script src="./card-images.js?v=30"></script>
+<script src="./market-prices.js?v=30"></script>
+<script src="./app.js?v=30"></script>
 </body>
 </html>
