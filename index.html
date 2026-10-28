@@ -6,7 +6,7 @@
 <meta name="theme-color" content="#17304f">
 <title>Bóveda TCG | Colección de cartas Pokémon</title>
 <meta name="description" content="Explora Bóveda TCG: colección Pokémon, disponibilidad y selección de cartas.">
-<link rel="stylesheet" href="./styles.css?v=31">
+<link rel="stylesheet" href="./styles.css?v=33">
 </head>
 <body>
 <header class="top">
@@ -33,7 +33,7 @@
   <button id="resetFilters" type="button">Limpiar filtros</button>
  </div>
  <p id="editingBanner" class="editing-banner" hidden>Modo administrador activo: pulsa <strong>Editar carta</strong> para cambiar fotos, cantidades o fichas. Estos cambios son públicos y cualquier visitante puede editarlos.</p>
- <p class="notice simple-price-note">Consulta el precio de cada carta directamente en <strong>TCGplayer</strong>. El precio final se confirma al realizar la compra y puede variar, incluso a favor del comprador. La selección no implica compra ni reserva.</p>
+ <p class="notice simple-price-note">Precios de referencia de <strong>TCGplayer Market Price</strong> convertidos a <strong>pesos colombianos (COP)</strong>, sin envío. El valor final se confirma según estado, idioma y acabado. Las cartas en español usan una referencia inglesa identificada; sin coincidencia segura, el precio queda por confirmar.<br><span id="exchangeRate"></span> · Datos diarios vía <a href="https://tcgcsv.com" target="_blank" rel="noopener noreferrer">TCGCSV</a> · Cambio de <a href="https://www.exchangerate-api.com" target="_blank" rel="noopener noreferrer">ExchangeRate-API</a>.</p>
  <div id="results" class="grid" aria-live="polite"></div>
 </main>
 <dialog id="cartDialog" class="editor-dialog cart-dialog">
@@ -89,7 +89,8 @@
 <script src="./catalog-overrides.js?v=31"></script>
 <script src="./card-stock.js?v=31"></script>
 <script src="./card-images.js?v=31"></script>
-<script src="./market-prices.js?v=31"></script>
-<script src="./app.js?v=31"></script>
+<script src="./market-snapshot.js?v=33"></script>
+<script src="./market-prices.js?v=33"></script>
+<script src="./app.js?v=33"></script>
 </body>
 </html>

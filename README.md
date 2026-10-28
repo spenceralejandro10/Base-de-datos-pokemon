@@ -23,7 +23,10 @@ Vitrina pública de cartas Pokémon con galería, filtros, referencias, disponib
 - Las fotografías subidas se guardan en `pokemon-gallery-overrides` (archivos con UUID; no se sobrescriben directamente).
 - La galería se ordena por colecciones desde las más recientes hasta las más antiguas. Las etiquetas `BTCG` visibles se numeran consecutivamente en ese orden, mientras los ID internos se mantienen fijos.
 - El carrito es una lista por navegador, no realiza compras ni altera existencias. Se puede copiar o descargar como archivo TXT.
-- La web no muestra precios calculados: enlaza a la búsqueda de cada carta en TCGplayer.
+- La web muestra TCGplayer Market Price convertido a COP por unidad, con USD, fecha y enlace al producto. Los datos provienen del archivo diario de TCGCSV; el cambio USD/COP, de ExchangeRate-API. La instantánea inicial permite mostrar precios sin esperar llamadas externas; el navegador consulta nuevos datos cuando tienen más de 24 horas.
+- Se exige coincidencia por colección, número y nombre. El catálogo japonés se consulta por separado. Las cartas en español muestran una referencia de la edición inglesa identificada, no una cotización exacta del idioma español. Si el acabado es ambiguo, se muestra el rango de Market Price por acabado; no se supone el estado de conservación. Sin coincidencia o cotización, aparece «Precio por confirmar» o «Sin precio de mercado».
+- Los precios no incluyen envío ni comisiones, y el valor de venta se confirma antes de comprar. La conversión redondea al peso más cercano sin márgenes añadidos. Si el cambio tiene más de siete días, no se muestra una conversión numérica. Una cotización conservada de más de dos días queda identificada como «Último dato».
+- `python scripts/update-prices.py` renueva exclusivamente `market-snapshot.js`; no escribe en Supabase ni modifica cartas, fotos o existencias. La caché de precios utiliza únicamente claves `boveda-market-v1-*`, independientes de las imágenes manuales.
 - Las actualizaciones posteriores al Excel no se sincronizan solas: hay que actualizar `pokemon_catalog` y `cards.js` manteniendo los ID internos.
 
 ## Archivos
@@ -36,6 +39,8 @@ Vitrina pública de cartas Pokémon con galería, filtros, referencias, disponib
 `catalog-overrides.js`: colección e idioma corregidos.
 `card-stock.js`: existencias.
 `card-images.js`: imágenes de colecciones.
-`market-prices.js`: enlace de búsqueda a TCGplayer.
+`market-prices.js`: coincidencias TCGplayer, conversión COP, actualización y enlace de consulta.
+`market-snapshot.js`: respaldo público de cotizaciones y cambio.
+`scripts/update-prices.py`: actualización del respaldo de precios.
 
 La web estática se sirve desde GitHub Pages, rama `main`, carpeta raíz.

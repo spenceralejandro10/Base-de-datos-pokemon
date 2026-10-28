@@ -285,9 +285,9 @@ function listText(){
  let total=0;
  for(const [id,quantity] of cart){
   const c=findCard(id);if(!c)continue;total+=quantity;
-  lines.push(cardCode(c)+" | "+c.name+" | "+c.number+" | "+(c.set||"Sin colección")+" | "+(c.language||"Sin idioma")+" | Unidades solicitadas: "+quantity);
+  lines.push(cardCode(c)+" | "+c.name+" | "+c.number+" | "+(c.set||"Sin colección")+" | "+(c.language||"Sin idioma")+" | Referencia por carta: "+market.amount(market.quote(c))+" | Unidades solicitadas: "+quantity);
  }
- lines.push("","REFERENCIAS DISTINTAS: "+cart.size,"UNIDADES SOLICITADAS: "+total,"","Consulta los precios en TCGplayer. El precio final se confirma antes de la compra y puede variar a favor del comprador.");
+ lines.push("","REFERENCIAS DISTINTAS: "+cart.size,"UNIDADES SOLICITADAS: "+total,"",market.rateText(),"Referencias TCGplayer convertidas a COP, sin envío. El precio final depende del estado, idioma y acabado y se confirma antes de la compra.");
  return lines.join("\r\n");
 }
 function drawCart(){
@@ -305,6 +305,7 @@ function drawCart(){
   const c=findCard(id);if(!c)continue;
   const row=document.createElement("div");row.className="cart-row";
   row.innerHTML='<div><strong>'+esc(c.name)+'</strong><small>'+esc(cardCode(c))+' · '+esc(c.number)+' · '+esc(c.language)+'</small></div>';
+  row.firstElementChild.append(market.element(c));
   const controls=document.createElement("div");controls.className="cart-row-controls";
   const minus=document.createElement("button");minus.textContent="−";minus.type="button";minus.addEventListener("click",()=>updateCartQty(c,qty-1));
   const count=document.createElement("span");count.textContent=qty;
@@ -354,7 +355,7 @@ async function imageFor(c,img,placeholder,status,token){
 function tcgLink(c) {
  const a=document.createElement("a");
  a.className="tcg-link";
- a.href=market.searchUrl(c);
+ a.href=market.quote(c).url||market.searchUrl(c);
  a.target="_blank";
  a.rel="noopener noreferrer";
  a.textContent="Ver en TCGplayer";
@@ -398,6 +399,7 @@ function galleryCard(c,token) {
  '<div class="stock-status '+(a.available?"is-available":"is-soldout")+'">'+(a.available?"Disponible · "+a.quantity+" ud.":"No disponible")+'</div>'+
  '<div class="links"></div></div>';
  const actions=item.querySelector(".links");
+ actions.before(market.element(c));
  actions.append(tcgLink(c),cartButton(c));
  const admin=editButton(c);if(admin)actions.append(admin);
  const search=quickImageSearchButton(c);if(search)actions.append(search);
@@ -412,7 +414,7 @@ function tableCard(c,token) {
  [cardCode(c),c.name,c.number,c.set,c.language,a.quantity,a.available?"Disponible":"No disponible"]
  .map((x,i)=>'<td'+(i===2?' class="num-col"':"")+'>'+esc(x==null||x===""?"—":x)+'</td>').join("")+
  '<td class="table-market"></td><td class="table-action"></td>';
- tr.querySelector(".table-market").append(tcgLink(c));
+ tr.querySelector(".table-market").append(market.element(c),tcgLink(c));
  tr.querySelector(".table-action").append(cartButton(c));
  const admin=editButton(c);if(admin)tr.querySelector(".table-action").append(admin);
  const search=quickImageSearchButton(c);if(search)tr.querySelector(".table-action").append(search);
@@ -422,6 +424,7 @@ function tableCard(c,token) {
 
 function render(){
  epoch++;const token=epoch;
+ if(el("exchangeRate"))el("exchangeRate").textContent=market.rateText();
  const arr=filtering();
  el("shown").textContent=arr.length;
  results.replaceChildren();
@@ -430,7 +433,7 @@ function render(){
  if(view.value==="table"){
   const scroller=document.createElement("div");scroller.className="table-scroll";
   const table=document.createElement("table");table.className="data-table";
-  table.innerHTML="<thead><tr>"+["Imagen","ID","Carta","Número","Colección","Idioma","Unidades","Estado","Consultar precio","Interés"].map(x=>"<th>"+x+"</th>").join("")+"</tr></thead>";
+  table.innerHTML="<thead><tr>"+["Imagen","ID","Carta","Número","Colección","Idioma","Unidades","Estado","Precio COP","Interés"].map(x=>"<th>"+x+"</th>").join("")+"</tr></thead>";
   const body=document.createElement("tbody");
   for(const c of arr)body.append(tableCard(c,token));
   table.append(body);scroller.append(table);results.append(scroller);
@@ -450,6 +453,8 @@ adminDisplay();
 shared.subscribe(()=>{if(initialized)render()});
 meta.listen(()=>{if(initialized)applyMeta()});
 stock.listen(()=>{if(initialized){updateStats();cleanCart();render()}});
+market.subscribe(()=>{render();if(cartDialog.open)drawCart()});
+void market.init();
 rebuildPublicCodes();
 refreshOptions();updateStats();render();
 function refreshPublishedCatalog(){

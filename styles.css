@@ -215,3 +215,11 @@ body.editing-mode .item { border-color:#cbddeb; }
 .links .image-search-shortcut{flex:1;min-width:130px}
 .table-action .image-search-shortcut{margin-left:8px}
 .image-search-shortcut:hover,.image-search-shortcut:focus-visible{background:#e2f0ff}
+
+/* Precio por unidad, conservando las fichas y fotografías existentes. */
+.card-market-price{display:flex;flex-direction:column;gap:4px;border-top:1px solid #e4ebf2;margin-top:7px;padding-top:10px;line-height:1.4}
+.card-market-price strong{font-size:19px;color:#186345;letter-spacing:-.025em;overflow-wrap:anywhere}
+.card-market-price small{font-size:11px;color:#67758b}
+.table-market .card-market-price{border:0;margin:0;padding:0;min-width:170px}
+.table-market .card-market-price strong,.cart-row .card-market-price strong{font-size:16px}
+@media(max-width:600px){.card-market-price strong{font-size:16px}}
