@@ -483,7 +483,7 @@ function cartButton(c){
  const a=available(c);
  const button=document.createElement("button");button.type="button";
  button.className="add-cart";
- button.textContent=a.available?(cart.get(c.id)?"Agregar otra · "+cart.get(c.id):"Agregar a mi selección"):"No disponible";
+ button.textContent=a.available?(cart.get(c.id)?"Agregar otra · "+cart.get(c.id):"Agregar a mi selección"):(a.override&&a.quantity===0?"Vendida":"No disponible");
  button.disabled=!a.available||(cart.get(c.id)||0)>=a.quantity;
  button.addEventListener("click",()=>{addToCart(c);render()});
  return button;
@@ -496,7 +496,7 @@ function galleryCard(c,token) {
  item.innerHTML='<div class="art"><div class="placeholder"><span class="loader"></span><span>Cargando imagen…</span></div><img hidden loading="lazy" referrerpolicy="no-referrer"><span class="pill">'+esc(cardCode(c))+'</span></div>'+
  '<div class="details"><h3>'+esc(c.name)+'</h3><div class="num">'+esc(c.number)+'</div>'+
  (details?'<div class="meta">'+esc(details)+'</div>':'')+
- '<div class="stock-status '+(a.available?"is-available":"is-soldout")+'">'+(a.available?"Disponible · "+a.quantity+" ud.":"No disponible")+'</div>'+
+ '<div class="stock-status '+(a.available?"is-available":"is-soldout")+'">'+(a.available?"Disponible · "+a.quantity+" ud.":a.override&&a.quantity===0?"Vendida":"No disponible")+'</div>'+
  '<div class="links"></div></div>';
  const actions=item.querySelector(".links");
  actions.before(market.element(c));
@@ -511,7 +511,7 @@ function tableCard(c,token) {
  const a=available(c);
  const tr=document.createElement("tr");
  tr.innerHTML='<td class="thumbnail"><div class="mini-art"><img hidden loading="lazy" referrerpolicy="no-referrer"><span>—</span></div></td>'+
- [cardCode(c),c.name,c.number,c.set,c.language,a.quantity,a.available?"Disponible":"No disponible"]
+ [cardCode(c),c.name,c.number,c.set,c.language,a.quantity,a.available?"Disponible":a.override&&a.quantity===0?"Vendida":"No disponible"]
  .map((x,i)=>'<td'+(i===2?' class="num-col"':"")+'>'+esc(x==null||x===""?"—":x)+'</td>').join("")+
  '<td class="table-market"></td><td class="table-action"></td>';
  tr.querySelector(".table-market").append(market.element(c),tcgLink(c));
