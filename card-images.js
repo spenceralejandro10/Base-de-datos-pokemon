@@ -105,7 +105,8 @@
       "recinto del festival": ["festival grounds"],
       "doble energia turbo": ["double turbo energy"],
       "ferrocuello": ["iron neck"],
-      "furioseta": ["brute bonnet"]
+      "furioseta": ["brute bonnet"],
+      "palkia lv x": ["palkia"]
     };
     const card = key(cardName), source = key(sourceName);
     if (!source) return true;
@@ -143,11 +144,21 @@
       let found;
       if (config.matchByUniqueName) {
         const names = (setData.cards || []).filter(c => nameFits(card.name, c.name, lang));
-        if (names.length !== 1) {
+        // La carta LEGEND ocupa dos mitades con el mismo nombre: la parte
+        // superior es 99/102 (019) y la inferior 100/102 (020).
+        if (names.length === 2 && key(card.name) === "darkrai cresselia legend") {
+          const first = Number(String(card.number||"").split("/")[0]);
+          const local = first === 99 ? 19 : first === 100 ? 20 : null;
+          if (local != null) {
+            found = names.find(c => Number(c.localId) === local);
+          }
+        } else if (names.length === 1) {
+          found = names[0];
+        }
+        if (!found) {
           if (names.length > 1) mismatch = true;
           continue;
         }
-        found = names[0];
       } else {
         found = listByNumber(setData, details);
       }
