@@ -356,6 +356,17 @@ function editButton(c){
  const button=document.createElement("button");button.type="button";button.className="image-button";
  button.textContent="Editar carta";button.addEventListener("click",()=>showEditor(c));return button;
 }
+function quickImageSearchButton(c){
+ if(!editingMode)return null;
+ const a=document.createElement("a");
+ a.className="image-search-shortcut";
+ a.href=imageSearchUrl(c);
+ a.target="_blank";
+ a.rel="noopener noreferrer";
+ a.textContent="Buscar imagen";
+ a.title="Buscar imágenes de esta versión exacta en Google Imágenes";
+ return a;
+}
 function cartButton(c){
  const a=available(c);
  const button=document.createElement("button");button.type="button";
@@ -378,6 +389,7 @@ function galleryCard(c,token) {
  const actions=item.querySelector(".links");
  actions.append(tcgLink(c),cartButton(c));
  const admin=editButton(c);if(admin)actions.append(admin);
+ const search=quickImageSearchButton(c);if(search)actions.append(search);
  imageFor(c,item.querySelector(".art>img"),item.querySelector(".placeholder"),null,token);
  return item;
 }
@@ -392,6 +404,7 @@ function tableCard(c,token) {
  tr.querySelector(".table-market").append(tcgLink(c));
  tr.querySelector(".table-action").append(cartButton(c));
  const admin=editButton(c);if(admin)tr.querySelector(".table-action").append(admin);
+ const search=quickImageSearchButton(c);if(search)tr.querySelector(".table-action").append(search);
  imageFor(c,tr.querySelector(".mini-art img"),tr.querySelector(".mini-art span"),null,token);
  return tr;
 }
