@@ -121,6 +121,43 @@ function filtering(){
   return !search||[cardCode(c),c.name,c.number,c.set,c.language,c.year,c.ordinal].join(" ").toLocaleLowerCase("es").includes(search);
  }));
 }
+function imageSearchUrl(card){
+ const terms=[card.name,card.number,card.set,card.language,"Pokémon TCG"].map(v=>String(v||"").trim()).filter(Boolean);
+ return "https://www.google.com/search?tbm=isch&q="+encodeURIComponent(terms.join(" "));
+}
+let suggestedImage="", suggestedCardId=null;
+function resetImageSuggestion(){
+ suggestedImage="";suggestedCardId=null;
+ el("imageSearchResult").hidden=true;
+ el("imageSearchPreview").removeAttribute("src");
+ el("imageSearchInfo").textContent="";
+ el("assignFoundImage").disabled=true;
+}
+async function findCatalogArtwork(){
+ if(!editing||!editingMode)return;
+ const selectedId=editing.id;
+ resetImageSuggestion();
+ const trigger=el("findCatalogImage");
+ trigger.disabled=true;
+ flash("Buscando imagen de "+editing.name+" según expansión, número e idioma…");
+ try{
+  const match=await window.CardImages.resolveCatalog(editing);
+  if(!editingMode||!editing||editing.id!==selectedId||!editor.open)return;
+  if(match.status==="verified"&&match.images?.length){
+   // Nunca asociar una imagen no verificada: primero vista previa y confirmación.
+   suggestedImage=match.images[0];
+   suggestedCardId=selectedId;
+   el("imageSearchPreview").src=suggestedImage;
+   el("imageSearchInfo").textContent="Encontrada en "+(match.source||"catálogo")+" · "+(match.info||"Coincidencia por número y colección")+". Confirma que sea la versión correcta antes de asignarla.";
+   el("imageSearchResult").hidden=false;
+   el("assignFoundImage").disabled=false;
+   flash("Imagen localizada. Revisa la vista previa y pulsa «Asignar esta imagen». Puedes comparar en Google Imágenes.");
+  }else{
+   flash("No se encontró una imagen verificable automáticamente. Usa «Buscar en Google Imágenes» para ver resultados de esta carta.",true);
+  }
+ }catch(e){if(editing?.id===selectedId)flash(e.message||"No fue posible buscar imágenes. Prueba Google Imágenes.",true)}
+ finally{trigger.disabled=false}
+}
 function adminDisplay(){
  const button=el("managementEntry");
  button.textContent=editingMode?"Volver a cliente":"Modo administrador";
@@ -141,6 +178,8 @@ function showEditor(card){
  el("adminNote").value=editing.adminNote||"";
  el("imageUrl").value=shared.getShared(editing)||localStorage.getItem("pokemon-image-"+editing.id)||"";
  el("imageUpload").value="";
+ resetImageSuggestion();
+ el("searchCardImage").href=imageSearchUrl(editing);
  el("editingCard").textContent=cardCode(editing)+" · "+editing.name+" · "+editing.number;
  el("editorTitle").textContent="Editar "+editing.name;
  if(!editor.open)editor.showModal();
@@ -164,6 +203,12 @@ el("managementEntry").addEventListener("click",()=>{
  if(!editingMode)editing=null;
  adminDisplay();
  render();
+});
+el("findCatalogImage").addEventListener("click",()=>{void findCatalogArtwork()});
+el("assignFoundImage").addEventListener("click",()=>{
+ if(!editing||suggestedCardId!==editing.id||!suggestedImage||!editingMode)return;
+ const selected=suggestedImage;
+ doAdmin(()=>shared.updateImage(editing,selected),"Imagen del catálogo asignada y guardada para todos.");
 });
 el("closeEditor").addEventListener("click",()=>editor.close());
 editor.addEventListener("click",e=>{if(e.target===editor)editor.close()});
