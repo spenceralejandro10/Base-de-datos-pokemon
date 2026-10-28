@@ -143,15 +143,26 @@ async function findCatalogArtwork(){
  try{
   const match=await window.CardImages.resolveCatalog(editing);
   if(!editingMode||!editing||editing.id!==selectedId||!editor.open)return;
-  if(match.status==="verified"&&match.images?.length){
-   // Nunca asociar una imagen no verificada: primero vista previa y confirmación.
-   suggestedImage=match.images[0];
+  if(match.status==="verified"&&match.images?.length&&!match.catalog?.editionIsReference){
+   // Evitar imágenes de otro idioma. Solo permitir las que correspondan a la edición buscada.
+   let url="";
+   for(const candidate of match.images){
+    if(await loadImage(candidate)){url=candidate;break}
+   }
+   if(!editingMode||!editing||editing.id!==selectedId||!editor.open)return;
+   if(!url){
+    flash("Se encontró una coincidencia, pero no se pudo cargar la foto. Usa Google Imágenes.",true);
+    return;
+   }
+   suggestedImage=url;
    suggestedCardId=selectedId;
-   el("imageSearchPreview").src=suggestedImage;
-   el("imageSearchInfo").textContent="Encontrada en "+(match.source||"catálogo")+" · "+(match.info||"Coincidencia por número y colección")+". Confirma que sea la versión correcta antes de asignarla.";
+   el("imageSearchPreview").src=url;
+   el("imageSearchInfo").textContent="Encontrada en "+(match.source||"catálogo")+" · "+(match.info||"Coincidencia por número y colección")+". Confirma que corresponda a la edición exacta antes de asignarla.";
    el("imageSearchResult").hidden=false;
    el("assignFoundImage").disabled=false;
-   flash("Imagen localizada. Revisa la vista previa y pulsa «Asignar esta imagen». Puedes comparar en Google Imágenes.");
+   flash("Imagen localizada. Comprueba la vista previa y pulsa «Asignar esta imagen».");
+  }else if(match.catalog?.editionIsReference){
+   flash("El catálogo solo encontró una imagen en otro idioma. Para no asignar la versión equivocada, utiliza «Buscar en Google Imágenes».",true);
   }else{
    flash("No se encontró una imagen verificable automáticamente. Usa «Buscar en Google Imágenes» para ver resultados de esta carta.",true);
   }
