@@ -1,53 +1,41 @@
 # Bóveda TCG
 
-Una vitrina sencilla para consultar cartas Pokémon, conocer la disponibilidad y seleccionar las cartas de interés.
+Vitrina pública de cartas Pokémon con galería, filtros, referencias, disponibilidad y carrito de interés.
 
-**Sitio público:** https://spenceralejandro10.github.io/Base-de-datos-pokemon/
+**Sitio web:** https://spenceralejandro10.github.io/Base-de-datos-pokemon/
 
-**Administración:** https://spenceralejandro10.github.io/Base-de-datos-pokemon/?admin=1
+**Google Sheets original:** https://docs.google.com/spreadsheets/d/1qFEBZ1OcQw6NUoF29ZvD-jfc9-l7KOHN_T3bxnXVqaI/edit
 
-## Qué puede hacer un visitante
+## Dos modos con un solo botón
 
-- Ver las imágenes y los datos de las cartas de la colección.
-- Buscar por nombre, código de carta, colección e idioma.
-- Filtrar por disponibilidad o limpiar todos los filtros.
-- Abrir **Ver en TCGplayer**, que busca la carta por nombre, número y colección directamente en TCGplayer.
-- Agregar cartas al carrito de interés y descargar o copiar la selección con códigos y cantidades.
+- **Modo cliente** (predeterminado): consulta de imágenes, colección, idioma, número, cantidades, búsqueda en TCGplayer y selección de cartas para descargar un TXT.
+- **Modo administrador**: pulsar el botón de la cabecera para mostrar **Editar carta** en cada ficha. Permite cambiar existencias y disponibilidad, corregir colección e idioma, asignar imagen HTTPS, subir foto y restaurar la ficha del Excel. El botón cambia a **Volver a cliente**.
+- No existen formulario de ingreso, usuario ni contraseña para activar el modo de edición.
 
-**La web no publica cifras de precios, no utiliza Cardmarket, no procesa pagos y no reserva productos.** El precio final de la venta se confirma con el vendedor y puede variar a favor del comprador.
-
-## Cómo entrar como administrador
-
-1. Entra a la vitrina normalmente. El formulario de administración **no se abre solo**, incluso si la dirección contiene `?admin=1`. Pulsa **Gestión** cuando quieras ingresar; el formulario aparece únicamente tras ese clic.
-2. Usuario: `root`. Es un alias de una cuenta Supabase Auth autorizada en una tabla privada; no es una contraseña.
-3. **Configuración inicial sin correos:** el usuario raíz ya existe en Supabase Auth. El propietario puede configurar una contraseña segura directamente desde la administración privada de Supabase. El acceso por correo ha sido retirado del formulario para evitar la limitación de envíos. No se configuró la contraseña insegura `123`.
-4. Una vez establecida la contraseña, ingresa normalmente con `root` y la clave. Dentro de la sesión, «Crear o cambiar contraseña» permite actualizarla sin correos.
-5. Los próximos accesos se hacen con el alias `root` y esa contraseña privada.
-6. Una vez autenticado, aparece **Editar carta**. Puedes subir una imagen, corregir colección/idioma, modificar cantidades y marcar una carta como no disponible.
-
-El botón de edición nunca se muestra al público. Las políticas RLS de Supabase bloquean modificaciones anónimas o no autorizadas, independientemente de los botones de la interfaz.
-
-## Inventario sincronizado
-
-- **158 referencias y 383 unidades** importadas de la pestaña `Inventario` del Google Sheets original, con su nombre, numeración, colección, año, idioma y cantidad exactos.
-- Las cartas se ordenan por **colección más reciente a más antigua** en la galería, la tabla y el filtro de expansiones. Dentro de cada colección se conserva el orden del Excel. Las etiquetas visibles `BTCG-0001` a `BTCG-0158` son consecutivas según el orden completo de exhibición; los identificadores internos usados en imágenes, stock y carritos **no se modifican**.
-- El contenido se guarda en la tabla `pokemon_catalog` de Supabase (lectura pública y escritura restringida). `cards.js` es una copia de respaldo idéntica; no se altera el Google Sheets.
-- Las etiquetas `BTCG` ahora se numeran en el orden visual. El identificador interno del duplicado anterior (54) queda retirado, pero se conservan las asociaciones de fotografías y el carrito con la fila consolidada de Alakazam (ID interno 37). Los códigos visibles pueden variar si el administrador cambia las colecciones o se modifica el orden de exhibición; cada lista exportada también incluye nombre, número, colección e idioma para reconocer la carta.
-- Las fotografías manuales almacenadas en Supabase siguen vinculadas a su ID aunque cambien nombre, colección o idioma.
-- Las fotografías que se asignaron **solo en el navegador anterior** permanecen en ese navegador. Al iniciar sesión como administrador desde ese **mismo navegador**, la web intenta sincronizarlas con Supabase sin borrar la copia local; también sigue disponible la opción de sincronización manual.
+**Advertencia de seguridad:** por decisión del propietario la edición es pública y sin autenticación. CUALQUIER visitante puede activar el modo administrador y modificar fotos, fichas y cantidades. Este botón es exclusivamente un interruptor visual, NO es un control de acceso. No debe utilizarse con datos privados o para información que deba ser protegida contra ediciones de terceros.
 
 ## Datos y persistencia
 
-- El inventario original de Google Sheets (158 referencias) no se modifica.
-- Las imágenes que sube el administrador quedan en Supabase Storage y en `pokemon_image_overrides`.
-- La colección y el idioma corregidos en la vitrina se guardan en `pokemon_card_overrides`.
-- Las existencias y la disponibilidad se guardan en `pokemon_stock_overrides`.
-- Estos cambios se ven en todos los dispositivos tras actualizar la página.
-- El carrito es una lista local de cada visitante y se exporta como archivo TXT; no altera el stock.
-- Los cambios posteriores que hagas en Google Sheets no se importan automáticamente: se debe actualizar `pokemon_catalog` y `cards.js` como en esta sincronización.
+- **158 referencias, 383 unidades** importadas del Excel. Los ID internos permanecen estables, incluido el ID 54 retirado cuando se consolidó un Alakazam.
+- El inventario original se almacena en `public.pokemon_catalog` con acceso **de solo lectura** para visitantes. `cards.js` contiene una copia equivalente como respaldo de visualización.
+- Las ediciones de imagen, ficha y existencias se guardan públicamente en tablas independientes de Supabase: `pokemon_image_overrides`, `pokemon_card_overrides`, `pokemon_stock_overrides`. Se reflejan en otros equipos al actualizar.
+- Las fotografías manuales se relacionan con la identidad interna original de la carta para que no desaparezcan al ordenar el catálogo.
+- Las fotografías subidas se guardan en `pokemon-gallery-overrides` (archivos con UUID; no se sobrescriben directamente).
+- La galería se ordena por colecciones desde las más recientes hasta las más antiguas. Las etiquetas `BTCG` visibles se numeran consecutivamente en ese orden, mientras los ID internos se mantienen fijos.
+- El carrito es una lista por navegador, no realiza compras ni altera existencias. Se puede copiar o descargar como archivo TXT.
+- La web no muestra precios calculados: enlaza a la búsqueda de cada carta en TCGplayer.
+- Las actualizaciones posteriores al Excel no se sincronizan solas: hay que actualizar `pokemon_catalog` y `cards.js` manteniendo los ID internos.
 
 ## Archivos
 
-`index.html` página, `styles.css` diseño, `cards.js` inventario, `card-images.js` imágenes, `market-prices.js` enlaces TCGplayer, `shared-images.js` autenticación e imágenes, `catalog-overrides.js` fichas, `card-stock.js` existencias, `app.js` galería y carrito.
+`index.html`: interfaz y herramientas de edición.
+`styles.css`: diseño responsive.
+`cards.js`: copia del inventario.
+`app.js`: galería, filtros, carrito, interruptor y edición.
+`shared-images.js`: imágenes compartidas y catálogo central.
+`catalog-overrides.js`: colección e idioma corregidos.
+`card-stock.js`: existencias.
+`card-images.js`: imágenes de colecciones.
+`market-prices.js`: enlace de búsqueda a TCGplayer.
 
-El sitio se publica con GitHub Pages desde `main` y `/(root)`.
+La web estática se sirve desde GitHub Pages, rama `main`, carpeta raíz.
