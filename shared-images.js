@@ -1,22 +1,16 @@
 /*
-  Galería Pokémon: imágenes compartidas y acceso del editor.
-  Supabase publishable key es público por diseño; la autorización real vive
-  en las políticas RLS de la base de datos, nunca en el navegador.
-*/
-(function () {
-  "use strict";
-  const URL_BASE = "https://cnivcnexsqobipvqxero.supabase.co";
-  const KEY = "sb_publishable_6UjwLuM-op0-OBKWlbusTw_qmLNZVfU";
-  const TABLE = "pokemon_image_overrides";
-  const BUCKET = "pokemon-gallery-overrides";
-  const SESSION_NAME = "pokemon-gallery-owner-session-v1";
-  let session = null;
-  let rows = new Map();
-  let imagesById = new Map();
-  let lastError = "";
-  let lastLoaded = 0;
-  const watchers = new Set();
-  const authHeaders = () => ({ apikey: KEY, "Content-Type": "application/json" });
+ * Imágenes compartidas de Bóveda TCG.
+ * Sin usuarios ni contraseñas: la edición es pública por petición del propietario.
+ * La tabla central pokemon_catalog es de solo lectura.
+ */
+(function(){
+"use strict";
+const URL_BASE="https://cnivcnexsqobipvqxero.supabase.co";
+const KEY="sb_publishable_6UjwLuM-op0-OBKWlbusTw_qmLNZVfU";
+const TABLE="pokemon_image_overrides";
+const BUCKET="pokemon-gallery-overrides";
+let rows=new Map(),imagesById=new Map(),lastError="",lastLoaded=0;
+const watchers=new Set();
   function imageKey(card) {
     const clean = text => String(text ?? "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim().toLowerCase();
     // La imagen mantiene su identidad aunque el administrador cambie idioma o colección.
@@ -89,246 +83,53 @@
     }
     return cards;
   }
-  function readSession() {
-    try { return JSON.parse(localStorage.getItem(SESSION_NAME) || "null"); }
-    catch (_) { return null; }
-  }
-  function saveSession(value) {
-    session = value;
-    if (value) localStorage.setItem(SESSION_NAME, JSON.stringify(value));
-    else localStorage.removeItem(SESSION_NAME);
-    updateWatchers();
-  }
-  function getSession() {
-    return session;
-  }
-  function isLoggedIn() {
-    return !!(session && session.access_token && session.user?.id);
-  }
-  async function refreshSession() {
-    if (!session?.refresh_token) return false;
-    const response = await fetch(URL_BASE + "/auth/v1/token?grant_type=refresh_token", {
-      method: "POST", headers: authHeaders(), body: JSON.stringify({ refresh_token: session.refresh_token })
-    });
-    if (!response.ok) {
-      saveSession(null);
-      return false;
-    }
-    const updated = await response.json();
-    saveSession(updated);
-    return true;
-  }
-  async function accessToken() {
-    if (!session) throw Error("Debes iniciar sesión para guardar cambios.");
-    if (session.expires_at && Date.now() / 1000 > session.expires_at - 100) {
-      if (!await refreshSession()) throw Error("Tu sesión caducó; entra de nuevo.");
-    }
-    return session.access_token;
-  }
-  async function init() {
-    session = readSession();
-    const params = new URLSearchParams(location.hash.startsWith("#") ? location.hash.slice(1) : "");
-    if (params.get("access_token") && params.get("refresh_token")) {
-      const token = {
-        access_token: params.get("access_token"),
-        refresh_token: params.get("refresh_token"),
-        token_type: params.get("token_type") || "bearer",
-        expires_at: Number(params.get("expires_at") || (Date.now() / 1000 + Number(params.get("expires_in") || 3600)))
-      };
-      const who = await fetch(URL_BASE + "/auth/v1/user", { headers: { apikey: KEY, Authorization: "Bearer " + token.access_token } });
-      if (who.ok) {
-        token.user = await who.json();
-        saveSession(token);
-      }
-      history.replaceState(null, "", location.pathname + location.search);
-    }
-    const searchParams = new URLSearchParams(location.search);
-    if (searchParams.get("token_hash") && searchParams.get("type")) {
-      try {
-        const verified = await verifyOneTime({ token_hash: searchParams.get("token_hash"), type: searchParams.get("type") });
-        if (verified?.access_token) saveSession(verified);
-      } finally {
-        history.replaceState(null, "", location.pathname + "?admin=1");
-      }
-    }
-    if (session?.access_token && !session.user) {
-      const who = await fetch(URL_BASE + "/auth/v1/user", { headers: { apikey: KEY, Authorization: "Bearer " + session.access_token } });
-      if (who.ok) { session.user = await who.json(); saveSession(session); }
-    }
-    await loadShared(true);
-  }
 
-  const ADMIN_ALIAS = "root";
-  const ADMIN_EMAIL = "spenceralejandro10@gmail.com";
-  function ownerEmail(username) {
-    if (String(username || "").trim().toLowerCase() !== ADMIN_ALIAS) {
-      throw Error("Usuario o contraseña incorrectos.");
-    }
-    return ADMIN_EMAIL;
-  }
-  async function passwordLogin(username, password) {
-    const email = ownerEmail(username);
-    if (!password || typeof password !== "string") throw Error("Introduce tu contraseña.");
-    const response = await fetch(URL_BASE + "/auth/v1/token?grant_type=password", {
-      method:"POST",headers:authHeaders(),
-      body:JSON.stringify({email,password})
-    });
-    const data = await response.json().catch(()=>({}));
-    if (!response.ok || !data.access_token) throw Error("Usuario o contraseña incorrectos.");
-    if (String(data.user?.email||"").toLowerCase() !== ADMIN_EMAIL) throw Error("Cuenta no autorizada.");
-    saveSession(data);
-    return true;
-  }
-  async function setPassword(nextPassword) {
-    if (!session?.access_token) throw Error("Primero verifica tu identidad mediante el correo.");
-    if (typeof nextPassword !== "string" || nextPassword.length < 12 || nextPassword.length > 128) {
-      throw Error("La contraseña debe tener entre 12 y 128 caracteres.");
-    }
-    const token = await accessToken();
-    const res = await fetch(URL_BASE + "/auth/v1/user",{
-      method:"PUT",
-      headers:{...authHeaders(),Authorization:"Bearer "+token},
-      body:JSON.stringify({password:nextPassword})
-    });
-    if(!res.ok){
-      const result=await res.json().catch(()=>({}));
-      throw Error(result.msg||result.message||result.error_description||"No se pudo establecer la contraseña.");
-    }
-    return true;
-  }
-
-  async function requestLogin(email) {
-    const addr = ownerEmail(email);
-    // Al volver del enlace de verificación, abrir directamente el panel privado.
-    const redirect = location.origin + location.pathname + "?admin=1";
-    const response = await fetch(URL_BASE + "/auth/v1/otp?redirect_to=" + encodeURIComponent(redirect), {
-      method: "POST",
-      headers: authHeaders(),
-      body: JSON.stringify({ email: addr, create_user: false })
-    });
-    if (!response.ok) {
-      const data = await response.json().catch(() => ({}));
-      throw Error(data.msg || data.message || data.error_description || "No se pudo enviar el enlace de acceso.");
-    }
-    return true;
-  }
-  async function verifyOneTime(payload) {
-    const response = await fetch(URL_BASE + "/auth/v1/verify", {
-      method: "POST", headers: authHeaders(), body: JSON.stringify(payload)
-    });
-    const data = await response.json().catch(() => ({}));
-    if (!response.ok) throw Error(data.msg || data.message || data.error_description || "Código de acceso incorrecto.");
-    return data;
-  }
-  async function verifyCode(email, token) {
-    const addr = ownerEmail(email);
-    const data = await verifyOneTime({ email: addr, token: String(token || "").trim(), type: "email" });
-    if (!data.access_token || String(data.user?.email || "").toLowerCase() !== addr) {
-      throw Error("No se pudo validar esta cuenta.");
-    }
-    saveSession(data);
-    return true;
-  }
-  // Verifica un enlace de Supabase directamente desde el navegador sin hacer clic
-  // en un redirect_to roto (p. ej. localhost:3000). El token nunca se guarda ni
-  // se envía al repositorio: únicamente a la API Auth de este proyecto.
-  async function verifyEmailLink(username, rawLink) {
-    const addr = ownerEmail(username);
-    let parsed;
-    try { parsed = new URL(String(rawLink || "").trim()); }
-    catch (_) { throw Error("Pega el enlace completo que recibiste por correo."); }
-    if (parsed.protocol !== "https:" ||
-        parsed.origin !== URL_BASE ||
-        parsed.pathname !== "/auth/v1/verify") {
-      throw Error("El enlace debe proceder de Supabase para esta Bóveda.");
-    }
-    const tokenHash = parsed.searchParams.get("token_hash") || parsed.searchParams.get("token");
-    const kind = parsed.searchParams.get("type");
-    if (!tokenHash || !["magiclink", "email", "recovery", "signup", "invite"].includes(kind)) {
-      throw Error("El correo no contiene un enlace de verificación compatible.");
-    }
-    const result = await verifyOneTime({ token_hash: tokenHash, type: kind });
-    if (!result.access_token || !result.refresh_token ||
-        String(result.user?.email || "").toLowerCase() !== addr) {
-      throw Error("No se pudo confirmar el correo del administrador.");
-    }
-    saveSession(result);
-    return true;
-  }
-  async function logout() {
-    if (session?.access_token) {
-      await fetch(URL_BASE + "/auth/v1/logout", {
-        method: "POST", headers: { ...authHeaders(), Authorization: "Bearer " + session.access_token }
-      }).catch(() => {});
-    }
-    saveSession(null);
-  }
-  async function updateImage(card, imageUrl) {
-    const url = String(imageUrl || "").trim();
-    if (!url || url.length > 2048) throw Error("Ingresa una URL HTTPS válida.");
-    let parsed;
-    try { parsed = new URL(url); } catch (_) { throw Error("La URL no es válida."); }
-    if (parsed.protocol !== "https:") throw Error("Las imágenes deben usar HTTPS.");
-    const token = await accessToken();
-    const payload = {
-      card_key: imageKey(card), image_url: url, image_source: "manual",
-      updated_by: session.user.id, updated_at: new Date().toISOString()
-    };
-    const response = await fetch(URL_BASE + "/rest/v1/" + TABLE + "?on_conflict=card_key", {
-      method: "POST",
-      headers: { apikey: KEY, Authorization: "Bearer " + token, "Content-Type": "application/json", Prefer: "resolution=merge-duplicates,return=representation" },
-      body: JSON.stringify(payload)
-    });
-    if (!response.ok) {
-      const data = await response.json().catch(() => ({}));
-      throw Error(response.status === 403 || response.status === 401
-        ? "Solo el propietario verificado puede asignar imágenes. Inicia sesión con su correo."
-        : (data.message || "No se pudo guardar la imagen en la base de datos."));
-    }
-    rows.set(imageKey(card), url);
-    updateWatchers();
-    return url;
-  }
-  async function removeImage(card) {
-    const token = await accessToken();
-    const response = await fetch(URL_BASE + "/rest/v1/" + TABLE + "?card_key=eq." + encodeURIComponent(imageKey(card)), {
-      method: "DELETE", headers: { apikey: KEY, Authorization: "Bearer " + token }
-    });
-    if (!response.ok) throw Error("No se pudo quitar la imagen compartida.");
-    rows.delete(imageKey(card));
-    updateWatchers();
-  }
-  async function uploadImage(card, file) {
-    if (!file || !["image/png","image/jpeg","image/webp"].includes(file.type)) throw Error("Selecciona una imagen JPG, PNG o WebP.");
-    if (file.size > 6291456) throw Error("Tamaño máximo: 6 MB.");
-    const token = await accessToken();
-    const name = crypto.randomUUID() + "." + (file.type === "image/png" ? "png" : file.type === "image/webp" ? "webp" : "jpg");
-    const path = "cards/" + name;
-    const res = await fetch(URL_BASE + "/storage/v1/object/" + BUCKET + "/" + path, {
-      method: "POST",
-      headers: { apikey: KEY, Authorization: "Bearer " + token, "Content-Type": file.type, "cache-control": "3600", "x-upsert": "false" },
-      body: file
-    });
-    if (!res.ok) {
-      const result = await res.json().catch(() => ({}));
-      throw Error(result.message || "La fotografía no se pudo subir.");
-    }
-    const address = URL_BASE + "/storage/v1/object/public/" + BUCKET + "/" + path;
-    try {
-      await updateImage(card, address);
-    } catch (error) {
-      throw Error("Se subió el archivo, pero no se pudo asociar con la carta: " + error.message);
-    }
-    return address;
-  }
-  function subscribe(callback) {
-    watchers.add(callback);
-    return () => watchers.delete(callback);
-  }
-  window.SharedImages = {
-    init, loadShared, loadCatalog, getShared, imageKey,
-    isLoggedIn, getSession, accessToken, requestLogin, verifyCode, verifyEmailLink, passwordLogin, setPassword,
-    logout, updateImage, removeImage, uploadImage,
-    subscribe, getError: () => lastError
-  };
+async function init(){await loadShared(true)}
+async function updateImage(card,imageUrl){
+ const url=String(imageUrl||"").trim();
+ let parsed;
+ try{parsed=new URL(url)}catch(_){throw Error("Introduce una URL HTTPS válida.")}
+ if(parsed.protocol!=="https:"||url.length>2048)throw Error("La imagen debe usar HTTPS y una URL válida.");
+ const payload={card_key:imageKey(card),image_url:url,image_source:"manual",updated_by:null,updated_at:new Date().toISOString()};
+ const response=await fetch(URL_BASE+"/rest/v1/"+TABLE+"?on_conflict=card_key",{
+  method:"POST",headers:{apikey:KEY,"Content-Type":"application/json",Prefer:"resolution=merge-duplicates,return=representation"},
+  body:JSON.stringify(payload)
+ });
+ if(!response.ok){const d=await response.json().catch(()=>({}));throw Error(d.message||"No se pudo guardar la imagen compartida.")}
+ rows.set(payload.card_key,url);imagesById.set(Number(card.id),url);
+ updateWatchers();
+ return url;
+}
+async function removeImage(card){
+ const id=Number(card.id),primary=imageKey(card);
+ const keys=[...rows.keys()].filter(key=>key===primary||Number(key.split("|")[0])===id);
+ if(id===37&&imagesById.has(54))keys.push(...[...rows.keys()].filter(key=>Number(key.split("|")[0])===54));
+ for(const key of new Set(keys)){
+  const response=await fetch(URL_BASE+"/rest/v1/"+TABLE+"?card_key=eq."+encodeURIComponent(key),{
+   method:"DELETE",headers:{apikey:KEY}
+  });
+  if(!response.ok)throw Error("No se pudo quitar la imagen compartida.");
+  rows.delete(key);
+ }
+ imagesById.delete(id);
+ if(id===37)imagesById.delete(54);
+ try{localStorage.removeItem("pokemon-image-"+id)}catch(_){}
+ updateWatchers();
+}
+async function uploadImage(card,file){
+ if(!file||!["image/png","image/jpeg","image/webp"].includes(file.type))throw Error("Selecciona una fotografía JPG, PNG o WebP.");
+ if(file.size>6291456)throw Error("La imagen supera el máximo de 6 MB.");
+ const name=crypto.randomUUID()+"."+(file.type==="image/png"?"png":file.type==="image/webp"?"webp":"jpg");
+ const path="cards/"+name;
+ const res=await fetch(URL_BASE+"/storage/v1/object/"+BUCKET+"/"+path,{
+  method:"POST",headers:{apikey:KEY,"Content-Type":file.type,"cache-control":"3600","x-upsert":"false"},
+  body:file
+ });
+ if(!res.ok){const d=await res.json().catch(()=>({}));throw Error(d.message||"No se pudo subir la fotografía.")}
+ const url=URL_BASE+"/storage/v1/object/public/"+BUCKET+"/"+path;
+ await updateImage(card,url);
+ return url;
+}
+function subscribe(callback){watchers.add(callback);return()=>watchers.delete(callback)}
+window.SharedImages={init,loadShared,loadCatalog,getShared,imageKey,updateImage,removeImage,uploadImage,subscribe,getError:()=>lastError};
 })();
