@@ -27,7 +27,13 @@
     "pokemon card 151": { tcg: "sv03.5", old: "sv3pt5" },
     "crown zenith": { tcg: "swsh12.5", old: "swsh12" },
     "shiny treasure ex": { tcg: "sv4a", old: null, japanese: true },
-    "scarlet & violet promo": { tcg: "svp", old: "svp" }
+    "scarlet & violet promo": { tcg: "svp", old: "svp" },
+    "future flash": { tcg: "SV4M", old: null, japanese: true },
+    "ruler of the black flame": { tcg: "SV3", old: null, japanese: true },
+    "crimson haze": { tcg: "SV5a", old: null, japanese: true },
+    "brilliant stars": { tcg: "swsh9", old: "swsh9" },
+    "celebrations (classic collection)": { tcg: "cel25c", old: "cel25c" },
+    "celebrations": { tcg: "cel25", old: "cel25" }
   };
   const key = text => String(text || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
   const setKey = text => String(text || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().trim().replace(/\s+/g, " ");
@@ -93,7 +99,11 @@
       "cael": ["clive"],
       "estudiante de paldea": ["paldean student"],
       "energia fuego basica": ["basic fire energy", "fire energy"],
-      "bill s transfer": ["bill s transfer"]
+      "bill s transfer": ["bill s transfer"],
+      "recinto del festival": ["festival grounds"],
+      "doble energia turbo": ["double turbo energy"],
+      "ferrocuello": ["iron neck"],
+      "furioseta": ["brute bonnet"]
     };
     const card = key(cardName), source = key(sourceName);
     if (!source) return true;
@@ -117,7 +127,7 @@
     let mismatch = false;
     let missingArtwork = false;
     for (const lang of languages(card, config.japanese)) {
-      const setId = (lang === "ja" && setKey(card.set) === "pokemon card 151") ? "sv2a" : config.tcg;
+      const setId = (lang === "ja" && ["pokemon card 151", "151"].includes(setKey(card.set))) ? "SV2a" : config.tcg;
       const base = "https://api.tcgdex.net/v2/" + lang;
       const setData = await loadJSON(base + "/sets/" + encodeURIComponent(setId));
       if (!setData) continue;
