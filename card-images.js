@@ -32,6 +32,7 @@
     "ruler of the black flame": { tcg: "SV3", old: null, japanese: true },
     "crimson haze": { tcg: "SV5a", old: null, japanese: true },
     "brilliant stars": { tcg: "swsh9", old: "swsh9" },
+    "fusion strike": { tcg: "swsh8", old: "swsh8" },
     "30th celebration": { tcg: "30th", old: null },
     "30th celebration - classic collection": { tcg: "30th-c", old: null, matchByUniqueName: true },
     "celebrations (classic collection)": { tcg: "cel25c", old: "cel25c" },
