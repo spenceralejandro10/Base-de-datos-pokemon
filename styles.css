@@ -188,3 +188,18 @@ body.editing-mode .item { border-color:#cbddeb; }
 @media(max-width:720px) {
  .editing-banner { font-size:11px; }
 }
+
+/* Herramientas para buscar y asignar automáticamente la imagen exacta */
+.image-search-actions { display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:8px 0 14px; }
+.image-search-actions button,.image-search-actions a {
+ display:inline-flex;align-items:center;justify-content:center;
+ flex:1 1 170px;min-height:39px;padding:10px 12px;
+ font-size:12px;line-height:1.3;border-radius:8px;
+ text-decoration:none;text-align:center;font-weight:650;
+}
+.image-search-link {border:1px solid #bfd2e4;background:#f4f8fc;color:#1d557d;}
+.image-search-link:hover,.image-search-link:focus-visible {background:#e8f3ff;}
+.image-search-result {border:1px solid #d9e5f1;background:#f8fbff;border-radius:10px;padding:14px;margin:4px 0 16px;text-align:center;}
+.image-search-result img {display:block;width:100%;max-width:235px;height:310px;object-fit:contain;margin:0 auto 10px;}
+.image-search-result .hint {max-width:330px;margin:8px auto 12px;line-height:1.5;}
+.image-search-result button {width:100%;max-width:240px;}
