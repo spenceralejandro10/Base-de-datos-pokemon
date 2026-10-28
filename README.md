@@ -30,7 +30,8 @@ Vitrina pública de cartas Pokémon con galería, filtros, referencias, disponib
 - Se muestran fotos, unidades pedidas, unidades registradas, precio por unidad incluido en el mensaje y precio de referencia `TCGplayer Market Price` (datos TCGCSV, convertidos a COP cuando hay una tasa de cambio válida).
 - Cada fila enlaza directamente al producto verificado en TCGplayer; si no existe referencia exacta, dirige a la búsqueda correspondiente. Los precios pueden variar: se requiere consultar el sitio enlazado para validar el precio vigente.
 - La pantalla suma los importes del mensaje y los precios de mercado disponibles; señala cualquier referencia no encontrada o sin precio.
-- La única entrada es el cuadro de texto para consultar otra lista, y el selector de orden. No hay botones de editar, vender, empacar, quitar ni descontar existencias.
+- Los únicos botones de cada carta son **Ver en TCGplayer** y **Quitar de lista**. Quitar de lista descarta esa línea solo de la vista local y recalcula el total: no edita inventario, ni fotos ni cantidades. Si se vuelve a pulsar **Consultar cartas**, la lista pegada se recupera completa. La lista excluida se recuerda en el mismo navegador al recargar la página.
+- No hay botones de editar, vender, empacar ni descontar existencias, y el modo administrador continúa desactivado.
 - La lista consultada se guarda solo en el almacenamiento local del navegador (clave `boveda-visual-consulta-v1`) para poder continuar tras actualizar la página. **Nueva consulta** solo borra esa copia local.
 - Seguridad: el administrador permanece desactivado y se revocó la ejecución de `public.pokemon_register_sale` a `PUBLIC`, `anon` y `authenticated`. Las tablas públicas de fotos, metadatos y existencias continúan sin permisos de escritura para visitantes.
 - La consulta no toca `pokemon_catalog`, `pokemon_stock_overrides`, `pokemon_image_overrides`, `pokemon_card_overrides` ni el Excel original.
