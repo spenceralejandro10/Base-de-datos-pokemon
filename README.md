@@ -6,13 +6,22 @@ Vitrina pública de cartas Pokémon con galería, filtros, referencias, disponib
 
 **Google Sheets original:** https://docs.google.com/spreadsheets/d/1qFEBZ1OcQw6NUoF29ZvD-jfc9-l7KOHN_T3bxnXVqaI/edit
 
-## Dos modos con un solo botón
+## Modo administrador desactivado (28 de octubre de 2026)
 
-- **Modo cliente** (predeterminado): consulta de imágenes, colección, idioma, número, cantidades, búsqueda en TCGplayer y selección de cartas para descargar un TXT.
-- **Modo administrador**: pulsar el botón de la cabecera para mostrar **Editar carta** y **Buscar imagen** en cada ficha. Permite cambiar existencias y disponibilidad, corregir colección e idioma, asignar imágenes y restaurar la ficha del Excel. **Buscar imagen** abre Google Imágenes con el nombre, número, colección e idioma de la carta. Desde **Editar carta** está también **Buscar imagen automáticamente**, que consulta el catálogo, muestra una vista previa verificable y permite **Asignar esta imagen** sin copiar una URL manualmente. Si la coincidencia es de otro idioma, no se asigna automáticamente. El botón principal cambia a **Volver a cliente**.
-- No existen formulario de ingreso, usuario ni contraseña para activar el modo de edición.
+- **Modo cliente**: la vitrina sigue mostrando fotos, cartas, precios, cantidades, filtros y carrito de interés.
+- **Modo administrador**: **inactivo hasta nueva solicitud explícita del propietario**. El botón está oculto y deshabilitado en `index.html`, y `app.js` tiene `ADMIN_ENABLED=false` para bloquear la activación, incluso si se usa un enlace antiguo con `?admin=1`.
+- La protección no es solo visual: las tablas `public.pokemon_image_overrides`, `public.pokemon_card_overrides` y `public.pokemon_stock_overrides` conservan el permiso `SELECT` para `anon` y `authenticated`, pero no los permisos `INSERT`, `UPDATE` ni `DELETE`.
+- La política `storage.objects` llamada `Public switch can upload gallery images` tiene temporalmente `WITH CHECK (false)`. El acceso público de lectura a las fotos se conserva.
+- **Conservación**: no se eliminan las herramientas de edición, fotografías, filas, colecciones ni cantidades.
 
-**Advertencia de seguridad:** por decisión del propietario la edición es pública y sin autenticación. CUALQUIER visitante puede activar el modo administrador y modificar fotos, fichas y cantidades. Este botón es exclusivamente un interruptor visual, NO es un control de acceso. No debe utilizarse con datos privados o para información que deba ser protegida contra ediciones de terceros.
+### Cómo reactivar cuando lo solicite el propietario
+
+1. Cambiar `ADMIN_ENABLED=true` en `app.js` y subir su versión de caché en `index.html`; `adminDisplay()` volverá a mostrar el botón.
+2. Restablecer los permisos públicos anteriores **solo si el propietario desea de nuevo una edición sin autenticación**:
+   `GRANT INSERT, UPDATE, DELETE ON public.pokemon_image_overrides, public.pokemon_card_overrides, public.pokemon_stock_overrides TO anon, authenticated;`
+3. Para reactivar también la subida pública de fotos, restaurar la política:
+   `ALTER POLICY "Public switch can upload gallery images" ON storage.objects WITH CHECK ((bucket_id = 'pokemon-gallery-overrides'::text) AND (name ~ '^cards/[0-9a-z-]+[.](jpg|png|webp)$'::text));`
+4. Comprobar accesos, catálogo, imágenes y edición al finalizar. Es preferible habilitar autenticación del propietario antes de reabrir escrituras públicas.
 
 ## Datos y persistencia
 
