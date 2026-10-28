@@ -6,7 +6,7 @@
 <meta name="theme-color" content="#17304f">
 <title>Bóveda TCG | Colección de cartas Pokémon</title>
 <meta name="description" content="Explora Bóveda TCG: colección Pokémon, disponibilidad y selección de cartas.">
-<link rel="stylesheet" href="./styles.css?v=30">
+<link rel="stylesheet" href="./styles.css?v=31">
 </head>
 <body>
 <header class="top">
@@ -63,6 +63,16 @@
   <button id="saveCardInfo" type="button" class="primary">Guardar colección e idioma</button>
   <button id="resetCardInfo" type="button">Restaurar ficha del Excel</button>
   <h3>Imagen de la carta</h3>
+  <p class="hint">Busca la imagen por nombre, número, colección e idioma, y revisa que corresponda a la versión exacta.</p>
+  <div class="image-search-actions">
+   <button id="findCatalogImage" type="button" class="primary">Buscar imagen automáticamente</button>
+   <a id="searchCardImage" href="#" target="_blank" rel="noopener noreferrer" class="image-search-link">Buscar en Google Imágenes</a>
+  </div>
+  <div id="imageSearchResult" class="image-search-result" hidden>
+   <img id="imageSearchPreview" alt="Vista previa de la imagen encontrada" loading="lazy">
+   <p id="imageSearchInfo" class="hint"></p>
+   <button id="assignFoundImage" type="button" class="primary">Asignar esta imagen</button>
+  </div>
   <label for="imageUrl">URL HTTPS de imagen</label><input id="imageUrl" type="url" placeholder="https://…/imagen.jpg">
   <button id="saveImageUrl" type="button" class="primary">Guardar imagen para todos</button>
   <div class="or-label">O subir fotografía</div>
@@ -74,12 +84,12 @@
  <button id="migrateOldImages" type="button">Sincronizar imágenes antiguas de este equipo</button>
 </dialog>
 <footer class="footer">Bóveda TCG · Colección Pokémon · Sin pagos en línea.</footer>
-<script src="./cards.js?v=30"></script>
-<script src="./shared-images.js?v=30"></script>
-<script src="./catalog-overrides.js?v=30"></script>
-<script src="./card-stock.js?v=30"></script>
-<script src="./card-images.js?v=30"></script>
-<script src="./market-prices.js?v=30"></script>
-<script src="./app.js?v=30"></script>
+<script src="./cards.js?v=31"></script>
+<script src="./shared-images.js?v=31"></script>
+<script src="./catalog-overrides.js?v=31"></script>
+<script src="./card-stock.js?v=31"></script>
+<script src="./card-images.js?v=31"></script>
+<script src="./market-prices.js?v=31"></script>
+<script src="./app.js?v=31"></script>
 </body>
 </html>
