@@ -32,6 +32,8 @@
     "ruler of the black flame": { tcg: "SV3", old: null, japanese: true },
     "crimson haze": { tcg: "SV5a", old: null, japanese: true },
     "brilliant stars": { tcg: "swsh9", old: "swsh9" },
+    "30th celebration": { tcg: "30th", old: null },
+    "30th celebration - classic collection": { tcg: "30th-c", old: null, matchByUniqueName: true },
     "celebrations (classic collection)": { tcg: "cel25c", old: "cel25c" },
     "celebrations": { tcg: "cel25", old: "cel25" }
   };
@@ -131,11 +133,24 @@
       const base = "https://api.tcgdex.net/v2/" + lang;
       const setData = await loadJSON(base + "/sets/" + encodeURIComponent(setId));
       if (!setData) continue;
-      if (!totalMatches(setData, details)) {
+      if (!config.matchByUniqueName && !totalMatches(setData, details)) {
         mismatch = true;
         continue;
       }
-      const found = listByNumber(setData, details);
+      // En la colección clásica las cartas conservan su numeración histórica
+      // (19/109, 149/147, etc.), mientras el catálogo tiene 001..030.
+      // Evitamos confundirlas por número: exigimos un nombre único en este set.
+      let found;
+      if (config.matchByUniqueName) {
+        const names = (setData.cards || []).filter(c => nameFits(card.name, c.name, lang));
+        if (names.length !== 1) {
+          if (names.length > 1) mismatch = true;
+          continue;
+        }
+        found = names[0];
+      } else {
+        found = listByNumber(setData, details);
+      }
       if (!found) continue;
       if (!nameFits(card.name, found.name, lang)) {
         mismatch = true;
@@ -181,7 +196,7 @@
       : (!card.set && key(card.name) === "lapras ex" && info.raw === "164" ? SETS["scarlet & violet promo"] : null);
     const baseConfig = SETS[setKey(card.set)] || inferred;
     if (!baseConfig && !info.promo) return pack("incomplete", "No se ha indicado una colección reconocible.");
-    const config = info.promo ? { tcg: "swshp", old: "swshp" } : baseConfig;
+    const config = info.promo && !baseConfig?.matchByUniqueName ? { tcg: "swshp", old: "swshp" } : baseConfig;
     // El set con 49 cartas es SVG (Special Deck Set ex), no Shiny Treasure ex (190).
     // Este ajuste afecta SOLO a la imagen: el Excel original no se toca.
     const jp49 = card.language === "Japonés" && info.suffix === 49 &&
