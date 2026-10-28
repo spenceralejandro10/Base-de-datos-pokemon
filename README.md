@@ -9,7 +9,7 @@ Vitrina pública de cartas Pokémon con galería, filtros, referencias, disponib
 ## Dos modos con un solo botón
 
 - **Modo cliente** (predeterminado): consulta de imágenes, colección, idioma, número, cantidades, búsqueda en TCGplayer y selección de cartas para descargar un TXT.
-- **Modo administrador**: pulsar el botón de la cabecera para mostrar **Editar carta** en cada ficha. Permite cambiar existencias y disponibilidad, corregir colección e idioma, asignar imagen HTTPS, subir foto y restaurar la ficha del Excel. El botón cambia a **Volver a cliente**.
+- **Modo administrador**: pulsar el botón de la cabecera para mostrar **Editar carta** y **Buscar imagen** en cada ficha. Permite cambiar existencias y disponibilidad, corregir colección e idioma, asignar imágenes y restaurar la ficha del Excel. **Buscar imagen** abre Google Imágenes con el nombre, número, colección e idioma de la carta. Desde **Editar carta** está también **Buscar imagen automáticamente**, que consulta el catálogo, muestra una vista previa verificable y permite **Asignar esta imagen** sin copiar una URL manualmente. Si la coincidencia es de otro idioma, no se asigna automáticamente. El botón principal cambia a **Volver a cliente**.
 - No existen formulario de ingreso, usuario ni contraseña para activar el modo de edición.
 
 **Advertencia de seguridad:** por decisión del propietario la edición es pública y sin autenticación. CUALQUIER visitante puede activar el modo administrador y modificar fotos, fichas y cantidades. Este botón es exclusivamente un interruptor visual, NO es un control de acceso. No debe utilizarse con datos privados o para información que deba ser protegida contra ediciones de terceros.
