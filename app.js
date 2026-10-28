@@ -11,6 +11,8 @@ const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&
 const publicCodes=new Map();
 const cardCode=c=>publicCodes.get(Number(c.id))||
   "BTCG-"+String(c.id).padStart(4,"0");
+// Desactivado por solicitud del propietario; se restaura solo cuando lo solicite.
+const ADMIN_ENABLED=false;
 let editingMode=false;
 let records=base.map(x=>({...x})),editing=null,epoch=0,busy=false,initialized=false;
 const CART_KEY="boveda-tcg-cart-v1";
@@ -170,7 +172,10 @@ async function findCatalogArtwork(){
  finally{trigger.disabled=false}
 }
 function adminDisplay(){
+ if(!ADMIN_ENABLED)editingMode=false;
  const button=el("managementEntry");
+ button.hidden=!ADMIN_ENABLED;
+ button.disabled=!ADMIN_ENABLED;
  button.textContent=editingMode?"Volver a cliente":"Modo administrador";
  button.setAttribute("aria-pressed",String(editingMode));
  button.setAttribute("aria-label",editingMode?"Desactivar herramientas de edición":"Activar herramientas de edición");
@@ -257,6 +262,7 @@ async function completeCatalogImages(){
 el("autoFillImages").addEventListener("click",()=>{void completeCatalogImages()});
 
 el("managementEntry").addEventListener("click",()=>{
+ if(!ADMIN_ENABLED)return;
  editingMode=!editingMode;
  if(!editingMode&&editor.open)editor.close();
  if(!editingMode)editing=null;
