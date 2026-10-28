@@ -208,6 +208,54 @@ async function doAdmin(fn,message){
  }catch(e){flash(e.message||"No se pudo guardar el cambio.",true)}
  finally{busy=false}
 }
+let fillingImages=false;
+async function completeCatalogImages(){
+  if(!editingMode||fillingImages)return;
+  fillingImages=true;
+  const button=el("autoFillImages"),label=el("autoFillProgress");
+  button.disabled=true;
+  let processed=0,stored=0,unresolved=0,errors=0;
+  try{
+    label.textContent="Comprobando fotografías existentes…";
+    await shared.loadShared(true);
+    // Solo cartas que todavía no tienen fotografía personal del propietario.
+    const todo=base.filter(c=>!shared.getShared(c)&&
+      !/^https:\/\//i.test(localStorage.getItem("pokemon-image-"+c.id)||""));
+    let position=0;
+    async function worker(){
+      while(position<todo.length&&editingMode){
+        const card=todo[position++];
+        try{
+          const found=await window.CardImages.resolveCatalog(card);
+          if(found.status==="verified"&&!found.catalog?.editionIsReference&&found.images?.length){
+            let url="";
+            for(const candidate of found.images){
+              if(await loadImage(candidate)){url=candidate;break;}
+            }
+            if(url&&!shared.getShared(card)){
+              if(await shared.saveCatalogImage(card,url))stored++;
+            }else if(!url)unresolved++;
+          }else unresolved++;
+        }catch(_){errors++;}
+        processed++;
+        label.textContent="Verificadas "+processed+"/"+todo.length+
+          " · fotos guardadas: "+stored;
+      }
+    }
+    await Promise.all(Array.from({length:3},()=>worker()));
+    await shared.loadShared(true);
+    if(initialized)render();
+    label.textContent="Completado: "+stored+" fotos verificadas añadidas; "+
+      (unresolved+errors)+" sin imagen exacta confirmada. Las manuales están intactas.";
+  }catch(e){
+    label.textContent=e.message||"No fue posible completar la búsqueda automática.";
+  }finally{
+    button.disabled=false;
+    fillingImages=false;
+  }
+}
+el("autoFillImages").addEventListener("click",()=>{void completeCatalogImages()});
+
 el("managementEntry").addEventListener("click",()=>{
  editingMode=!editingMode;
  if(!editingMode&&editor.open)editor.close();
@@ -334,24 +382,62 @@ el("copyCart").addEventListener("click",async()=>{
 });
 
 async function loadImage(url){
-  return new Promise(resolve=>{const image=new Image();image.referrerPolicy="no-referrer";image.onload=()=>resolve(true);image.onerror=()=>resolve(false);image.src=url});
+  return new Promise(resolve=>{
+    const image=new Image();
+    let finished=false;
+    const timeout=setTimeout(()=>finish(false),10000);
+    function finish(success){
+      if(finished)return;
+      finished=true;
+      clearTimeout(timeout);
+      image.onload=null;
+      image.onerror=null;
+      resolve(success);
+    }
+    image.referrerPolicy="no-referrer";
+    image.onload=()=>finish(true);
+    image.onerror=()=>finish(false);
+    image.src=url;
+  });
 }
 async function imageFor(c,img,placeholder,status,token){
- try{
-  const match=await window.CardImages.resolve(c);
-  if(token!==epoch||!img.isConnected)return;
-  for(const url of match.images||[]){
-   if(await loadImage(url)){
+  try{
+    const main=await window.CardImages.resolve(c);
     if(token!==epoch||!img.isConnected)return;
-    img.src=url;img.alt=c.name+" · "+c.number;img.hidden=false;
-    if(placeholder)placeholder.hidden=true;
-    if(status)status.textContent=match.status==="shared"?"Imagen de la bóveda":match.status==="local"?"Imagen local pendiente de sincronizar":"Imagen de catálogo";
-    return;
-   }
+    async function display(match){
+      for(const url of match.images||[]){
+        if(token!==epoch||!img.isConnected)return false;
+        if(await loadImage(url)){
+          if(token!==epoch||!img.isConnected)return false;
+          img.src=url;
+          img.alt=c.name+" · "+c.number;
+          img.title=match.catalog?.editionIsReference
+            ? "Imagen de referencia en otro idioma; comprueba la edición"
+            : c.name+" · "+c.number;
+          img.hidden=false;
+          if(placeholder)placeholder.hidden=true;
+          if(status)status.textContent=match.status==="shared"?"Imagen de la bóveda":
+            match.status==="local"?"Imagen local":
+            match.catalog?.editionIsReference?"Referencia visual en inglés":"Imagen oficial de catálogo";
+          return true;
+        }
+      }
+      return false;
+    }
+    // Las imágenes manuales se respetan. Si una miniatura externa caduca,
+    // intentamos recuperar la carta exacta del catálogo antes de mostrar vacío.
+    if(await display(main))return;
+    if(main.status==="shared"||main.status==="local"){
+      const fallback=await window.CardImages.resolveCatalog(c);
+      if(await display(fallback))return;
+    }
+    if(token!==epoch||!img.isConnected)return;
+    if(status)status.textContent=main.reason||"Imagen no disponible";
+    if(placeholder?.classList?.contains("placeholder"))placeholder.textContent="Imagen pendiente";
+  }catch(_){
+    if(status)status.textContent="Imagen no disponible";
+    if(placeholder?.classList?.contains("placeholder"))placeholder.textContent="Imagen pendiente";
   }
-  if(status)status.textContent=match.reason||"Imagen no disponible";
-  if(placeholder?.classList?.contains("placeholder"))placeholder.textContent="Imagen pendiente";
- }catch(_){if(status)status.textContent="Imagen no disponible";}
 }
 function tcgLink(c) {
  const a=document.createElement("a");
