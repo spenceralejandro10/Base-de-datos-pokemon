@@ -12,7 +12,7 @@
     "obsidian flames":[3,23228],"paldea evolved":[3,23120],
     "scarlet violet promo":[3,22872],"scarlet violet":[3,22873],
     "crown zenith":[3,17688],"lost origin":[3,3118],
-    "astral radiance":[3,3040],"sword shield promo":[3,2545],
+    "astral radiance":[3,3040],"astral radiance trainer gallery":[3,3068],"sword shield promo":[3,2545],
     "celebrations classic collection":[3,2931],"evolving skies":[3,2848],
     "pokemon card 151":[85,23599],"scarlet ex":[85,23605],
     "violet ex":[85,23606],"crimson haze":[85,23602],
