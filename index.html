@@ -6,7 +6,7 @@
 <meta name="theme-color" content="#17304f">
 <title>Bóveda TCG | Colección de cartas Pokémon</title>
 <meta name="description" content="Explora Bóveda TCG: colección Pokémon, disponibilidad y selección de cartas.">
-<link rel="stylesheet" href="./styles.css?v=37">
+<link rel="stylesheet" href="./styles.css?v=49">
 </head>
 <body>
 <header class="top">
@@ -14,6 +14,7 @@
   <div><p class="eyebrow">COLECCIÓN DE CARTAS POKÉMON</p><h1>Bóveda TCG</h1><p class="sub">Explora nuestra colección, revisa las cartas disponibles y guarda tus favoritas.</p></div>
   <div class="header-actions">
    <button id="managementEntry" type="button" class="manage-entry" aria-label="Activar herramientas de edición" aria-pressed="false" hidden disabled>Modo administrador</button>
+   <button id="orderOpen" class="cart-trigger order-entry" type="button">Preparar pedido</button>
    <button id="cartOpen" class="cart-trigger" type="button">Mi selección <span id="cartCount">0</span></button>
   </div>
  </div>
@@ -36,6 +37,61 @@
  <p class="notice simple-price-note"><strong>Cartas sin jugar, recién sacadas de sobre y protegidas en toploader</strong> (estado declarado por el propietario). Los precios muestran <strong>TCGplayer Market Price</strong> en <strong>COP</strong>: una referencia de ventas realizadas. No se toma el anuncio de un vendedor ni se etiqueta tu carta como usada o dañada. El valor final se confirma según edición, idioma y acabado; no incluye envío.<br><span id="exchangeRate"></span> · <a href="https://help.tcgplayer.com/hc/en-us/articles/213588017-TCGplayer-Market-Price" target="_blank" rel="noopener noreferrer">Cómo se calcula Market Price</a> · Datos de <a href="https://tcgcsv.com" target="_blank" rel="noopener noreferrer">TCGCSV</a> · Cambio de <a href="https://www.exchangerate-api.com" target="_blank" rel="noopener noreferrer">ExchangeRate-API</a>.</p>
  <div id="results" class="grid" aria-live="polite"></div>
 </main>
+<dialog id="orderDialog" class="editor-dialog order-dialog" aria-labelledby="orderTitle">
+ <div class="dialog-top">
+  <div><p class="order-eyebrow">PEDIDOS DE CLIENTES</p><h2 id="orderTitle">Preparar pedido</h2><p class="order-lead">Pega la lista completa tal como te la enviaron. Las fotos y precios se muestran sin modificar el inventario.</p></div>
+  <button id="orderClose" class="icon-button" type="button" aria-label="Cerrar pedido">×</button>
+ </div>
+ <div class="order-import">
+  <label for="orderPaste">Lista recibida del cliente</label>
+  <textarea id="orderPaste" rows="4" placeholder="BTCG-0087 | Venusaur ex | 001/142 | Stellar Crown | Inglés | Referencia por carta: $ 4.495 COP | Unidades solicitadas: 1" spellcheck="false"></textarea>
+  <div class="order-actions">
+   <button id="orderImport" class="primary" type="button">Buscar cartas de la lista</button>
+   <button id="orderClear" type="button">Nuevo pedido</button>
+  </div>
+  <p id="orderMessage" role="status" aria-live="polite" class="order-message"></p>
+ </div>
+ <div id="orderWorkspace" hidden>
+  <div class="order-totals" aria-label="Resumen del pedido">
+   <div><small>Por buscar / pendiente</small><strong id="orderPendingTotal">—</strong></div>
+   <div><small>Ventas confirmadas</small><strong id="orderSoldTotal">—</strong></div>
+   <div><small>Unidades pendientes</small><strong id="orderPendingCount">—</strong></div>
+   <div><small>Por verificar</small><strong id="orderNotFoundCount">—</strong></div>
+  </div>
+  <p class="order-help">Los precios vienen del mensaje pegado. Empacada solo organiza tu pedido. Vendida descuenta una unidad en Bóveda TCG, previa identificación del propietario. Quitar no descuenta existencias.</p>
+  <div class="order-toolbar">
+   <label for="orderSort">Ordenar
+    <select id="orderSort"><option value="collection">Pendientes por colección</option><option value="name">Pendientes por nombre</option><option value="original">Orden del cliente</option></select>
+   </label>
+   <label for="orderFilter">Mostrar
+    <select id="orderFilter"><option value="all">Todas</option><option value="pending">Pendientes</option><option value="packed">Empacadas</option><option value="sold">Vendidas</option></select>
+   </label>
+  </div>
+  <div id="orderCards" class="order-cards" aria-live="polite"></div>
+  <details id="orderRemovedPanel" class="order-removed" hidden><summary>Cartas quitadas del pedido (<span id="orderRemovedCount">0</span>)</summary><div id="orderRemovedCards"></div></details>
+  <details id="orderAuth" class="order-auth">
+   <summary>Autorizar descuentos del inventario</summary>
+   <p>Solo el propietario puede confirmar ventas. Preparar y empacar cartas no requiere iniciar sesión. El modo administrador permanece desactivado.</p>
+   <div class="order-auth-grid">
+    <label>Correo de propietario<input id="orderEmail" type="email" autocomplete="email" placeholder="Correo autorizado"></label>
+    <button type="button" id="orderSendOtp">Enviar código de acceso</button>
+    <label>Código del correo<input id="orderOtp" type="text" inputmode="numeric" autocomplete="one-time-code" placeholder="Código de verificación"></label>
+    <button type="button" id="orderVerifyOtp">Confirmar código</button>
+    <button type="button" id="orderSignOut" hidden>Cerrar sesión de ventas</button>
+   </div>
+   <p id="orderAuthStatus" role="status" aria-live="polite"></p>
+  </details>
+ </div>
+</dialog>
+<dialog id="orderStockDialog" class="editor-dialog order-stock-dialog" aria-labelledby="orderStockTitle">
+ <div class="dialog-top"><h2 id="orderStockTitle">Verificar existencias</h2><button id="orderStockClose" class="icon-button" type="button" aria-label="Cancelar">×</button></div>
+ <p id="orderStockText"></p>
+ <label for="orderRealStock">Unidades físicas que tienes ahora, incluida la que vas a vender</label>
+ <input id="orderRealStock" type="number" min="1" max="100000" step="1">
+ <p class="hint">Por ejemplo: si el Excel indica 1 pero encuentras 3, escribe 3. Al vender una, quedarán 2 disponibles en la página. Esta corrección no borra cartas ni fotografías.</p>
+ <p id="orderStockError" role="alert" class="order-message"></p>
+ <div class="order-actions"><button type="button" class="primary" id="orderConfirmStockSale">Confirmar venta y descontar 1</button><button type="button" id="orderCancelStockSale">Cancelar</button></div>
+</dialog>
 <dialog id="cartDialog" class="editor-dialog cart-dialog">
  <div class="dialog-top"><h2>Mi selección de cartas</h2><button id="closeCart" class="icon-button" type="button" aria-label="Cerrar">×</button></div>
  <p>Agrega las cartas que te interesen y descarga el archivo de texto. Puedes enviárselo al vendedor para consultar disponibilidad y condiciones.</p>
@@ -91,6 +147,7 @@
 <script src="./card-images.js?v=45"></script>
 <script src="./market-snapshot.js?v=37"></script>
 <script src="./market-prices.js?v=47"></script>
-<script src="./app.js?v=48"></script>
+<script src="./app.js?v=49"></script>
+<script src="./order-panel.js?v=1"></script>
 </body>
 </html>
