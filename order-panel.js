@@ -10,6 +10,7 @@ const pricing=window.CardPrices;
 const pictures=window.CardImages;
 const stock=window.CardStock;
 const localKey="boveda-visual-consulta-v1";
+const excludedKey="boveda-visual-consulta-hidden-v1";
 const dialog=$("orderDialog");
 const cop=n=>new Intl.NumberFormat("es-CO",{style:"currency",currency:"COP",maximumFractionDigits:0}).format(n);
 const normalize=s=>String(s??"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().replace(/[^a-z0-9]+/g," ").trim();
@@ -23,6 +24,13 @@ const el=(tag,cls,content)=>{
  return n;
 };
 let rows=[];
+let excluded=new Set();
+function persistExcluded(){
+ try{
+  if(excluded.size)localStorage.setItem(excludedKey,JSON.stringify([...excluded]));
+  else localStorage.removeItem(excludedKey);
+ }catch(_){}
+}
 function info(s,wrong=false){const n=$("orderMessage");n.textContent=s;n.classList.toggle("error",wrong);}
 function catalogCards(){return catalog.cards();}
 function findCard(parts,code){
@@ -190,6 +198,17 @@ function cardItem(row,index){
   link.title=quote?.url?"Abrir el producto de TCGplayer":"Buscar la carta en TCGplayer";
   actions.append(link);
  }else actions.append(el("span","order-lookup-needed","Revisar identidad"));
+ const remove=el("button","order-remove-local","Quitar de lista");
+ remove.type="button";
+ remove.title="Solo retira esta referencia del panel visual. No altera el inventario ni el Excel.";
+ remove.addEventListener("click",()=>{
+  excluded.add(row.original);
+  rows=rows.filter(item=>item.original!==row.original);
+  persistExcluded();
+  render();
+  info("Se quitó "+(card?.name||row.name)+" de este panel. El inventario no cambió.");
+ });
+ actions.append(remove);
  wrap.append(actions);
  return wrap;
 }
@@ -215,10 +234,11 @@ function render(){
  container.replaceChildren();
  for(const [i,row] of sortRows().entries())container.append(cardItem(row,i));
 }
-function consult(text){
+function consult(text,restore=false){
  const parsed=parse(text);
  if(!parsed.found.length){info("Pega una lista de cartas con los códigos y los detalles recibidos.",true);return}
- rows=parsed.found;
+ if(!restore){excluded.clear();persistExcluded()}
+ rows=parsed.found.filter(row=>!excluded.has(row.original));
  try{localStorage.setItem(localKey,text)}catch(_){}
  render();
  const valid=rows.filter(r=>resolved(r)).length;
@@ -229,6 +249,8 @@ function consult(text){
 }
 function newQuery(){
  rows=[];
+ excluded.clear();
+ persistExcluded();
  $("orderPaste").value="";
  $("orderWorkspace").hidden=true;
  info("Lista limpia. Puedes pegar un nuevo mensaje.");
@@ -248,8 +270,10 @@ $("orderSort").addEventListener("change",render);
 pricing.subscribe(()=>{if(dialog.open&&rows.length)render()});
 stock.listen(()=>{if(dialog.open&&rows.length)render()});
 try{
+ const hidden=JSON.parse(localStorage.getItem(excludedKey)||"[]");
+ if(Array.isArray(hidden))excluded=new Set(hidden.filter(n=>Number.isSafeInteger(n)&&n>=0));
  const saved=localStorage.getItem(localKey);
- if(saved){$("orderPaste").value=saved;consult(saved);}
+ if(saved){$("orderPaste").value=saved;consult(saved,true);}
 }catch(_){}
 window.BovedaVisualOrder=Object.freeze({parse});
 })();
