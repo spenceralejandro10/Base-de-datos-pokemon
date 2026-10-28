@@ -16,6 +16,13 @@ const ADMIN_ENABLED=false;
 let editingMode=false;
 let records=base.map(x=>({...x})),editing=null,epoch=0,busy=false,initialized=false;
 const CART_KEY="boveda-tcg-cart-v1";
+// Read-only bridge for customer-list preparation. It cannot enable administration
+// and intentionally exposes no database write functions.
+window.BovedaOrderBridge=Object.freeze({
+ cards:()=>records.slice(),
+ code:card=>cardCode(card),
+ availability:card=>available(card)
+});
 // Al consolidar el Alakazam repetido del Excel se retiró BTCG-0054.
 // No perder su fotografía local: conservar la copia original y asociarla
 // a BTCG-0037 cuando esta no tiene todavía una imagen propia.
