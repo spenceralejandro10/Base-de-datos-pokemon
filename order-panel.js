@@ -346,6 +346,8 @@ async function sellOne(entry,realStock=null){
   }
   // A stable transaction UUID prevents double deduction after a network timeout.
   const tx=entry.pendingSale||{saleId:createId(),cardId:card.id,count:1,expected:actual,realCount:realStock};
+  // Preserve the retry UUID, but attach a newly verified physical stock count.
+  if(realStock!==null&&tx.realCount==null)tx.realCount=realStock;
   entry.pendingSale=tx;persist();
   notify("Registrando venta y descontando una unidad…");
   const resp=await fetch(BASE+"/rest/v1/rpc/pokemon_register_sale",{
@@ -369,9 +371,14 @@ async function sellOne(entry,realStock=null){
  }catch(e){
   notify("No se confirmó el descuento: "+e.message+" Si reintentas se usa el mismo identificador.",true);
   if(verifyModal.open)$("orderStockError").textContent=e.message;
+  if(!auth&&verifyModal.open)verifyModal.close();
   // Retain pendingSale for safe replay. If stock changed independently,
   // a new request can be started after reviewing the correct stock.
-  if(/Las existencias cambiaron/i.test(e.message)){entry.pendingSale=null;persist()}
+  if(/Las existencias cambiaron/i.test(e.message)||
+     /Comprueba las unidades físicas/i.test(e.message)||
+     /Solo el propietario puede registrar ventas/i.test(e.message)){
+    entry.pendingSale=null;persist();
+  }
  }finally{inFlight=false}
 }
 function confirmStockSale(){
