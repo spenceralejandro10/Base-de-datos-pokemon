@@ -23,6 +23,17 @@ Vitrina pública de cartas Pokémon con galería, filtros, referencias, disponib
    `ALTER POLICY "Public switch can upload gallery images" ON storage.objects WITH CHECK ((bucket_id = 'pokemon-gallery-overrides'::text) AND (name ~ '^cards/[0-9a-z-]+[.](jpg|png|webp)$'::text));`
 4. Comprobar accesos, catálogo, imágenes y edición al finalizar. Es preferible habilitar autenticación del propietario antes de reabrir escrituras públicas.
 
+## Panel de preparación de pedidos y ventas
+
+- El botón público **Preparar pedido** abre un panel independiente del modo administrador, que sigue desactivado.
+- Acepta la lista textual enviada por un cliente (códigos `BTCG`, nombres, números, colecciones, idioma, precio en COP y unidades). Valida la coincidencia exacta y advierte cuando el código ya no coincide con la identidad de la carta.
+- Muestra fotos manuales con prioridad, imágenes de catálogo como respaldo, precios por unidad y totales: pendiente y vendido. Permite ordenar por colección, nombre o mensaje recibido.
+- **Empacada** marca solo el checklist privado del navegador. **Quitar** excluye una línea del pedido, pero nunca restaura ni descuenta existencias; se puede recuperar desde las cartas retiradas. Los pedidos se guardan localmente en el dispositivo.
+- **Vendida** descuenta una unidad en la disponibilidad pública, solo después de iniciar sesión como el propietario. Las ventas se registran con UUID para impedir descuentos duplicados al reintentar una petición.
+- Si la carta tiene como máximo una unidad registrada, se obliga a comprobar cuántas existen físicamente antes de vender, permitiendo corregir una cantidad inicial equivocada. Los ajustes se guardan en `pokemon_stock_overrides`; no sobrescriben las filas históricas del Excel.
+- La vista pública muestra **Vendida** cuando una transacción agota las existencias. El catálogo y las fotos permanecen intactos.
+- **Seguridad**: `public.pokemon_register_sale` se concede únicamente a la cuenta autenticada y validada mediante `private.pokemon_editor_allowed()`. No se reabren los permisos públicos de escritura ni se reactiva el interruptor administrativo. `public.pokemon_sale_events` conserva el historial protegido por RLS.
+
 ## Datos y persistencia
 
 - Las fotos se muestran automáticamente mediante TCGdex (incluidas 30th Celebration y 30th Classic Collection) y las imágenes propias tienen prioridad. Los enlaces manuales nunca se sobrescriben. Si un enlace deja de cargar, la galería busca una imagen oficial de respaldo. En modo administrador, **Completar fotos automáticamente** busca imágenes exactas en lote y solo guarda las verificadas, sin sustituir las manuales. Las imágenes de referencia en otro idioma no se guardan como fotografías exactas.
