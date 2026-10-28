@@ -23,16 +23,17 @@ Vitrina pública de cartas Pokémon con galería, filtros, referencias, disponib
    `ALTER POLICY "Public switch can upload gallery images" ON storage.objects WITH CHECK ((bucket_id = 'pokemon-gallery-overrides'::text) AND (name ~ '^cards/[0-9a-z-]+[.](jpg|png|webp)$'::text));`
 4. Comprobar accesos, catálogo, imágenes y edición al finalizar. Es preferible habilitar autenticación del propietario antes de reabrir escrituras públicas.
 
-## Panel de preparación de pedidos y ventas
+## Panel visual de consulta de pedidos (sin edición)
 
-- El botón público **Preparar pedido** abre un panel independiente del modo administrador, que sigue desactivado.
-- Acepta la lista textual enviada por un cliente (códigos `BTCG`, nombres, números, colecciones, idioma, precio en COP y unidades). Valida la coincidencia exacta y advierte cuando el código ya no coincide con la identidad de la carta.
-- Muestra fotos manuales con prioridad, imágenes de catálogo como respaldo, precios por unidad y totales: pendiente y vendido. Permite ordenar por colección, nombre o mensaje recibido.
-- **Empacada** marca solo el checklist privado del navegador. **Quitar** excluye una línea del pedido, pero nunca restaura ni descuenta existencias; se puede recuperar desde las cartas retiradas. Los pedidos se guardan localmente en el dispositivo.
-- **Vendida** descuenta una unidad en la disponibilidad pública, solo después de iniciar sesión como el propietario. Las ventas se registran con UUID para impedir descuentos duplicados al reintentar una petición.
-- Si la carta tiene como máximo una unidad registrada, se obliga a comprobar cuántas existen físicamente antes de vender, permitiendo corregir una cantidad inicial equivocada. Los ajustes se guardan en `pokemon_stock_overrides`; no sobrescriben las filas históricas del Excel.
-- La vista pública muestra **Vendida** cuando una transacción agota las existencias. El catálogo y las fotos permanecen intactos.
-- **Seguridad**: `public.pokemon_register_sale` se concede únicamente a la cuenta autenticada y validada mediante `private.pokemon_editor_allowed()`. No se reabren los permisos públicos de escritura ni se reactiva el interruptor administrativo. `public.pokemon_sale_events` conserva el historial protegido por RLS.
+- El botón **Consultar lista** abre un panel amplio y de solo lectura. El visitante puede pegar el mensaje de selección de cartas recibido de un cliente; esto no modifica ningún dato de Bóveda TCG.
+- Se identifica cada carta mediante nombre, número, expansión e idioma, y se contrasta su código público `BTCG`. Si el código y la identidad no coinciden, el sistema advierte y evita enseñar otra carta como si fuera la solicitada.
+- Se muestran fotos, unidades pedidas, unidades registradas, precio por unidad incluido en el mensaje y precio de referencia `TCGplayer Market Price` (datos TCGCSV, convertidos a COP cuando hay una tasa de cambio válida).
+- Cada fila enlaza directamente al producto verificado en TCGplayer; si no existe referencia exacta, dirige a la búsqueda correspondiente. Los precios pueden variar: se requiere consultar el sitio enlazado para validar el precio vigente.
+- La pantalla suma los importes del mensaje y los precios de mercado disponibles; señala cualquier referencia no encontrada o sin precio.
+- La única entrada es el cuadro de texto para consultar otra lista, y el selector de orden. No hay botones de editar, vender, empacar, quitar ni descontar existencias.
+- La lista consultada se guarda solo en el almacenamiento local del navegador (clave `boveda-visual-consulta-v1`) para poder continuar tras actualizar la página. **Nueva consulta** solo borra esa copia local.
+- Seguridad: el administrador permanece desactivado y se revocó la ejecución de `public.pokemon_register_sale` a `PUBLIC`, `anon` y `authenticated`. Las tablas públicas de fotos, metadatos y existencias continúan sin permisos de escritura para visitantes.
+- La consulta no toca `pokemon_catalog`, `pokemon_stock_overrides`, `pokemon_image_overrides`, `pokemon_card_overrides` ni el Excel original.
 
 ## Datos y persistencia
 
