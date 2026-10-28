@@ -287,7 +287,7 @@ function listText(){
   const c=findCard(id);if(!c)continue;total+=quantity;
   lines.push(cardCode(c)+" | "+c.name+" | "+c.number+" | "+(c.set||"Sin colección")+" | "+(c.language||"Sin idioma")+" | Referencia por carta: "+market.amount(market.quote(c))+" | Unidades solicitadas: "+quantity);
  }
- lines.push("","REFERENCIAS DISTINTAS: "+cart.size,"UNIDADES SOLICITADAS: "+total,"",market.rateText(),"Referencias TCGplayer convertidas a COP, sin envío. El precio final depende del estado, idioma y acabado y se confirma antes de la compra.");
+ lines.push("","REFERENCIAS DISTINTAS: "+cart.size,"UNIDADES SOLICITADAS: "+total,"",market.rateText(),"Referencia TCGplayer Direct Low del archivo diario convertida a COP, sin envío. La oferta destacada puede variar según estado, idioma y momento de consulta. El precio final se confirma antes de la compra.");
  return lines.join("\r\n");
 }
 function drawCart(){
@@ -333,7 +333,7 @@ el("copyCart").addEventListener("click",async()=>{
 });
 
 async function loadImage(url){
- return new Promise(resolve=>{const image=new Image();image.onload=()=>resolve(true);image.onerror=()=>resolve(false);image.src=url});
+  return new Promise(resolve=>{const image=new Image();image.referrerPolicy="no-referrer";image.onload=()=>resolve(true);image.onerror=()=>resolve(false);image.src=url});
 }
 async function imageFor(c,img,placeholder,status,token){
  try{
@@ -393,7 +393,7 @@ function galleryCard(c,token) {
  const item=document.createElement("article");
  item.className="item";
  const details=[c.set,c.language].filter(Boolean).join(" · ");
- item.innerHTML='<div class="art"><div class="placeholder"><span class="loader"></span><span>Cargando imagen…</span></div><img hidden loading="lazy"><span class="pill">'+esc(cardCode(c))+'</span></div>'+
+ item.innerHTML='<div class="art"><div class="placeholder"><span class="loader"></span><span>Cargando imagen…</span></div><img hidden loading="lazy" referrerpolicy="no-referrer"><span class="pill">'+esc(cardCode(c))+'</span></div>'+
  '<div class="details"><h3>'+esc(c.name)+'</h3><div class="num">'+esc(c.number)+'</div>'+
  (details?'<div class="meta">'+esc(details)+'</div>':'')+
  '<div class="stock-status '+(a.available?"is-available":"is-soldout")+'">'+(a.available?"Disponible · "+a.quantity+" ud.":"No disponible")+'</div>'+
@@ -410,7 +410,7 @@ function galleryCard(c,token) {
 function tableCard(c,token) {
  const a=available(c);
  const tr=document.createElement("tr");
- tr.innerHTML='<td class="thumbnail"><div class="mini-art"><img hidden loading="lazy"><span>—</span></div></td>'+
+ tr.innerHTML='<td class="thumbnail"><div class="mini-art"><img hidden loading="lazy" referrerpolicy="no-referrer"><span>—</span></div></td>'+
  [cardCode(c),c.name,c.number,c.set,c.language,a.quantity,a.available?"Disponible":"No disponible"]
  .map((x,i)=>'<td'+(i===2?' class="num-col"':"")+'>'+esc(x==null||x===""?"—":x)+'</td>').join("")+
  '<td class="table-market"></td><td class="table-action"></td>';

@@ -1,4 +1,4 @@
-/* Precios TCGplayer vía TCGCSV. Solo lectura: nunca modifica el inventario. */
+/* TCGplayer Direct Low vía TCGCSV. Nunca sustituye Direct por Market Price. */
 (function () {
   "use strict";
   const norm=s=>String(s||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().replace(/[^a-z0-9]+/g," ").trim();
@@ -24,13 +24,13 @@
     "cloe":"lacey","e nigma":"iono","ferrocuello":"iron jugulis","furioseta":"brute bonnet",
     "calyrex jinete glacial vmax":"ice rider calyrex vmax"};
   const seed=window.MARKET_SNAPSHOT||{groups:{}};
-  const pending=new Map(),failures=new Set(),listeners=new Set(),DAY=86400000;
+  const listeners=new Set(),DAY=86400000;
   const formatCOP=n=>new Intl.NumberFormat("es-CO",{style:"currency",currency:"COP",maximumFractionDigits:0}).format(n)+" COP";
   const formatUSD=n=>"US$"+Number(n).toFixed(2);
   const date=s=>new Date(s).toLocaleDateString("es-CO",{timeZone:"America/Bogota"});
   let fx=seed.fx||null;
-  function read(key){try{return JSON.parse(localStorage.getItem("boveda-market-v1-"+key))}catch(_){return null}}
-  function save(key,value){try{localStorage.setItem("boveda-market-v1-"+key,JSON.stringify(value))}catch(_){}}
+  function read(key){try{return JSON.parse(localStorage.getItem("boveda-direct-v2-"+key))}catch(_){return null}}
+  function save(key,value){try{localStorage.setItem("boveda-direct-v2-"+key,JSON.stringify(value))}catch(_){}}
   function emit(){for(const cb of listeners){try{cb()}catch(_){}}}
   async function json(url){
     const response=await fetch(url,{signal:AbortSignal.timeout(15000)});
@@ -46,29 +46,9 @@
     if(key==="astral radiance"&&/^TG/i.test(card.number))group=[3,3068];
     return group;
   }
-  function compact(products,prices,updatedAt){
-    const rows=new Map();
-    for(const p of prices){
-      if(typeof p.marketPrice!=="number"||!Number.isFinite(p.marketPrice)||p.marketPrice<=0)continue;
-      if(!rows.has(p.productId))rows.set(p.productId,[]);
-      rows.get(p.productId).push({usd:p.marketPrice,finish:p.subTypeName});
-    }
-    return {updatedAt,products:products.filter(p=>p.extendedData?.some(e=>e.name==="Number")).map(p=>({
-      id:p.productId,name:p.name,number:p.extendedData.find(e=>e.name==="Number").value,prices:rows.get(p.productId)||[]
-    }))};
-  }
   function getGroup(group){
-    const key=group.join("-"),cached=read(key),fallback=seed.groups[key];
-    const data=cached?.products&&(!fallback||cached.updatedAt>fallback.updatedAt)?cached:fallback;
-    if(!pending.has(key)&&(!data||Date.now()-Date.parse(data.updatedAt)>DAY)){
-      const url="https://tcgcsv.com/tcgplayer/"+group.join("/");
-      pending.set(key,Promise.all([json(url+"/products"),json(url+"/prices")]).then(([p,r])=>{
-        if(!p.success||!r.success||!Array.isArray(p.results)||!Array.isArray(r.results))throw Error("Sin datos");
-        const next=compact(p.results,r.results,new Date().toISOString());
-        seed.groups[key]=next;save(key,next);emit();
-      }).catch(()=>{failures.add(key);emit()}));
-    }
-    return data;
+    // TCGCSV blocks browser CORS; consume the shared, server-generated snapshot.
+    return seed.source==="directLowPrice"?seed.groups[group.join("-")]:null;
   }
   const baseName=s=>norm(String(s).replace(/\s*[-–]\s*[A-Z]*\d+(?:\s*\/\s*[A-Z]*\d+)?/i,""));
   function match(card,data){
@@ -85,12 +65,9 @@
     const group=groupFor(card);
     if(!group)return{status:"missing",reason:"Precio por confirmar"};
     const data=getGroup(group),matches=match(card,data);
-    if(matches.length!==1){
-      const unavailable=data||failures.has(group.join("-"));
-      return{status:unavailable?"missing":"loading",reason:unavailable?"Precio por confirmar":"Consultando TCGplayer…"};
-    }
+    if(matches.length!==1)return{status:"missing",reason:"Precio Direct por confirmar"};
     const product=matches[0],variants=product.prices||[],usd=variants.map(v=>v.usd).filter(v=>Number.isFinite(v)&&v>0);
-    if(!usd.length)return{status:"missing",reason:"Sin precio de mercado"};
+    if(!usd.length)return{status:"missing",reason:"Sin oferta TCGplayer Direct",url:"https://www.tcgplayer.com/product/"+product.id};
     const rate=Number(fx?.cop),validRate=rate>0&&Date.now()-Date.parse(fx?.updatedAt)<7*DAY;
     const min=Math.min(...usd),max=Math.max(...usd);
     return{status:"ready",min,max,copMin:validRate?min*rate:null,copMax:validRate?max*rate:null,
@@ -109,14 +86,14 @@
   }
   function element(card){
     const q=quote(card),box=document.createElement("div");box.className="card-market-price";
-    const label=document.createElement("small");label.textContent="Referencia TCGplayer · por carta";
+    const label=document.createElement("small");label.textContent="TCGplayer Direct · por carta";
     const value=document.createElement("strong");value.textContent=amount(q);box.append(label,value);
     if(q.status==="ready"){
       const detail=document.createElement("small");
       detail.textContent=formatUSD(q.min)+(q.min!==q.max?" – "+formatUSD(q.max)+" · Según acabado":" · "+q.variants[0].finish);
       const updated=document.createElement("small");updated.textContent=(q.stale?"Último dato: ":"Consulta: ")+date(q.updatedAt)+(q.reference?" · Referencia en inglés":"");
       box.append(detail,updated);
-      box.title=q.variants.map(v=>v.finish+": "+formatUSD(v.usd)).join(" · ")+". Market Price agregado; el estado de conservación puede cambiar el valor.";
+      box.title=q.variants.map(v=>v.finish+": "+formatUSD(v.usd)).join(" · ")+". Direct Low del archivo diario, sin envío; la oferta destacada puede variar por estado, idioma y momento de consulta.";
     }
     return box;
   }

@@ -32,7 +32,7 @@ def group_data(group):
     products, prices = read('products'), read('prices')
     by_id = {}
     for p in prices:
-        value = p.get('marketPrice')
+        value = p.get('directLowPrice')
         if isinstance(value, (int, float)) and value > 0:
             by_id.setdefault(p['productId'], []).append({'usd': value, 'finish': p['subTypeName']})
     compact = []
@@ -50,9 +50,9 @@ def main():
     with urllib.request.urlopen(request, timeout=30) as response:
         fx = json.load(response)
     assert fx['result'] == 'success' and fx['base_code'] == 'USD' and fx['rates']['COP'] > 0
-    snapshot = {'groups': groups, 'fx': {'cop': fx['rates']['COP'], 'updatedAt':
+    snapshot = {'source': 'directLowPrice', 'groups': groups, 'fx': {'cop': fx['rates']['COP'], 'updatedAt':
         datetime.datetime.fromtimestamp(fx['time_last_update_unix'], datetime.timezone.utc).isoformat()}}
-    (ROOT / 'market-snapshot.js').write_text('/* TCGplayer Market Price via TCGCSV; read-only fallback. */\nwindow.MARKET_SNAPSHOT=' + json.dumps(snapshot, ensure_ascii=False, separators=(',', ':')) + ';\n')
+    (ROOT / 'market-snapshot.js').write_text('/* TCGplayer Direct Low via TCGCSV; never Market Price. */\nwindow.MARKET_SNAPSHOT=' + json.dumps(snapshot, ensure_ascii=False, separators=(',', ':')) + ';\n')
     print(f'{len(groups)} collections; USD/COP {snapshot["fx"]["cop"]}; inventory untouched.')
 
 if __name__ == '__main__':
