@@ -23,6 +23,12 @@ Vitrina pública de cartas Pokémon con galería, filtros, referencias, disponib
    `ALTER POLICY "Public switch can upload gallery images" ON storage.objects WITH CHECK ((bucket_id = 'pokemon-gallery-overrides'::text) AND (name ~ '^cards/[0-9a-z-]+[.](jpg|png|webp)$'::text));`
 4. Comprobar accesos, catálogo, imágenes y edición al finalizar. Es preferible habilitar autenticación del propietario antes de reabrir escrituras públicas.
 
+## Ocho referencias marcadas visualmente como vendidas (29 de octubre de 2026)
+
+Las referencias **BTCG-0087 Venusaur ex 001/142**, **BTCG-0125 Wugtrio 224/091**, **BTCG-0147 Pidgeot ex 335/190**, **BTCG-0155 Wigglytuff ex 336/190**, **BTCG-0190 Jynx ex 191/165**, **BTCG-0235 Caterpie 172/165**, **BTCG-0247 Omanyte 180/165** y **BTCG-0315 Blastoise 2/102** aparecen como **Vendida**, con imagen en blanco y negro tanto en la galería como en la consulta de clientes. La vista de tabla muestra el mismo estado. No se eliminan registros ni fotos.
+
+El estado está definido por ID inmutable **y** nombre/número/colección/idioma exactos en `sold-cards.js`. Se bloquea añadir estas referencias a selecciones nuevas, pero no se toca `pokemon_catalog`, el Excel, ni `pokemon_stock_overrides`: las cantidades históricas siguen registradas (317 referencias y 650 unidades). El modo administrador continúa desactivado. Para indicar ventas nuevas o revertir el estado, el propietario debe solicitarlas expresamente; no hay interruptor público.
+
 ## Panel visual de consulta de pedidos (sin edición)
 
 - El botón **Consultar lista** abre un panel amplio y de solo lectura. El visitante puede pegar el mensaje de selección de cartas recibido de un cliente; esto no modifica ningún dato de Bóveda TCG.
