@@ -27,7 +27,15 @@ Vitrina pública de cartas Pokémon con galería, filtros, referencias, disponib
 
 Las referencias **BTCG-0087 Venusaur ex 001/142**, **BTCG-0125 Wugtrio 224/091**, **BTCG-0147 Pidgeot ex 335/190**, **BTCG-0155 Wigglytuff ex 336/190**, **BTCG-0190 Jynx ex 191/165**, **BTCG-0235 Caterpie 172/165**, **BTCG-0247 Omanyte 180/165** y **BTCG-0315 Blastoise 2/102** aparecen como **Vendida**, con imagen en blanco y negro tanto en la galería como en la consulta de clientes. La vista de tabla muestra el mismo estado. No se eliminan registros ni fotos.
 
-El estado está definido por ID inmutable **y** nombre/número/colección/idioma exactos en `sold-cards.js`. Se bloquea añadir estas referencias a selecciones nuevas, pero no se toca `pokemon_catalog`, el Excel, ni `pokemon_stock_overrides`: las cantidades históricas siguen registradas (317 referencias y 650 unidades). El modo administrador continúa desactivado. Para indicar ventas nuevas o revertir el estado, el propietario debe solicitarlas expresamente; no hay interruptor público.
+El estado está definido por ID inmutable **y** nombre/número/colección/idioma exactos en `sold-cards.js`. Se bloquea añadir estas referencias a selecciones nuevas, pero no se toca `pokemon_catalog`, el Excel, ni `pokemon_stock_overrides`: las cantidades históricas siguen registradas (317 referencias y 642 unidades disponibles). El modo administrador continúa desactivado. Para indicar ventas nuevas o revertir el estado, el propietario debe solicitarlas expresamente; no hay interruptor público.
+
+## Inventario después de las ventas (29 de octubre de 2026)
+
+- Se descontaron **10 unidades**: las 8 referencias ya marcadas visualmente como vendidas (cada una pasó de 1 a 0) y una unidad de **Mewtwo ex 157/128** y **Magikarp 203/193** (cada una pasó de 4 a 3).
+- Se respetaron dos unidades añadidas directamente en Google Sheets anteriormente: Eiscue ex 222/197 y Energía Fuego básica 230/197.
+- El inventario sincronizado contiene **317 referencias y 642 unidades**. Las referencias con 0 existencias permanecen presentes y con sus fotografías.
+- En Google Sheets se añadió **Registro de ventas** para identificar las 10 unidades descontadas, junto a las pestañas originales.
+- La función de ventas pública y el modo administrador continúan desactivados. No se modifican las 112 fotografías.
 
 ## Panel visual de consulta de pedidos (sin edición)
 
@@ -46,7 +54,7 @@ El estado está definido por ID inmutable **y** nombre/número/colección/idioma
 
 - Las fotos se muestran automáticamente mediante TCGdex (incluidas 30th Celebration y 30th Classic Collection) y las imágenes propias tienen prioridad. Los enlaces manuales nunca se sobrescriben. Si un enlace deja de cargar, la galería busca una imagen oficial de respaldo. En modo administrador, **Completar fotos automáticamente** busca imágenes exactas en lote y solo guarda las verificadas, sin sustituir las manuales. Las imágenes de referencia en otro idioma no se guardan como fotografías exactas.
 
-- **317 referencias, 650 unidades** importadas del Excel. Los ID internos permanecen estables; se retiraron los ID 54 (Alakazam), 121 (Lapras ex) y 122 (Venusaur ex) al consolidar referencias duplicadas. Las nuevas cartas usan los ID 160–253; se conservan intactos los identificadores anteriores.
+- **317 referencias, 642 unidades disponibles** importadas del Excel. Los ID internos permanecen estables; se retiraron los ID 54 (Alakazam), 121 (Lapras ex) y 122 (Venusaur ex) al consolidar referencias duplicadas. Las nuevas cartas usan los ID 160–253; se conservan intactos los identificadores anteriores.
 - El inventario original se almacena en `public.pokemon_catalog` con acceso **de solo lectura** para visitantes. `cards.js` contiene una copia equivalente como respaldo de visualización.
 - Las ediciones de imagen, ficha y existencias se guardan públicamente en tablas independientes de Supabase: `pokemon_image_overrides`, `pokemon_card_overrides`, `pokemon_stock_overrides`. Se reflejan en otros equipos al actualizar.
 - Las fotografías manuales se relacionan con la identidad interna original de la carta para que no desaparezcan al ordenar el catálogo.
