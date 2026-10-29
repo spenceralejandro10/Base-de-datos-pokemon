@@ -152,8 +152,13 @@ function line(tag,caption,value,more){
 function cardItem(row,index){
  const card=resolved(row),quote=marketData(card),mkt=marketCop(quote);
  const stockInfo=card?catalog.availability(card):null;
- const wrap=el("article","order-list-row"+(card?"":" order-list-row-warning"));
- const art=el("div","order-list-art");appendArtwork(card,art);wrap.append(art);
+ const visuallySold=Boolean(card&&catalog.sold?.(card));
+ const wrap=el("article","order-list-row"+(card?"":" order-list-row-warning")+
+  (visuallySold?" is-marked-sold":""));
+ const art=el("div","order-list-art");
+ appendArtwork(card,art);
+ if(visuallySold)art.append(el("span","order-sold-stamp","VENDIDA"));
+ wrap.append(art);
  const content=el("div","order-list-identity");
  const label=el("div","order-number-label",card?catalog.code(card):(row.code||"No localizada"));
  const heading=el("h4","",card?.name||row.name);
@@ -168,10 +173,11 @@ function cardItem(row,index){
  stockbox.append(el("strong","order-list-qty","Solicita "+row.quantity));
  if(stockInfo){
   const amount=stockInfo.quantity;
-  const text="Registradas: "+amount;
-  const indicator=el("span","order-stock-badge"+(amount<row.quantity?" order-stock-low":""),text);
+  const text=visuallySold?"Vendida (visual)":"Registradas: "+amount;
+  const indicator=el("span","order-stock-badge"+(visuallySold?" order-stock-sold":amount<row.quantity?" order-stock-low":""),text);
   stockbox.append(indicator);
-  if(amount<row.quantity)stockbox.append(el("small","order-stock-caution","Revisar físicamente"));
+  if(visuallySold)stockbox.append(el("small","order-stock-caution","Registro histórico: "+amount+" ud."));
+  else if(amount<row.quantity)stockbox.append(el("small","order-stock-caution","Revisar físicamente"));
  }else stockbox.append(el("small","order-stock-caution","Sin registro confirmado"));
  wrap.append(stockbox);
  const prices=el("div","order-list-prices");
