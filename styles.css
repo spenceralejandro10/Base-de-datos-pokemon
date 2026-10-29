@@ -369,3 +369,41 @@ body.editing-mode .item { border-color:#cbddeb; }
  .order-form-actions{gap:7px}
  .order-form-actions button{padding:9px 12px}
 }
+
+
+/* Ocho cartas vendidas: presentación exclusivamente visual; sin modificar inventario. */
+.item.is-marked-sold{position:relative;background:#f1f2f3;border-color:#ccd1d6;}
+.item.is-marked-sold .art{background:#dcdfe2;}
+.item.is-marked-sold .art>img{filter:grayscale(100%);opacity:.65;}
+.item.is-marked-sold .details h3,.item.is-marked-sold .num,
+.item.is-marked-sold .meta{color:#646b73;}
+.item.is-marked-sold .stock-status{color:#343a40;background:#e0e2e5;border-color:#c4c7cc;font-weight:800;}
+.item.is-marked-sold .add-cart{opacity:.85;background:#e0e2e5;color:#555;border-color:#bec4ca;}
+.item.is-marked-sold .sold-image-stamp{
+ position:absolute;top:130px;left:50%;z-index:4;
+ transform:translate(-50%,-50%) rotate(-9deg);
+ padding:9px 19px;border:3px solid #333;border-radius:7px;
+ background:rgba(248,248,248,.90);box-shadow:0 2px 12px #2225;
+ color:#252525;font-size:22px;letter-spacing:.12em;font-weight:900;
+ pointer-events:none;white-space:nowrap;
+}
+.data-table tr.is-marked-sold{background:#eeeeef;color:#666;}
+.data-table tr.is-marked-sold .mini-art img{filter:grayscale(100%);opacity:.65;}
+.data-table tr.is-marked-sold .num-col{color:#60666b;}
+.data-table tr.is-marked-sold:hover{background:#e6e7e9;}
+.order-list-row.is-marked-sold{background:#f0f1f2;border-left:4px solid #9c9fa3;}
+.order-list-row.is-marked-sold .order-image{filter:grayscale(100%);opacity:.65;}
+.order-list-row.is-marked-sold .order-list-art{position:relative;background:#d5d8dc;}
+.order-sold-stamp{
+ position:absolute;top:50%;left:50%;z-index:2;pointer-events:none;
+ transform:translate(-50%,-50%) rotate(-11deg);
+ background:rgba(248,248,248,.91);color:#333;
+ border:2px solid #555;border-radius:4px;padding:5px 6px;
+ font-size:10px;letter-spacing:.06em;font-weight:900;
+}
+.order-list-row.is-marked-sold .order-stock-sold{
+ background:#e1e3e5;color:#3e4349;border:1px solid #c4c8cc;
+}
+@media(max-width:650px){
+ .item.is-marked-sold .sold-image-stamp{top:112px;font-size:18px;padding:7px 12px;}
+}
