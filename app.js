@@ -21,7 +21,8 @@ const CART_KEY="boveda-tcg-cart-v1";
 window.BovedaOrderBridge=Object.freeze({
  cards:()=>records.slice(),
  code:card=>cardCode(card),
- availability:card=>available(card)
+ availability:card=>available(card),
+ sold:card=>Boolean(window.BovedaSold?.isSold(card))
 });
 // Al consolidar el Alakazam repetido del Excel se retiró BTCG-0054.
 // No perder su fotografía local: conservar la copia original y asociarla
@@ -41,7 +42,10 @@ if(cart.has(54)){
 }
 const saveCart=()=>{localStorage.setItem(CART_KEY,JSON.stringify([...cart]));updateCartCount()};
 function flash(text,error=false){info.textContent=text;info.className="editor-message"+(error?" error":"")}
-function available(c){return stock.get(c)}
+function available(c){
+ const current=stock.get(c);
+ return window.BovedaSold?.isSold(c)?{...current,available:false,soldVisual:true}:current;
+}
 function findCard(id){return records.find(c=>Number(c.id)===Number(id))}
 const tcgQuery=c=>market.searchUrl(c);
 function updateStats(){
@@ -483,7 +487,7 @@ function cartButton(c){
  const a=available(c);
  const button=document.createElement("button");button.type="button";
  button.className="add-cart";
- button.textContent=a.available?(cart.get(c.id)?"Agregar otra · "+cart.get(c.id):"Agregar a mi selección"):(a.override&&a.quantity===0?"Vendida":"No disponible");
+ button.textContent=a.soldVisual?"Vendida":a.available?(cart.get(c.id)?"Agregar otra · "+cart.get(c.id):"Agregar a mi selección"):(a.override&&a.quantity===0?"Vendida":"No disponible");
  button.disabled=!a.available||(cart.get(c.id)||0)>=a.quantity;
  button.addEventListener("click",()=>{addToCart(c);render()});
  return button;
@@ -491,12 +495,13 @@ function cartButton(c){
 function galleryCard(c,token) {
  const a=available(c);
  const item=document.createElement("article");
- item.className="item";
+ item.className="item"+(a.soldVisual?" is-marked-sold":"");
  const details=[c.set,c.language].filter(Boolean).join(" · ");
  item.innerHTML='<div class="art"><div class="placeholder"><span class="loader"></span><span>Cargando imagen…</span></div><img hidden loading="lazy" referrerpolicy="no-referrer"><span class="pill">'+esc(cardCode(c))+'</span></div>'+
+ (a.soldVisual?'<div class="sold-image-stamp" aria-label="Carta vendida">VENDIDA</div>':'')+
  '<div class="details"><h3>'+esc(c.name)+'</h3><div class="num">'+esc(c.number)+'</div>'+
  (details?'<div class="meta">'+esc(details)+'</div>':'')+
- '<div class="stock-status '+(a.available?"is-available":"is-soldout")+'">'+(a.available?"Disponible · "+a.quantity+" ud.":a.override&&a.quantity===0?"Vendida":"No disponible")+'</div>'+
+ '<div class="stock-status '+(a.available?"is-available":"is-soldout")+'">'+(a.soldVisual?"Vendida":a.available?"Disponible · "+a.quantity+" ud.":a.override&&a.quantity===0?"Vendida":"No disponible")+'</div>'+
  '<div class="links"></div></div>';
  const actions=item.querySelector(".links");
  actions.before(market.element(c));
@@ -510,8 +515,9 @@ function galleryCard(c,token) {
 function tableCard(c,token) {
  const a=available(c);
  const tr=document.createElement("tr");
+ if(a.soldVisual)tr.className="is-marked-sold";
  tr.innerHTML='<td class="thumbnail"><div class="mini-art"><img hidden loading="lazy" referrerpolicy="no-referrer"><span>—</span></div></td>'+
- [cardCode(c),c.name,c.number,c.set,c.language,a.quantity,a.available?"Disponible":a.override&&a.quantity===0?"Vendida":"No disponible"]
+ [cardCode(c),c.name,c.number,c.set,c.language,a.quantity,a.soldVisual?"Vendida":a.available?"Disponible":a.override&&a.quantity===0?"Vendida":"No disponible"]
  .map((x,i)=>'<td'+(i===2?' class="num-col"':"")+'>'+esc(x==null||x===""?"—":x)+'</td>').join("")+
  '<td class="table-market"></td><td class="table-action"></td>';
  tr.querySelector(".table-market").append(market.element(c),tcgLink(c));
