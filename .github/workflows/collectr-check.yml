@@ -10,12 +10,12 @@ jobs:
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
-      - name: Inspeccionar coincidencias pendientes
+      - name: Completar valoración Collectr por correspondencias
         run: python3 scripts/inspect-collectr.py
-      - name: Guardar informe solo en rama de consulta
+      - name: Guardar reporte solo en la rama de consulta
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add collectr-retry-samples.json
-          git diff --cached --quiet || git commit -m "Diagnóstico de coincidencias Collectr sin alterar sitio"
+          git add collectr-retry-samples.json collectr-valuation.json collectr-results.json
+          git diff --cached --quiet || git commit -m "Completar valoración Collectr sin alterar página"
           git push origin HEAD:consulta-collectr-2026-11-08
