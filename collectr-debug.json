@@ -1,0 +1,116 @@
+{
+  "https://app.getcollectr.com/?query=Mewtwo%20157%2F128": {
+    "length": 346582,
+    "start": "<!DOCTYPE html><html lang=\"en\"><head><meta charSet=\"utf-8\"/><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"/><link rel=\"stylesheet\" href=\"/_next/static/chunks/0-hr9a_hui3gh.css\" data-precedence=\"next\"/><link rel=\"stylesheet\" href=\"/_next/static/chunks/0z8npjwkrujpz.css\" data-precedence=\"next\"/><link rel=\"preload\" as=\"script\" fetchPriority=\"low\" href=\"/_next/static/chunks/17jgc65no27l2.js\"/><script src=\"/_next/static/chunks/2nsn2slz5emql.js\" async=\"\"></script><script src=\"/_next/static/chunks/35i5yputl1187.js\" async=\"\"></script><script src=\"/_next/static/chunks/1fkaya2t7r343.js\" async=\"\"></script><script src=\"/_next/static/chunks/turbopack-3-ry682tkyiqk.js\" async=\"\"></script><script src=\"/_next/static/chunks/01mtsrzzeicjg.js\" async=\"\"></script><script src=\"/_next/static/chunks/3n_aqqukx3l29.js\" async=\"\"></script><script src=\"/_next/static/chunks/3vcotzofu46_u.js\" async=\"\"></script><script src=\"/_next/static/chunks/0sq3f0thlplah.js\" async=\"\"></script><script src=\"/_ne",
+    "terms": [
+      {
+        "term": "__NEXT_DATA__",
+        "index": -1,
+        "excerpt": ""
+      },
+      {
+        "term": "__next_f.push",
+        "index": 121971,
+        "excerpt": "ById(b))(a=document.getElementById(a))?(a.previousSibling.data=\"$~\",$RB.push(a,b),2===$RB.length&&(\"number\"!==typeof $RT?requestAnimationFrame($RV.bind(null,$RB)):(a=performance.now(),setTimeout($RV.bind(null,$RB),2300>a&&2E3<a?2300-a:$RT+300-a)))):b.parentNode.removeChild(b)};$RC(\"B:0\",\"S:0\")</script><div hidden id=\"S:1\"><template id=\"P:2\"></template><!--$--><!--/$--></div><script>(self.__next_f=self.__next_f||[]).push([0])</script><script>self.__next_f.push([1,\"1:\\\"$Sreact.fragment\\\"\\n2:\\\"/_next/static/chunks/01mtsrzzeicjg.js\\\"\\n3:\\\"/_next/static/chunks/3n_aqqukx3l29.js\\\"\\n4:\\\"/_next/static/chunks/3vcotzofu46_u.js\\\"\\n5:\\\"/_next/static/chunks/0sq3f0thlplah.js\\\"\\n6:\\\"/_next/static/chunks/2h6ouptc1lhuf.js\\\"\\n7:\\\"/_next/static/chunks/0v3koyrigvgs4.js\\\"\\n8:\\\"/_next/static/chunks/2jc7tsdv3kwje.js\\\"\\n9:\\\"/_next/static/chunks/41gydwzh_fivi.js\\\"\\na:\\\"/_next/static/chunks/441mg1ke5s66b.js\\\"\\nb:\\\"/_next/static/chunks/033smkm66op_c.js\\\"\\nc:\\\"/_next/static/chunks/33x-pczgw7ekm.js\\\"\\nd:\\\"/_next/static/chunks/1b0w61omiagzn.js\\\"\\ne:\\\"/_next/static/chunks/1mo2rlv83oirx.js\\\"\\nf:I[421761,[\\\"$2\\\",\\\"$3\\\",\\\"$4\\\",\\\"$5\\\",\\\"$6\\\",\\\"$7\\\",\\\"$8\\\",\\\"$9\\\",\\\"$a\\\",\\\"$b\\\",\\\"$c\\\",\\\"$d\\\",\\\"$e\\\"],\\\"ThemeProvider\\\"]\\n10:I[12985,[\\\"$2\\\",\\\"$3\\\",\\\"$4\\\",\\\"$5\\\",\\\"$6\\\",\\\"$7\\\",\\\"$8\\\",\\\"$9\\\",\\\"$a\\\",\\\"$b\\\",\\\"$c\\\",\\\"$d\\\",\\\"$e\\\"],\\\"NuqsAdapter\\\"]\\n11:I[155062,[\\\"$2\\\",\\\"$3\\\",\\\"$4\\\",\\\"$5\\\",\\\"$6\\\",\\\"$7\\\",\\\"$8\\\",\\\"$9\\\",\\\"$a\\\",\\\"$b\\\",\\\"$c\\\",\\\"$d\\\",\\\"$e\\\"],\\\"default\\\"]\\n12:I[474110,[\\\"$2\\\",\\\"$3\\\",\\\"$4\\\",\\\"$5\\\",\\\"$6\\\",\\\"$7\\\",\\\"$"
+      },
+      {
+        "term": "dehydratedState",
+        "index": -1,
+        "excerpt": ""
+      },
+      {
+        "term": "productId",
+        "index": -1,
+        "excerpt": ""
+      },
+      {
+        "term": "Mewtwo ex",
+        "index": 270314,
+        "excerpt": "tchMeta\\\":null,\\\"isInvalidated\\\":false,\\\"status\\\":\\\"success\\\",\\\"fetchStatus\\\":\\\"idle\\\"},\\\"queryKey\\\":[\\\"explore\\\",\\\"getSortFilters\\\"],\\\"queryHash\\\":\\\"[\\\\\\\"explore\\\\\\\",\\\\\\\"getSortFilters\\\\\\\"]\\\"},{\\\"dehydratedAt\\\":1794170552313,\\\"state\\\":{\\\"data\\\":{\\\"pages\\\":[{\\\"data\\\":[{\\\"product_id\\\":\\\"696687\\\",\\\"catalog_category\\\":\\\"3\\\",\\\"catalog_category_name\\\":\\\"Pokemon\\\",\\\"catalog_group\\\":\\\"30th Celebration\\\",\\\"catalog_group_id\\\":\\\"24722\\\",\\\"product_name\\\":\\\"Mewtwo ex \\\",\\\"image_url\\\":\\\"https://public.getcollectr.com/public-assets/products/product_696687.jpg?optimizer=image\\u0026format=webp\\u0026width=1200\\u0026quality=80\\u0026strip=metadata\\\",\\\"card_number\\\":\\\"157/128\\\",\\\"rarity\\\":\\\"Futuristic Rare\\\",\\\"product_sub_type\\\":\\\"Holofoil\\\",\\\"is_card\\\":true,\\\"unique_sub_type_groups\\\":[{\\\"grade_id\\\":\\\"11\\\",\\\"product_sub_type\\\":\\\"Holofoil\\\"},{\\\"grade_id\\\":\\\"12\\\",\\\"product_sub_type\\\":\\\"Holofoil\\\"},{\\\"grade_id\\\":\\\"132\\\",\\\"product_sub_type\\\":\\\"Holofoil\\\"},{\\\"grade_id\\\":\\\"133\\\",\\\"product_sub_type\\\":\\\"Holofoil\\\"},{\\\"grade_id\\\":\\\"28\\\",\\\"product_sub_type\\\":\\\"Holofoil\\\"},{\\\"grade_id\\\":\\\"29\\\",\\\"product_sub_type\\\":\\\"Holofoil\\\"},{\\\"grade_id\\\":\\\"30\\\",\\\"product_sub_type\\\":\\\"Holofoil\\\"},{\\\"grade_id\\\":\\\"31\\\",\\\"product_sub_type\\\":\\\"Holofoil\\\"},{\\\"grade_id\\\":\\\"49\\\",\\\"product_sub_type\\\":\\\"Holofoil\\\"},{\\\"grade_id\\\":\\\"50\\\",\\\"product_sub_type\\\":\\\"Holofoil\\\"},{\\\"grade_id\\\":\\\"51\\\",\\\"product_sub_type\\\":\\\"Holofoil\\\"},{\\\"grade_id\\\":\\\"52\\\",\\\"product_sub_type\\\":\\\"Holofoil\\\"},{\\\"grade_id\\\":\\\"53\\\",\\\"product_sub_type\\\":\\\"Holof"
+      },
+      {
+        "term": "157/128",
+        "index": 3659,
+        "excerpt": "lectr - Track the prices of Pokemon, Magic the Gathering, YuGiOh and many other TCGs! Raw cards, sealed products and graded cards!</title><meta name=\"description\" content=\"Collectr helps you manage your raw cards, graded cards and sealed products from over 20+ TCGs like Magic the Gathering, Pokémon, Yu-Gi-Oh!, and many more!\"/><link rel=\"manifest\" href=\"/manifest.webmanifest\"/><link rel=\"canonical\" href=\"https://app.getcollectr.com/?query=Mewtwo+157/128\"/><meta property=\"og:title\" content=\"Collectr - Track the prices of Pokemon, Magic the Gathering, YuGiOh and many other TCGs! Raw cards, sealed products and graded cards!\"/><meta property=\"og:description\" content=\"Collectr helps you manage your raw cards, graded cards and sealed products from over 20+ TCGs like Magic the Gathering, Pokémon, Yu-Gi-Oh!, and many more!\"/><meta property=\"og:url\" content=\"https://app.getcollectr.com/?query=Mewtwo+157/128\"/><meta property=\"og:site_name\" content=\"Collectr\"/><meta property=\"og:type\" content=\"website\"/><meta name=\"twitter:card\" content=\"summary\"/><meta name=\"twitter:site:id\" content=\"1490729049257295880\"/><meta name=\"twitter:creator\" content=\"@getcollectrapp\"/><meta name=\"twitter:creator:id\" content=\"twitter:site:id\"/><meta name=\"twitter:title\" content=\"Collectr - Track the prices of Pokemon, Magic the Gathering, YuGiOh and many other TCGs! Raw cards, sealed products and graded cards!\"/><meta name=\"twitter:description\" content=\"Collectr helps you manage your raw cards, graded cards and"
+      },
+      {
+        "term": "30th Celebration",
+        "index": 270245,
+        "excerpt": "pdatedAt\\\":0,\\\"fetchFailureCount\\\":0,\\\"fetchFailureReason\\\":null,\\\"fetchMeta\\\":null,\\\"isInvalidated\\\":false,\\\"status\\\":\\\"success\\\",\\\"fetchStatus\\\":\\\"idle\\\"},\\\"queryKey\\\":[\\\"explore\\\",\\\"getSortFilters\\\"],\\\"queryHash\\\":\\\"[\\\\\\\"explore\\\\\\\",\\\\\\\"getSortFilters\\\\\\\"]\\\"},{\\\"dehydratedAt\\\":1794170552313,\\\"state\\\":{\\\"data\\\":{\\\"pages\\\":[{\\\"data\\\":[{\\\"product_id\\\":\\\"696687\\\",\\\"catalog_category\\\":\\\"3\\\",\\\"catalog_category_name\\\":\\\"Pokemon\\\",\\\"catalog_group\\\":\\\"30th Celebration\\\",\\\"catalog_group_id\\\":\\\"24722\\\",\\\"product_name\\\":\\\"Mewtwo ex \\\",\\\"image_url\\\":\\\"https://public.getcollectr.com/public-assets/products/product_696687.jpg?optimizer=image\\u0026format=webp\\u0026width=1200\\u0026quality=80\\u0026strip=metadata\\\",\\\"card_number\\\":\\\"157/128\\\",\\\"rarity\\\":\\\"Futuristic Rare\\\",\\\"product_sub_type\\\":\\\"Holofoil\\\",\\\"is_card\\\":true,\\\"unique_sub_type_groups\\\":[{\\\"grade_id\\\":\\\"11\\\",\\\"product_sub_type\\\":\\\"Holofoil\\\"},{\\\"grade_id\\\":\\\"12\\\",\\\"product_sub_type\\\":\\\"Holofoil\\\"},{\\\"grade_id\\\":\\\"132\\\",\\\"product_sub_type\\\":\\\"Holofoil\\\"},{\\\"grade_id\\\":\\\"133\\\",\\\"product_sub_type\\\":\\\"Holofoil\\\"},{\\\"grade_id\\\":\\\"28\\\",\\\"product_sub_type\\\":\\\"Holofoil\\\"},{\\\"grade_id\\\":\\\"29\\\",\\\"product_sub_type\\\":\\\"Holofoil\\\"},{\\\"grade_id\\\":\\\"30\\\",\\\"product_sub_type\\\":\\\"Holofoil\\\"},{\\\"grade_id\\\":\\\"31\\\",\\\"product_sub_type\\\":\\\"Holofoil\\\"},{\\\"grade_id\\\":\\\"49\\\",\\\"product_sub_type\\\":\\\"Holofoil\\\"},{\\\"grade_id\\\":\\\"50\\\",\\\"product_sub_type\\\":\\\"Holofoil\\\"},{\\\"grade_id\\\":\\\"51\\\",\\\"product_sub_type\\\":\\\"Holofoil\\\"},{\\\"grade_id\\\":\\\"52\\\",\\\"product_sub_t"
+      },
+      {
+        "term": "currentPrice",
+        "index": -1,
+        "excerpt": ""
+      },
+      {
+        "term": "marketPrice",
+        "index": -1,
+        "excerpt": ""
+      },
+      {
+        "term": "Holofoil",
+        "index": 270585,
+        "excerpt": "\"product_id\\\":\\\"696687\\\",\\\"catalog_category\\\":\\\"3\\\",\\\"catalog_category_name\\\":\\\"Pokemon\\\",\\\"catalog_group\\\":\\\"30th Celebration\\\",\\\"catalog_group_id\\\":\\\"24722\\\",\\\"product_name\\\":\\\"Mewtwo ex \\\",\\\"image_url\\\":\\\"https://public.getcollectr.com/public-assets/products/product_696687.jpg?optimizer=image\\u0026format=webp\\u0026width=1200\\u0026quality=80\\u0026strip=metadata\\\",\\\"card_number\\\":\\\"157/128\\\",\\\"rarity\\\":\\\"Futuristic Rare\\\",\\\"product_sub_type\\\":\\\"Holofoil\\\",\\\"is_card\\\":true,\\\"unique_sub_type_groups\\\":[{\\\"grade_id\\\":\\\"11\\\",\\\"product_sub_type\\\":\\\"Holofoil\\\"},{\\\"grade_id\\\":\\\"12\\\",\\\"product_sub_type\\\":\\\"Holofoil\\\"},{\\\"grade_id\\\":\\\"132\\\",\\\"product_sub_type\\\":\\\"Holofoil\\\"},{\\\"grade_id\\\":\\\"133\\\",\\\"product_sub_type\\\":\\\"Holofoil\\\"},{\\\"grade_id\\\":\\\"28\\\",\\\"product_sub_type\\\":\\\"Holofoil\\\"},{\\\"grade_id\\\":\\\"29\\\",\\\"product_sub_type\\\":\\\"Holofoil\\\"},{\\\"grade_id\\\":\\\"30\\\",\\\"product_sub_type\\\":\\\"Holofoil\\\"},{\\\"grade_id\\\":\\\"31\\\",\\\"product_sub_type\\\":\\\"Holofoil\\\"},{\\\"grade_id\\\":\\\"49\\\",\\\"product_sub_type\\\":\\\"Holofoil\\\"},{\\\"grade_id\\\":\\\"50\\\",\\\"product_sub_type\\\":\\\"Holofoil\\\"},{\\\"grade_id\\\":\\\"51\\\",\\\"product_sub_type\\\":\\\"Holofoil\\\"},{\\\"grade_id\\\":\\\"52\\\",\\\"product_sub_type\\\":\\\"Holofoil\\\"},{\\\"grade_id\\\":\\\"53\\\",\\\"product_sub_type\\\":\\\"Holofoil\\\"},{\\\"grade_id\\\":\\\"73\\\",\\\"product_sub_type\\\":\\\"Holofoil\\\"},{\\\"grade_id\\\":\\\"74\\\",\\\"product_sub_type\\\":\\\"Holofoil\\\"},{\\\"grade_id\\\":\\\"9\\\",\\\"product_sub_type\\\":\\\"Holofoil\\\"}],\\\"latest_price\\\":\\\"26.8200\\\",\\\"older_market_price\\\":\\\"31.0300\\\",\\\"market_price_diff\\\":\\\"-4.21000"
+      }
+    ],
+    "last": "-->%)</span></div></div></div></div><div class=\"flex flex-row items-center gap-1.5 ml-auto mt-auto\"><div class=\"cursor-pointer\" data-testid=\"product-add-button\"><div class=\"group flex size-8 items-center justify-center rounded-full border-collectr-brand-primary border-[1.5px] hover:bg-collectr-brand-primary\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-plus group-hover:stroke-white stroke-collectr-brand-primary\" aria-hidden=\"true\"><path d=\"M5 12h14\"></path><path d=\"M12 5v14\"></path></svg></div></div></div></div></div></li></ul></div></div></div></div></main></div><script>$RS=function(a,b){a=document.getElementById(a);b=document.getElementById(b);for(a.parentNode.removeChild(a);a.firstChild;)b.parentNode.insertBefore(a.firstChild,b);b.parentNode.removeChild(b)};$RS(\"S:2\",\"P:2\")</script><script>$RC(\"B:1\",\"S:1\")</script></body></html>"
+  },
+  "https://app.getcollectr.com/sets/category/3/30th-celebration?groupId=24722&cardType=cards": {
+    "length": 208359,
+    "start": "<!DOCTYPE html><html lang=\"en\"><head><meta charSet=\"utf-8\"/><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"/><link rel=\"stylesheet\" href=\"/_next/static/chunks/0-hr9a_hui3gh.css\" data-precedence=\"next\"/><link rel=\"stylesheet\" href=\"/_next/static/chunks/0z8npjwkrujpz.css\" data-precedence=\"next\"/><link rel=\"preload\" as=\"script\" fetchPriority=\"low\" href=\"/_next/static/chunks/17jgc65no27l2.js\"/><script src=\"/_next/static/chunks/2nsn2slz5emql.js\" async=\"\"></script><script src=\"/_next/static/chunks/35i5yputl1187.js\" async=\"\"></script><script src=\"/_next/static/chunks/1fkaya2t7r343.js\" async=\"\"></script><script src=\"/_next/static/chunks/turbopack-3-ry682tkyiqk.js\" async=\"\"></script><script src=\"/_next/static/chunks/01mtsrzzeicjg.js\" async=\"\"></script><script src=\"/_next/static/chunks/3n_aqqukx3l29.js\" async=\"\"></script><script src=\"/_next/static/chunks/3vcotzofu46_u.js\" async=\"\"></script><script src=\"/_next/static/chunks/0sq3f0thlplah.js\" async=\"\"></script><script src=\"/_ne",
+    "terms": [
+      {
+        "term": "__NEXT_DATA__",
+        "index": -1,
+        "excerpt": ""
+      },
+      {
+        "term": "__next_f.push",
+        "index": 24958,
+        "excerpt": "ption></select></div></div></div></div><div data-orientation=\"horizontal\" role=\"none\" data-slot=\"separator\" class=\"bg-border shrink-0 data-[orientation=horizontal]:h-px data-[orientation=horizontal]:w-full data-[orientation=vertical]:h-full data-[orientation=vertical]:w-px\"></div></div><template id=\"P:2\"></template><!--$?--><template id=\"B:3\"></template><!--/$--></div></div><script>(self.__next_f=self.__next_f||[]).push([0])</script><script>self.__next_f.push([1,\"1:\\\"$Sreact.fragment\\\"\\n2:\\\"/_next/static/chunks/01mtsrzzeicjg.js\\\"\\n3:\\\"/_next/static/chunks/3n_aqqukx3l29.js\\\"\\n4:\\\"/_next/static/chunks/3vcotzofu46_u.js\\\"\\n5:\\\"/_next/static/chunks/0sq3f0thlplah.js\\\"\\n6:\\\"/_next/static/chunks/2h6ouptc1lhuf.js\\\"\\n7:\\\"/_next/static/chunks/0v3koyrigvgs4.js\\\"\\n8:\\\"/_next/static/chunks/2jc7tsdv3kwje.js\\\"\\n9:\\\"/_next/static/chunks/41gydwzh_fivi.js\\\"\\na:\\\"/_next/static/chunks/441mg1ke5s66b.js\\\"\\nb:\\\"/_next/static/chunks/033smkm66op_c.js\\\"\\nc:\\\"/_next/static/chunks/33x-pczgw7ekm.js\\\"\\nd:\\\"/_next/static/chunks/1b0w61omiagzn.js\\\"\\ne:\\\"/_next/static/chunks/1mo2rlv83oirx.js\\\"\\nf:I[421761,[\\\"$2\\\",\\\"$3\\\",\\\"$4\\\",\\\"$5\\\",\\\"$6\\\",\\\"$7\\\",\\\"$8\\\",\\\"$9\\\",\\\"$a\\\",\\\"$b\\\",\\\"$c\\\",\\\"$d\\\",\\\"$e\\\"],\\\"ThemeProvider\\\"]\\n10:I[12985,[\\\"$2\\\",\\\"$3\\\",\\\"$4\\\",\\\"$5\\\",\\\"$6\\\",\\\"$7\\\",\\\"$8\\\",\\\"$9\\\",\\\"$a\\\",\\\"$b\\\",\\\"$c\\\",\\\"$d\\\",\\\"$e\\\"],\\\"NuqsAdapter\\\"]\\n11:I[155062,[\\\"$2\\\",\\\"$3\\\",\\\"$4\\\",\\\"$5\\\",\\\"$6\\\",\\\"$7\\\",\\\"$8\\\",\\\"$9\\\",\\\"$a\\\",\\\"$b\\\",\\\"$c\\\",\\\"$d\\\",\\\"$e\\\"],\\\"default\\\"]\\n12:I[474110,[\\\"$2\\\",\\\"$3\\\",\\\"$4\\\",\\\"$5\\\",\\\"$6\\\",\\\"$7\\\",\\\"$"
+      },
+      {
+        "term": "dehydratedState",
+        "index": -1,
+        "excerpt": ""
+      },
+      {
+        "term": "productId",
+        "index": -1,
+        "excerpt": ""
+      },
+      {
+        "term": "Mewtwo ex",
+        "index": -1,
+        "excerpt": ""
+      },
+      {
+        "term": "157/128",
+        "index": -1,
+        "excerpt": ""
+      },
+      {
+        "term": "30th Celebration",
+        "index": 44512,
+        "excerpt": "cedence\\\":\\\"next\\\",\\\"crossOrigin\\\":\\\"$undefined\\\",\\\"nonce\\\":\\\"$undefined\\\"}]\\n29:C\\n43:[[\\\"$\\\",\\\"meta\\\",\\\"0\\\",{\\\"charSet\\\":\\\"utf-8\\\"}],[\\\"$\\\",\\\"meta\\\",\\\"1\\\",{\\\"name\\\":\\\"viewport\\\",\\\"content\\\":\\\"width=device-width, initial-scale=1\\\"}]]\\n\"])</script><script>self.__next_f.push([1,\"47:I[27201,[\\\"$2\\\",\\\"$3\\\",\\\"$4\\\",\\\"$5\\\",\\\"$6\\\",\\\"$7\\\",\\\"$8\\\",\\\"$9\\\",\\\"$a\\\",\\\"$b\\\",\\\"$c\\\",\\\"$d\\\",\\\"$e\\\"],\\\"IconMark\\\"]\\n40:null\\n46:[[\\\"$\\\",\\\"title\\\",\\\"0\\\",{\\\"children\\\":\\\"30th Celebration - Pokemon Card List and Prices\\\"}],[\\\"$\\\",\\\"meta\\\",\\\"1\\\",{\\\"name\\\":\\\"description\\\",\\\"content\\\":\\\"Collectr helps you manage your raw cards, graded cards and sealed products from over 20+ TCGs like Magic the Gathering, Pokémon, Yu-Gi-Oh!, and many more!\\\"}],[\\\"$\\\",\\\"link\\\",\\\"2\\\",{\\\"rel\\\":\\\"manifest\\\",\\\"href\\\":\\\"/manifest.webmanifest\\\",\\\"crossOrigin\\\":\\\"$undefined\\\"}],[\\\"$\\\",\\\"link\\\",\\\"3\\\",{\\\"rel\\\":\\\"canonical\\\",\\\"href\\\":\\\"https://app.getcollectr.com/sets/category/3/30th-celebration?groupId=24722\\u0026cardType=cards\\\"}],[\\\"$\\\",\\\"meta\\\",\\\"4\\\",{\\\"property\\\":\\\"og:title\\\",\\\"content\\\":\\\"30th Celebration - Pokemon Card List and Prices\\\"}],[\\\"$\\\",\\\"meta\\\",\\\"5\\\",{\\\"property\\\":\\\"og:description\\\",\\\"content\\\":\\\"Collectr helps you manage your raw cards, graded cards and sealed products from over 20+ TCGs like Magic the Gathering, Pokémon, Yu-Gi-Oh!, and many more!\\\"}],[\\\"$\\\",\\\"meta\\\",\\\"6\\\",{\\\"property\\\":\\\"og:url\\\",\\\"content\\\":\\\"https://app.getcollectr.com/sets/category/3/30th-celebration?groupId=24722\\u0026cardType=cards\\\"}],[\\\"$\\\","
+      },
+      {
+        "term": "currentPrice",
+        "index": -1,
+        "excerpt": ""
+      },
+      {
+        "term": "marketPrice",
+        "index": -1,
+        "excerpt": ""
+      },
+      {
+        "term": "Holofoil",
+        "index": 101256,
+        "excerpt": "[{\\\"data\\\":[{\\\"product_id\\\":\\\"717609\\\",\\\"catalog_category\\\":\\\"3\\\",\\\"catalog_category_name\\\":\\\"Pokemon\\\",\\\"catalog_group\\\":\\\"30th Celebration\\\",\\\"catalog_group_id\\\":\\\"24722\\\",\\\"product_name\\\":\\\"Mew \\\",\\\"image_url\\\":\\\"https://public.getcollectr.com/public-assets/products/product_717609.jpg?optimizer=image\\u0026format=webp\\u0026width=1200\\u0026quality=80\\u0026strip=metadata\\\",\\\"card_number\\\":\\\"B/RGB\\\",\\\"rarity\\\":\\\"Holo Rare\\\",\\\"product_sub_type\\\":\\\"Holofoil\\\",\\\"is_card\\\":true,\\\"unique_sub_type_groups\\\":[{\\\"grade_id\\\":\\\"11\\\",\\\"product_sub_type\\\":\\\"Holofoil\\\"},{\\\"grade_id\\\":\\\"12\\\",\\\"product_sub_type\\\":\\\"Holofoil\\\"},{\\\"grade_id\\\":\\\"133\\\",\\\"product_sub_type\\\":\\\"Holofoil\\\"},{\\\"grade_id\\\":\\\"30\\\",\\\"product_sub_type\\\":\\\"Holofoil\\\"},{\\\"grade_id\\\":\\\"31\\\",\\\"product_sub_type\\\":\\\"Holofoil\\\"},{\\\"grade_id\\\":\\\"51\\\",\\\"product_sub_type\\\":\\\"Holofoil\\\"},{\\\"grade_id\\\":\\\"52\\\",\\\"product_sub_type\\\":\\\"Holofoil\\\"},{\\\"grade_id\\\":\\\"53\\\",\\\"product_sub_type\\\":\\\"Holofoil\\\"},{\\\"grade_id\\\":\\\"73\\\",\\\"product_sub_type\\\":\\\"Holofoil\\\"},{\\\"grade_id\\\":\\\"74\\\",\\\"product_sub_type\\\":\\\"Holofoil\\\"}],\\\"latest_price\\\":\\\"4263.6000\\\",\\\"older_market_price\\\":\\\"4152.8000\\\",\\\"market_price_diff\\\":\\\"110.80000000000018\\\",\\\"market_price_percentage_diff\\\":\\\"2.668079368137165\\\",\\\"watchlist\\\":false,\\\"is_owned\\\":false,\\\"web_slug_group\\\":\\\"30th-celebration\\\",\\\"web_slug_category\\\":\\\"3\\\"},{\\\"product_id\\\":\\\"717607\\\",\\\"catalog_category\\\":\\\"3\\\",\\\"catalog_category_name\\\":\\\"Pokemon\\\",\\\"catalog_group\\\":\\\"30th Celebration\\\",\\\"catalog_group_id\\\":\\\"24"
+      }
+    ],
+    "last": "eton\" class=\"bg-accent animate-pulse h-[60px] w-full rounded-sm\"></div><div class=\"h-[20.67px] w-full rounded-sm\"></div><div class=\"flex flex-row justify-between items-center mt-auto\"><div><div data-slot=\"skeleton\" data-testid=\"skeleton\" class=\"bg-accent animate-pulse h-[22.5px] w-[72px] rounded-sm my-1\"></div><div data-slot=\"skeleton\" data-testid=\"skeleton\" class=\"bg-accent animate-pulse h-[15px] w-[105px] rounded-sm mb-1\"></div><div data-slot=\"skeleton\" data-testid=\"skeleton\" class=\"bg-accent animate-pulse h-[15px] w-1/2 rounded-sm\"></div></div><div data-slot=\"skeleton\" data-testid=\"skeleton\" class=\"bg-accent animate-pulse h-8 w-8 rounded-full mt-auto\"></div></div></div></li></ul></div></div></div></div></div></div><script>$RS=function(a,b){a=document.getElementById(a);b=document.getElementById(b);for(a.parentNode.removeChild(a);a.firstChild;)b.parentNode.insertBefore(a.firstChild,b);b.parentNode.removeChild(b)};$RS(\"S:2\",\"P:2\")</script><script>$RC(\"B:1\",\"S:1\")</script></body></html>"
+  }
+}
