@@ -10,12 +10,12 @@ jobs:
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
-      - name: Consultar precios públicos Collectr
+      - name: Consultar cotizaciones Collectr y sumar inventario
         run: python3 scripts/check-collectr.py
-      - name: Guardar resultado solo en esta rama
+      - name: Guardar reporte solo en la rama aislada
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add collectr-debug.json
-          git diff --cached --quiet || git commit -m "Guardar diagnóstico Collectr (rama aislada)"
+          git add collectr-results.json collectr-valuation.json
+          git diff --cached --quiet || git commit -m "Valoración Collectr por referencias (solo rama temporal)"
           git push origin HEAD:consulta-collectr-2026-11-08
