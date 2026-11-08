@@ -1,25 +1,25 @@
 {
-  "generated_at": "2026-11-08T20:46:43.907576+00:00",
+  "generated_at": "2026-11-08T20:50:03.143346+00:00",
   "source": "Collectr public catalog / raw ungraded price",
   "fx_cop_per_usd": 3239.854719,
   "fx_date": "2026-11-08T00:02:31+00:00",
   "all_references_in_stock": 309,
   "all_units_in_stock": 642,
-  "collectr_references": 282,
-  "collectr_units": 613,
-  "collectr_only_subtotal_usd": 4654.14,
-  "collectr_only_subtotal_cop": 15078744,
-  "missing_references": 27,
-  "missing_units": 29,
-  "same_refs_collectr_cop": 14970241,
-  "same_refs_tcgplayer_cop": 13951754,
-  "same_refs_difference_cop": 1018487,
-  "same_refs_count": 277,
-  "tcgplayer_fallback_references": 14,
-  "tcgplayer_fallback_units": 15,
-  "estimated_mixed_total_cop": 15763098,
-  "unvalued_references": 13,
-  "unvalued_units": 14,
+  "collectr_references": 306,
+  "collectr_units": 639,
+  "collectr_only_subtotal_usd": 4961.77,
+  "collectr_only_subtotal_cop": 16075424,
+  "missing_references": 3,
+  "missing_units": 3,
+  "same_refs_collectr_cop": 15927428,
+  "same_refs_tcgplayer_cop": 14636108,
+  "same_refs_difference_cop": 1291319,
+  "same_refs_count": 291,
+  "tcgplayer_fallback_references": 0,
+  "tcgplayer_fallback_units": 0,
+  "estimated_mixed_total_cop": 16075424,
+  "unvalued_references": 3,
+  "unvalued_units": 3,
   "top_valued_collectr": [
     {
       "name": "Lugia",
@@ -144,220 +144,25 @@
   ],
   "missing_examples": [
     {
-      "id": 12,
-      "name": "Squirtle",
-      "number": "170/165",
-      "set": "Pokémon Card 151",
-      "quantity": 1,
-      "error": null
-    },
-    {
-      "id": 24,
-      "name": "Mr. Mime",
-      "number": "179/165",
-      "set": "Pokémon Card 151",
-      "quantity": 1,
-      "error": null
-    },
-    {
-      "id": 32,
-      "name": "Mewtwo",
-      "number": "183/165",
-      "set": "Pokémon Card 151",
-      "quantity": 1,
-      "error": null
-    },
-    {
       "id": 55,
       "name": "Estudiante de Paldea",
       "number": "065/165",
       "set": "Paldean Fates",
-      "quantity": 1,
-      "error": null
-    },
-    {
-      "id": 119,
-      "name": "Cloe",
-      "number": "142/131",
-      "set": "Prismatic Evolutions",
-      "quantity": 1,
-      "error": null
-    },
-    {
-      "id": 125,
-      "name": "Pikachu",
-      "number": "173/165",
-      "set": "Pokémon Card 151",
-      "quantity": 1,
-      "error": null
-    },
-    {
-      "id": 126,
-      "name": "Charmeleon",
-      "number": "169/165",
-      "set": "Pokémon Card 151",
-      "quantity": 1,
-      "error": null
-    },
-    {
-      "id": 127,
-      "name": "Charmander",
-      "number": "168/165",
-      "set": "Pokémon Card 151",
-      "quantity": 1,
-      "error": null
-    },
-    {
-      "id": 128,
-      "name": "Psyduck",
-      "number": "175/165",
-      "set": "Pokémon Card 151",
-      "quantity": 1,
-      "error": null
-    },
-    {
-      "id": 130,
-      "name": "Snorlax",
-      "number": "181/165",
-      "set": "Pokémon Card 151",
-      "quantity": 1,
-      "error": null
-    },
-    {
-      "id": 137,
-      "name": "Nidoking",
-      "number": "174/165",
-      "set": "Pokémon Card 151",
-      "quantity": 1,
-      "error": null
-    },
-    {
-      "id": 139,
-      "name": "Ivysaur",
-      "number": "167/165",
-      "set": "Pokémon Card 151",
-      "quantity": 1,
-      "error": null
-    },
-    {
-      "id": 140,
-      "name": "Wartortle",
-      "number": "171/165",
-      "set": "Pokémon Card 151",
-      "quantity": 1,
-      "error": null
-    },
-    {
-      "id": 141,
-      "name": "Bulbasaur",
-      "number": "166/165",
-      "set": "Pokémon Card 151",
-      "quantity": 2,
-      "error": null
-    },
-    {
-      "id": 146,
-      "name": "Poliwhirl",
-      "number": "176/165",
-      "set": "Pokémon Card 151",
-      "quantity": 1,
-      "error": null
-    },
-    {
-      "id": 152,
-      "name": "Machoke",
-      "number": "177/165",
-      "set": "Pokémon Card 151",
-      "quantity": 1,
-      "error": null
-    },
-    {
-      "id": 212,
-      "name": "Recinto del Festival",
-      "number": "108/131",
-      "set": "Prismatic Evolutions",
-      "quantity": 1,
-      "error": null
+      "quantity": 1
     },
     {
       "id": 231,
       "name": "Doble Energía Turbo",
       "number": "216/172",
       "set": "Brilliant Stars",
-      "quantity": 1,
-      "error": null
-    },
-    {
-      "id": 259,
-      "name": "Tambores del Despertar",
-      "number": "141/162",
-      "set": "Temporal Forces",
-      "quantity": 1,
-      "error": null
-    },
-    {
-      "id": 260,
-      "name": "Colmilargo ex",
-      "number": "053/091",
-      "set": "Paldean Fates",
-      "quantity": 2,
-      "error": null
+      "quantity": 1
     },
     {
       "id": 270,
       "name": "Basic Psychic Energy",
       "number": "Sin número",
       "set": "151",
-      "quantity": 1,
-      "error": null
-    },
-    {
-      "id": 280,
-      "name": "Cinturón Colosal",
-      "number": "117/131",
-      "set": "Prismatic Evolutions",
-      "quantity": 1,
-      "error": null
-    },
-    {
-      "id": 286,
-      "name": "Vasija Terrestre",
-      "number": "106/131",
-      "set": "Prismatic Evolutions",
-      "quantity": 1,
-      "error": null
-    },
-    {
-      "id": 291,
-      "name": "Capturador Contraataque",
-      "number": "264/182",
-      "set": "Paradox Rift",
-      "quantity": 1,
-      "error": null
-    },
-    {
-      "id": 295,
-      "name": "Calyrex Jinete Espectral VMAX",
-      "number": "TG30/TG30",
-      "set": "Astral Radiance Trainer Gallery",
-      "quantity": 1,
-      "error": null
-    },
-    {
-      "id": 299,
-      "name": "Ferropaladín ex",
-      "number": "089/182",
-      "set": "Paradox Rift",
-      "quantity": 1,
-      "error": null
-    },
-    {
-      "id": 301,
-      "name": "Aroa",
-      "number": "166/142",
-      "set": "Stellar Crown",
-      "quantity": 1,
-      "error": null
+      "quantity": 1
     }
   ]
 }

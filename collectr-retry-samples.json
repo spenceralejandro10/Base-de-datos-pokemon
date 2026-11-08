@@ -1,87 +1,589 @@
-{
-  "Squirtle 170/165": [
-    {
-      "product_id": "502549",
-      "product_name": "Squirtle ",
-      "catalog_group": "SV: 151",
-      "catalog_group_id": "23237",
-      "card_number": "170/165",
-      "latest_price": "79.2600",
-      "product_sub_type": "Holofoil"
-    },
-    {
-      "product_id": "10012093",
-      "product_name": "Squirtle (JP)",
-      "catalog_group": "Pokemon 151",
-      "catalog_group_id": "1000142",
-      "card_number": "170/165",
-      "latest_price": "30.9834",
-      "product_sub_type": "Holofoil"
-    }
-  ],
-  "Mewtwo 183/165": [
-    {
-      "product_id": "10012106",
-      "product_name": "Mewtwo (JP)",
-      "catalog_group": "Pokemon 151",
-      "catalog_group_id": "1000142",
-      "card_number": "183/165",
-      "latest_price": "30.1254",
-      "product_sub_type": "Holofoil"
-    }
-  ],
-  "Mr. Mime 179/165": [
-    {
-      "product_id": "517028",
-      "product_name": "Mr. Mime ",
-      "catalog_group": "SV: 151",
-      "catalog_group_id": "23237",
-      "card_number": "179/165",
-      "latest_price": "11.0400",
-      "product_sub_type": "Holofoil"
-    },
-    {
-      "product_id": "10012102",
-      "product_name": "Mr. Mime (JP)",
-      "catalog_group": "Pokemon 151",
-      "catalog_group_id": "1000142",
-      "card_number": "179/165",
-      "latest_price": "4.0134",
-      "product_sub_type": "Holofoil"
-    }
-  ],
-  "Paldean Student 065/165": [],
-  "Lacey 142/131": [],
-  "Festival Grounds 108/131": [
-    {
-      "product_id": "610463",
-      "product_name": "Festival Grounds ",
-      "catalog_group": "Prismatic Evolutions",
-      "catalog_group_id": "23821",
-      "card_number": "108/131",
-      "latest_price": "0.2200",
-      "product_sub_type": "Reverse Holofoil"
-    },
-    {
-      "product_id": "610619",
-      "product_name": "Festival Grounds (Poke Ball Pattern) ",
-      "catalog_group": "Prismatic Evolutions",
-      "catalog_group_id": "23821",
-      "card_number": "108/131",
-      "latest_price": "0.3500",
-      "product_sub_type": "Holofoil"
-    }
-  ],
-  "Great Tusk ex 053/091": [
-    {
-      "product_id": "534415",
-      "product_name": "Great Tusk ex ",
-      "catalog_group": "Paldean Fates",
-      "catalog_group_id": "23353",
-      "card_number": "053/091",
-      "latest_price": "0.5500",
-      "product_sub_type": "Holofoil"
-    }
-  ],
-  "Sin número": []
-}
+[
+  {
+    "id": 125,
+    "name": "Pikachu",
+    "matched": true,
+    "tests": [
+      {
+        "q": "Pikachu 173/165",
+        "found": 2,
+        "candidates": [
+          {
+            "name": "Pikachu ",
+            "set": "SV: 151",
+            "number": "173/165",
+            "usd": "56.5100"
+          },
+          {
+            "name": "Pikachu (JP)",
+            "set": "Pokemon 151",
+            "number": "173/165",
+            "usd": "33.8054"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": 12,
+    "name": "Squirtle",
+    "matched": true,
+    "tests": [
+      {
+        "q": "Squirtle 170/165",
+        "found": 2,
+        "candidates": [
+          {
+            "name": "Squirtle ",
+            "set": "SV: 151",
+            "number": "170/165",
+            "usd": "79.2600"
+          },
+          {
+            "name": "Squirtle (JP)",
+            "set": "Pokemon 151",
+            "number": "170/165",
+            "usd": "30.9834"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": 24,
+    "name": "Mr. Mime",
+    "matched": true,
+    "tests": [
+      {
+        "q": "Mr. Mime 179/165",
+        "found": 2,
+        "candidates": [
+          {
+            "name": "Mr. Mime ",
+            "set": "SV: 151",
+            "number": "179/165",
+            "usd": "11.0400"
+          },
+          {
+            "name": "Mr. Mime (JP)",
+            "set": "Pokemon 151",
+            "number": "179/165",
+            "usd": "4.0134"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": 32,
+    "name": "Mewtwo",
+    "matched": true,
+    "tests": [
+      {
+        "q": "Mewtwo 183/165",
+        "found": 1,
+        "candidates": [
+          {
+            "name": "Mewtwo (JP)",
+            "set": "Pokemon 151",
+            "number": "183/165",
+            "usd": "30.1254"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": 119,
+    "name": "Cloe",
+    "matched": true,
+    "tests": [
+      {
+        "q": "Raifort 142/131",
+        "found": 1,
+        "candidates": [
+          {
+            "name": "Raifort ",
+            "set": "Prismatic Evolutions",
+            "number": "142/131",
+            "usd": "0.5900"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": 126,
+    "name": "Charmeleon",
+    "matched": true,
+    "tests": [
+      {
+        "q": "Charmeleon 169/165",
+        "found": 2,
+        "candidates": [
+          {
+            "name": "Charmeleon ",
+            "set": "SV: 151",
+            "number": "169/165",
+            "usd": "51.0700"
+          },
+          {
+            "name": "Charmeleon (JP)",
+            "set": "Pokemon 151",
+            "number": "169/165",
+            "usd": "15.9650"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": 127,
+    "name": "Charmander",
+    "matched": true,
+    "tests": [
+      {
+        "q": "Charmander 168/165",
+        "found": 2,
+        "candidates": [
+          {
+            "name": "Charmander ",
+            "set": "SV: 151",
+            "number": "168/165",
+            "usd": "78.0900"
+          },
+          {
+            "name": "Charmander (JP)",
+            "set": "Pokemon 151",
+            "number": "168/165",
+            "usd": "29.2963"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": 128,
+    "name": "Psyduck",
+    "matched": true,
+    "tests": [
+      {
+        "q": "Psyduck 175/165",
+        "found": 2,
+        "candidates": [
+          {
+            "name": "Psyduck ",
+            "set": "SV: 151",
+            "number": "175/165",
+            "usd": "47.6200"
+          },
+          {
+            "name": "Psyduck (JP)",
+            "set": "Pokemon 151",
+            "number": "175/165",
+            "usd": "23.3131"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": 130,
+    "name": "Snorlax",
+    "matched": true,
+    "tests": [
+      {
+        "q": "Snorlax 181/165",
+        "found": 1,
+        "candidates": [
+          {
+            "name": "Snorlax (JP)",
+            "set": "Pokemon 151",
+            "number": "181/165",
+            "usd": "15.6838"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": 55,
+    "name": "Estudiante de Paldea",
+    "matched": false,
+    "tests": [
+      {
+        "q": "Paldean Student 065/165",
+        "found": 0,
+        "candidates": []
+      },
+      {
+        "q": "Friends in Paldea 065/165",
+        "found": 0,
+        "candidates": []
+      }
+    ]
+  },
+  {
+    "id": 137,
+    "name": "Nidoking",
+    "matched": true,
+    "tests": [
+      {
+        "q": "Nidoking 174/165",
+        "found": 2,
+        "candidates": [
+          {
+            "name": "Nidoking ",
+            "set": "SV: 151",
+            "number": "174/165",
+            "usd": "15.2600"
+          },
+          {
+            "name": "Nidoking (JP)",
+            "set": "Pokemon 151",
+            "number": "174/165",
+            "usd": "7.0843"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": 139,
+    "name": "Ivysaur",
+    "matched": true,
+    "tests": [
+      {
+        "q": "Ivysaur 167/165",
+        "found": 2,
+        "candidates": [
+          {
+            "name": "Ivysaur ",
+            "set": "SV: 151",
+            "number": "167/165",
+            "usd": "36.4800"
+          },
+          {
+            "name": "Ivysaur (JP)",
+            "set": "Pokemon 151",
+            "number": "167/165",
+            "usd": "13.2999"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": 146,
+    "name": "Poliwhirl",
+    "matched": true,
+    "tests": [
+      {
+        "q": "Poliwhirl 176/165",
+        "found": 2,
+        "candidates": [
+          {
+            "name": "Poliwhirl ",
+            "set": "SV: 151",
+            "number": "176/165",
+            "usd": "33.8400"
+          },
+          {
+            "name": "Poliwhirl (JP)",
+            "set": "Pokemon 151",
+            "number": "176/165",
+            "usd": "13.1588"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": 140,
+    "name": "Wartortle",
+    "matched": true,
+    "tests": [
+      {
+        "q": "Wartortle 171/165",
+        "found": 2,
+        "candidates": [
+          {
+            "name": "Wartortle ",
+            "set": "SV: 151",
+            "number": "171/165",
+            "usd": "43.7000"
+          },
+          {
+            "name": "Wartortle (JP)",
+            "set": "Pokemon 151",
+            "number": "171/165",
+            "usd": "26.2235"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": 141,
+    "name": "Bulbasaur",
+    "matched": true,
+    "tests": [
+      {
+        "q": "Bulbasaur 166/165",
+        "found": 2,
+        "candidates": [
+          {
+            "name": "Bulbasaur ",
+            "set": "SV: 151",
+            "number": "166/165",
+            "usd": "54.0800"
+          },
+          {
+            "name": "Bulbasaur (JP)",
+            "set": "Pokemon 151",
+            "number": "166/165",
+            "usd": "21.9235"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": 270,
+    "name": "Basic Psychic Energy",
+    "matched": false,
+    "tests": []
+  },
+  {
+    "id": 152,
+    "name": "Machoke",
+    "matched": true,
+    "tests": [
+      {
+        "q": "Machoke 177/165",
+        "found": 2,
+        "candidates": [
+          {
+            "name": "Machoke ",
+            "set": "SV: 151",
+            "number": "177/165",
+            "usd": "19.1900"
+          },
+          {
+            "name": "Machoke (JP)",
+            "set": "Pokemon 151",
+            "number": "177/165",
+            "usd": "8.6419"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": 212,
+    "name": "Recinto del Festival",
+    "matched": true,
+    "tests": [
+      {
+        "q": "Festival Grounds 108/131",
+        "found": 2,
+        "candidates": [
+          {
+            "name": "Festival Grounds ",
+            "set": "Prismatic Evolutions",
+            "number": "108/131",
+            "usd": "0.2200"
+          },
+          {
+            "name": "Festival Grounds (Poke Ball Pattern) ",
+            "set": "Prismatic Evolutions",
+            "number": "108/131",
+            "usd": "0.3500"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": 260,
+    "name": "Colmilargo ex",
+    "matched": true,
+    "tests": [
+      {
+        "q": "Great Tusk ex 053/091",
+        "found": 1,
+        "candidates": [
+          {
+            "name": "Great Tusk ex ",
+            "set": "Paldean Fates",
+            "number": "053/091",
+            "usd": "0.5500"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": 231,
+    "name": "Doble Energía Turbo",
+    "matched": false,
+    "tests": [
+      {
+        "q": "Double Turbo Energy 216/172",
+        "found": 0,
+        "candidates": []
+      }
+    ]
+  },
+  {
+    "id": 259,
+    "name": "Tambores del Despertar",
+    "matched": true,
+    "tests": [
+      {
+        "q": "Awakening Drum 141/162",
+        "found": 2,
+        "candidates": [
+          {
+            "name": "Awakening Drum ",
+            "set": "Temporal Forces",
+            "number": "141/162",
+            "usd": "0.3800"
+          },
+          {
+            "name": "Awakening Drum ",
+            "set": "Prize Pack Series One",
+            "number": "141/162",
+            "usd": "2.1000"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": 280,
+    "name": "Cinturón Colosal",
+    "matched": true,
+    "tests": [
+      {
+        "q": "Maximum Belt 117/131",
+        "found": 1,
+        "candidates": [
+          {
+            "name": "Maximum Belt ",
+            "set": "Prismatic Evolutions",
+            "number": "117/131",
+            "usd": "0.4800"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": 291,
+    "name": "Capturador Contraataque",
+    "matched": true,
+    "tests": [
+      {
+        "q": "Counter Catcher 264/182",
+        "found": 1,
+        "candidates": [
+          {
+            "name": "Counter Catcher ",
+            "set": "Paradox Rift",
+            "number": "264/182",
+            "usd": "1.8000"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": 286,
+    "name": "Vasija Terrestre",
+    "matched": true,
+    "tests": [
+      {
+        "q": "Earthen Vessel 106/131",
+        "found": 2,
+        "candidates": [
+          {
+            "name": "Earthen Vessel ",
+            "set": "Prismatic Evolutions",
+            "number": "106/131",
+            "usd": "0.3200"
+          },
+          {
+            "name": "Earthen Vessel (Poke Ball Pattern) ",
+            "set": "Prismatic Evolutions",
+            "number": "106/131",
+            "usd": "0.3200"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": 295,
+    "name": "Calyrex Jinete Espectral VMAX",
+    "matched": true,
+    "tests": [
+      {
+        "q": "Shadow Rider Calyrex VMAX TG30/TG30",
+        "found": 1,
+        "candidates": [
+          {
+            "name": "Shadow Rider Calyrex VMAX (Secret) ",
+            "set": "Astral Radiance Trainer Gallery",
+            "number": "TG30/TG30",
+            "usd": "4.4500"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": 301,
+    "name": "Aroa",
+    "matched": true,
+    "tests": [
+      {
+        "q": "Lacey 166/142",
+        "found": 1,
+        "candidates": [
+          {
+            "name": "Lacey ",
+            "set": "Stellar Crown",
+            "number": "166/142",
+            "usd": "2.0800"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": 299,
+    "name": "Ferropaladín ex",
+    "matched": true,
+    "tests": [
+      {
+        "q": "Iron Valiant ex 089/182",
+        "found": 2,
+        "candidates": [
+          {
+            "name": "Iron Valiant ex ",
+            "set": "Paradox Rift",
+            "number": "089/182",
+            "usd": "0.7700"
+          },
+          {
+            "name": "Iron Valiant ex ",
+            "set": "Prize Pack Series One",
+            "number": "089/182",
+            "usd": "1.7300"
+          }
+        ]
+      }
+    ]
+  }
+]

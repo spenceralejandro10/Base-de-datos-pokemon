@@ -228,8 +228,18 @@
     "quantity": 1,
     "query": "Squirtle 170/165",
     "tcgplayer_usd": 20.51,
-    "collectr": null,
-    "found_products": 2
+    "collectr": {
+      "usd": 30.9834,
+      "product_id": "10012093",
+      "set": "Pokemon 151",
+      "number": "170/165",
+      "finish": "Holofoil",
+      "source_url": "https://app.getcollectr.com/explore/product/10012093",
+      "match_score": 24,
+      "match_note": "JP group alias"
+    },
+    "found_products": 2,
+    "resolved_query": "Squirtle 170/165"
   },
   {
     "id": 13,
@@ -460,8 +470,18 @@
     "quantity": 1,
     "query": "Mr. Mime 179/165",
     "tcgplayer_usd": 2.67,
-    "collectr": null,
-    "found_products": 2
+    "collectr": {
+      "usd": 4.0134,
+      "product_id": "10012102",
+      "set": "Pokemon 151",
+      "number": "179/165",
+      "finish": "Holofoil",
+      "source_url": "https://app.getcollectr.com/explore/product/10012102",
+      "match_score": 24,
+      "match_note": "JP group alias"
+    },
+    "found_products": 2,
+    "resolved_query": "Mr. Mime 179/165"
   },
   {
     "id": 25,
@@ -572,8 +592,18 @@
     "quantity": 1,
     "query": "Mewtwo 183/165",
     "tcgplayer_usd": 20.02,
-    "collectr": null,
-    "found_products": 1
+    "collectr": {
+      "usd": 30.1254,
+      "product_id": "10012106",
+      "set": "Pokemon 151",
+      "number": "183/165",
+      "finish": "Holofoil",
+      "source_url": "https://app.getcollectr.com/explore/product/10012106",
+      "match_score": 24,
+      "match_note": "JP group alias"
+    },
+    "found_products": 1,
+    "resolved_query": "Mewtwo 183/165"
   },
   {
     "id": 33,
@@ -2216,8 +2246,18 @@
     "quantity": 1,
     "query": "lacey 142/131",
     "tcgplayer_usd": null,
-    "collectr": null,
-    "found_products": 0
+    "collectr": {
+      "usd": 0.59,
+      "product_id": "610497",
+      "set": "Prismatic Evolutions",
+      "number": "142/131",
+      "finish": "Holofoil",
+      "source_url": "https://app.getcollectr.com/explore/product/610497",
+      "match_score": 24,
+      "match_note": "Traducción al inglés verificada por número"
+    },
+    "found_products": 0,
+    "resolved_query": "Raifort 142/131"
   },
   {
     "id": 120,
@@ -2288,8 +2328,18 @@
     "quantity": 1,
     "query": "Pikachu 173/165",
     "tcgplayer_usd": 19.8,
-    "collectr": null,
-    "found_products": 2
+    "collectr": {
+      "usd": 33.8054,
+      "product_id": "10012096",
+      "set": "Pokemon 151",
+      "number": "173/165",
+      "finish": "Holofoil",
+      "source_url": "https://app.getcollectr.com/explore/product/10012096",
+      "match_score": 24,
+      "match_note": "JP group alias"
+    },
+    "found_products": 2,
+    "resolved_query": "Pikachu 173/165"
   },
   {
     "id": 126,
@@ -2300,8 +2350,18 @@
     "quantity": 1,
     "query": "Charmeleon 169/165",
     "tcgplayer_usd": 14.06,
-    "collectr": null,
-    "found_products": 2
+    "collectr": {
+      "usd": 15.965,
+      "product_id": "10012092",
+      "set": "Pokemon 151",
+      "number": "169/165",
+      "finish": "Holofoil",
+      "source_url": "https://app.getcollectr.com/explore/product/10012092",
+      "match_score": 24,
+      "match_note": "JP group alias"
+    },
+    "found_products": 2,
+    "resolved_query": "Charmeleon 169/165"
   },
   {
     "id": 127,
@@ -2312,8 +2372,18 @@
     "quantity": 1,
     "query": "Charmander 168/165",
     "tcgplayer_usd": 22.27,
-    "collectr": null,
-    "found_products": 2
+    "collectr": {
+      "usd": 29.2963,
+      "product_id": "10012091",
+      "set": "Pokemon 151",
+      "number": "168/165",
+      "finish": "Holofoil",
+      "source_url": "https://app.getcollectr.com/explore/product/10012091",
+      "match_score": 24,
+      "match_note": "JP group alias"
+    },
+    "found_products": 2,
+    "resolved_query": "Charmander 168/165"
   },
   {
     "id": 128,
@@ -2324,8 +2394,18 @@
     "quantity": 1,
     "query": "Psyduck 175/165",
     "tcgplayer_usd": 19.41,
-    "collectr": null,
-    "found_products": 2
+    "collectr": {
+      "usd": 23.3131,
+      "product_id": "10012098",
+      "set": "Pokemon 151",
+      "number": "175/165",
+      "finish": "Holofoil",
+      "source_url": "https://app.getcollectr.com/explore/product/10012098",
+      "match_score": 24,
+      "match_note": "JP group alias"
+    },
+    "found_products": 2,
+    "resolved_query": "Psyduck 175/165"
   },
   {
     "id": 129,
@@ -2356,8 +2436,18 @@
     "quantity": 1,
     "query": "Snorlax 181/165",
     "tcgplayer_usd": 12.34,
-    "collectr": null,
-    "found_products": 1
+    "collectr": {
+      "usd": 15.6838,
+      "product_id": "10012104",
+      "set": "Pokemon 151",
+      "number": "181/165",
+      "finish": "Holofoil",
+      "source_url": "https://app.getcollectr.com/explore/product/10012104",
+      "match_score": 24,
+      "match_note": "JP group alias"
+    },
+    "found_products": 1,
+    "resolved_query": "Snorlax 181/165"
   },
   {
     "id": 131,
@@ -2488,8 +2578,18 @@
     "quantity": 1,
     "query": "Nidoking 174/165",
     "tcgplayer_usd": 4.35,
-    "collectr": null,
-    "found_products": 2
+    "collectr": {
+      "usd": 7.0843,
+      "product_id": "10012097",
+      "set": "Pokemon 151",
+      "number": "174/165",
+      "finish": "Holofoil",
+      "source_url": "https://app.getcollectr.com/explore/product/10012097",
+      "match_score": 24,
+      "match_note": "JP group alias"
+    },
+    "found_products": 2,
+    "resolved_query": "Nidoking 174/165"
   },
   {
     "id": 138,
@@ -2520,8 +2620,18 @@
     "quantity": 1,
     "query": "Ivysaur 167/165",
     "tcgplayer_usd": 12.58,
-    "collectr": null,
-    "found_products": 2
+    "collectr": {
+      "usd": 13.2999,
+      "product_id": "10012090",
+      "set": "Pokemon 151",
+      "number": "167/165",
+      "finish": "Holofoil",
+      "source_url": "https://app.getcollectr.com/explore/product/10012090",
+      "match_score": 24,
+      "match_note": "JP group alias"
+    },
+    "found_products": 2,
+    "resolved_query": "Ivysaur 167/165"
   },
   {
     "id": 140,
@@ -2532,8 +2642,18 @@
     "quantity": 1,
     "query": "Wartortle 171/165",
     "tcgplayer_usd": 12.2,
-    "collectr": null,
-    "found_products": 2
+    "collectr": {
+      "usd": 26.2235,
+      "product_id": "10012094",
+      "set": "Pokemon 151",
+      "number": "171/165",
+      "finish": "Holofoil",
+      "source_url": "https://app.getcollectr.com/explore/product/10012094",
+      "match_score": 24,
+      "match_note": "JP group alias"
+    },
+    "found_products": 2,
+    "resolved_query": "Wartortle 171/165"
   },
   {
     "id": 141,
@@ -2544,8 +2664,18 @@
     "quantity": 2,
     "query": "Bulbasaur 166/165",
     "tcgplayer_usd": 15.79,
-    "collectr": null,
-    "found_products": 2
+    "collectr": {
+      "usd": 21.9235,
+      "product_id": "10012089",
+      "set": "Pokemon 151",
+      "number": "166/165",
+      "finish": "Holofoil",
+      "source_url": "https://app.getcollectr.com/explore/product/10012089",
+      "match_score": 24,
+      "match_note": "JP group alias"
+    },
+    "found_products": 2,
+    "resolved_query": "Bulbasaur 166/165"
   },
   {
     "id": 142,
@@ -2636,8 +2766,18 @@
     "quantity": 1,
     "query": "Poliwhirl 176/165",
     "tcgplayer_usd": 14.01,
-    "collectr": null,
-    "found_products": 2
+    "collectr": {
+      "usd": 13.1588,
+      "product_id": "10012099",
+      "set": "Pokemon 151",
+      "number": "176/165",
+      "finish": "Holofoil",
+      "source_url": "https://app.getcollectr.com/explore/product/10012099",
+      "match_score": 24,
+      "match_note": "JP group alias"
+    },
+    "found_products": 2,
+    "resolved_query": "Poliwhirl 176/165"
   },
   {
     "id": 147,
@@ -2748,8 +2888,18 @@
     "quantity": 1,
     "query": "Machoke 177/165",
     "tcgplayer_usd": 5.43,
-    "collectr": null,
-    "found_products": 2
+    "collectr": {
+      "usd": 8.6419,
+      "product_id": "10012100",
+      "set": "Pokemon 151",
+      "number": "177/165",
+      "finish": "Holofoil",
+      "source_url": "https://app.getcollectr.com/explore/product/10012100",
+      "match_score": 24,
+      "match_note": "JP group alias"
+    },
+    "found_products": 2,
+    "resolved_query": "Machoke 177/165"
   },
   {
     "id": 153,
@@ -3940,8 +4090,18 @@
     "quantity": 1,
     "query": "Recinto del Festival 108/131",
     "tcgplayer_usd": null,
-    "collectr": null,
-    "found_products": 0
+    "collectr": {
+      "usd": 0.22,
+      "product_id": "610463",
+      "set": "Prismatic Evolutions",
+      "number": "108/131",
+      "finish": "Reverse Holofoil",
+      "source_url": "https://app.getcollectr.com/explore/product/610463",
+      "match_score": 24,
+      "match_note": "Traducción al inglés verificada por número"
+    },
+    "found_products": 0,
+    "resolved_query": "Festival Grounds 108/131"
   },
   {
     "id": 213,
@@ -4844,8 +5004,18 @@
     "quantity": 1,
     "query": "Tambores del Despertar 141/162",
     "tcgplayer_usd": null,
-    "collectr": null,
-    "found_products": 0
+    "collectr": {
+      "usd": 0.38,
+      "product_id": "542654",
+      "set": "Temporal Forces",
+      "number": "141/162",
+      "finish": "Holofoil",
+      "source_url": "https://app.getcollectr.com/explore/product/542654",
+      "match_score": 24,
+      "match_note": "Traducción al inglés verificada por número"
+    },
+    "found_products": 0,
+    "resolved_query": "Awakening Drum 141/162"
   },
   {
     "id": 260,
@@ -4856,8 +5026,18 @@
     "quantity": 2,
     "query": "Colmilargo ex 053/091",
     "tcgplayer_usd": null,
-    "collectr": null,
-    "found_products": 0
+    "collectr": {
+      "usd": 0.55,
+      "product_id": "534415",
+      "set": "Paldean Fates",
+      "number": "053/091",
+      "finish": "Holofoil",
+      "source_url": "https://app.getcollectr.com/explore/product/534415",
+      "match_score": 24,
+      "match_note": "Traducción al inglés verificada por número"
+    },
+    "found_products": 0,
+    "resolved_query": "Great Tusk ex 053/091"
   },
   {
     "id": 261,
@@ -5200,8 +5380,18 @@
     "quantity": 1,
     "query": "Cinturón Colosal 117/131",
     "tcgplayer_usd": null,
-    "collectr": null,
-    "found_products": 0
+    "collectr": {
+      "usd": 0.48,
+      "product_id": "610472",
+      "set": "Prismatic Evolutions",
+      "number": "117/131",
+      "finish": "Holofoil",
+      "source_url": "https://app.getcollectr.com/explore/product/610472",
+      "match_score": 24,
+      "match_note": "Traducción al inglés verificada por número"
+    },
+    "found_products": 0,
+    "resolved_query": "Maximum Belt 117/131"
   },
   {
     "id": 281,
@@ -5312,8 +5502,18 @@
     "quantity": 1,
     "query": "Vasija Terrestre 106/131",
     "tcgplayer_usd": null,
-    "collectr": null,
-    "found_products": 0
+    "collectr": {
+      "usd": 0.32,
+      "product_id": "610461",
+      "set": "Prismatic Evolutions",
+      "number": "106/131",
+      "finish": "Reverse Holofoil",
+      "source_url": "https://app.getcollectr.com/explore/product/610461",
+      "match_score": 24,
+      "match_note": "Traducción al inglés verificada por número"
+    },
+    "found_products": 0,
+    "resolved_query": "Earthen Vessel 106/131"
   },
   {
     "id": 287,
@@ -5404,8 +5604,18 @@
     "quantity": 1,
     "query": "Capturador Contraataque 264/182",
     "tcgplayer_usd": null,
-    "collectr": null,
-    "found_products": 0
+    "collectr": {
+      "usd": 1.8,
+      "product_id": "523945",
+      "set": "Paradox Rift",
+      "number": "264/182",
+      "finish": "Holofoil",
+      "source_url": "https://app.getcollectr.com/explore/product/523945",
+      "match_score": 24,
+      "match_note": "Traducción al inglés verificada por número"
+    },
+    "found_products": 0,
+    "resolved_query": "Counter Catcher 264/182"
   },
   {
     "id": 292,
@@ -5476,8 +5686,18 @@
     "quantity": 1,
     "query": "Calyrex Jinete Espectral VMAX TG30/TG30",
     "tcgplayer_usd": null,
-    "collectr": null,
-    "found_products": 0
+    "collectr": {
+      "usd": 4.45,
+      "product_id": "272502",
+      "set": "Astral Radiance Trainer Gallery",
+      "number": "TG30/TG30",
+      "finish": "Holofoil",
+      "source_url": "https://app.getcollectr.com/explore/product/272502",
+      "match_score": 24,
+      "match_note": "Traducción al inglés verificada por número"
+    },
+    "found_products": 0,
+    "resolved_query": "Shadow Rider Calyrex VMAX TG30/TG30"
   },
   {
     "id": 296,
@@ -5548,8 +5768,18 @@
     "quantity": 1,
     "query": "Ferropaladín ex 089/182",
     "tcgplayer_usd": null,
-    "collectr": null,
-    "found_products": 0
+    "collectr": {
+      "usd": 0.77,
+      "product_id": "523756",
+      "set": "Paradox Rift",
+      "number": "089/182",
+      "finish": "Holofoil",
+      "source_url": "https://app.getcollectr.com/explore/product/523756",
+      "match_score": 24,
+      "match_note": "Traducción al inglés verificada por número"
+    },
+    "found_products": 0,
+    "resolved_query": "Iron Valiant ex 089/182"
   },
   {
     "id": 300,
@@ -5580,8 +5810,18 @@
     "quantity": 1,
     "query": "Aroa 166/142",
     "tcgplayer_usd": null,
-    "collectr": null,
-    "found_products": 0
+    "collectr": {
+      "usd": 2.08,
+      "product_id": "567470",
+      "set": "Stellar Crown",
+      "number": "166/142",
+      "finish": "Holofoil",
+      "source_url": "https://app.getcollectr.com/explore/product/567470",
+      "match_score": 24,
+      "match_note": "Traducción al inglés verificada por número"
+    },
+    "found_products": 0,
+    "resolved_query": "Lacey 166/142"
   },
   {
     "id": 302,
