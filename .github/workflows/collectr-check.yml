@@ -1,0 +1,21 @@
+name: Consulta Collectr sin modificar sitio
+on:
+  push:
+    branches: [consulta-collectr-2026-11-08]
+permissions:
+  contents: write
+jobs:
+  collectr:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Consultar precios públicos Collectr
+        run: python3 scripts/check-collectr.py
+      - name: Guardar resultado solo en esta rama
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add collectr-debug.json
+          git diff --cached --quiet || git commit -m "Guardar diagnóstico Collectr (rama aislada)"
+          git push origin HEAD:consulta-collectr-2026-11-08
