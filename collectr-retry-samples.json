@@ -1,0 +1,87 @@
+{
+  "Squirtle 170/165": [
+    {
+      "product_id": "502549",
+      "product_name": "Squirtle ",
+      "catalog_group": "SV: 151",
+      "catalog_group_id": "23237",
+      "card_number": "170/165",
+      "latest_price": "79.2600",
+      "product_sub_type": "Holofoil"
+    },
+    {
+      "product_id": "10012093",
+      "product_name": "Squirtle (JP)",
+      "catalog_group": "Pokemon 151",
+      "catalog_group_id": "1000142",
+      "card_number": "170/165",
+      "latest_price": "30.9834",
+      "product_sub_type": "Holofoil"
+    }
+  ],
+  "Mewtwo 183/165": [
+    {
+      "product_id": "10012106",
+      "product_name": "Mewtwo (JP)",
+      "catalog_group": "Pokemon 151",
+      "catalog_group_id": "1000142",
+      "card_number": "183/165",
+      "latest_price": "30.1254",
+      "product_sub_type": "Holofoil"
+    }
+  ],
+  "Mr. Mime 179/165": [
+    {
+      "product_id": "517028",
+      "product_name": "Mr. Mime ",
+      "catalog_group": "SV: 151",
+      "catalog_group_id": "23237",
+      "card_number": "179/165",
+      "latest_price": "11.0400",
+      "product_sub_type": "Holofoil"
+    },
+    {
+      "product_id": "10012102",
+      "product_name": "Mr. Mime (JP)",
+      "catalog_group": "Pokemon 151",
+      "catalog_group_id": "1000142",
+      "card_number": "179/165",
+      "latest_price": "4.0134",
+      "product_sub_type": "Holofoil"
+    }
+  ],
+  "Paldean Student 065/165": [],
+  "Lacey 142/131": [],
+  "Festival Grounds 108/131": [
+    {
+      "product_id": "610463",
+      "product_name": "Festival Grounds ",
+      "catalog_group": "Prismatic Evolutions",
+      "catalog_group_id": "23821",
+      "card_number": "108/131",
+      "latest_price": "0.2200",
+      "product_sub_type": "Reverse Holofoil"
+    },
+    {
+      "product_id": "610619",
+      "product_name": "Festival Grounds (Poke Ball Pattern) ",
+      "catalog_group": "Prismatic Evolutions",
+      "catalog_group_id": "23821",
+      "card_number": "108/131",
+      "latest_price": "0.3500",
+      "product_sub_type": "Holofoil"
+    }
+  ],
+  "Great Tusk ex 053/091": [
+    {
+      "product_id": "534415",
+      "product_name": "Great Tusk ex ",
+      "catalog_group": "Paldean Fates",
+      "catalog_group_id": "23353",
+      "card_number": "053/091",
+      "latest_price": "0.5500",
+      "product_sub_type": "Holofoil"
+    }
+  ],
+  "Sin número": []
+}
