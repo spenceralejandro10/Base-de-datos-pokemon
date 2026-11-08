@@ -1,0 +1,23 @@
+name: Recalcular precios TCGplayer
+on:
+  push:
+    paths:
+      - '.github/workflows/update-market.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  prices:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Actualizar instantánea y calcular variación con inventario vivo
+        run: python3 scripts/revalue-prices.py
+      - name: Publicar precios y reporte
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add market-snapshot.js market-valuation.json index.html
+          git diff --cached --quiet || git commit -m "Actualizar precios TCGplayer y reporte de valoración"
+          git push
