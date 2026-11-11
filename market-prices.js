@@ -32,7 +32,8 @@
   ]);
   const ownerPrice=card=>{
     const item=fixedPrices.get(Number(card.id));
-    return item&&norm(item.name)===norm(card.name)&&number(item.number)===number(card.number)&&norm(item.set)===norm(card.set)?item:null;
+    // Los identificadores internos son estables; los nombres de colección pueden variar al sincronizar.
+    return item&&norm(item.name)===norm(card.name)&&number(item.number)===number(card.number)?item:null;
   };
   const seed=window.MARKET_SNAPSHOT||{groups:{}};
   const listeners=new Set(),DAY=86400000;
