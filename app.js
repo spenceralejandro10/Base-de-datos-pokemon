@@ -353,7 +353,7 @@ function listText(){
   const quote=market.quote(c);
   lines.push(cardCode(c)+" | "+c.name+" | "+c.number+" | "+(c.set||"Sin colección")+" | "+(c.language||"Sin idioma")+" | Referencia por carta: "+market.amount(quote)+" | Unidades solicitadas: "+quantity);
  }
- lines.push("","REFERENCIAS DISTINTAS: "+cart.size,"UNIDADES SOLICITADAS: "+total,"",market.rateText(),"TCGplayer Market Price convertido a COP, sin envío. Estado declarado de la colección: cartas sin jugar, recién sacadas de sobre y protegidas en toploader. El precio final se confirma antes de la compra.");
+ lines.push("","REFERENCIAS DISTINTAS: "+cart.size,"UNIDADES SOLICITADAS: "+total,"",market.rateText(),"Referencias disponibles: TCGplayer Market Price, precio fijado por propietario o Collectr autorizado, según cada carta. Los precios en COP no incluyen envío. Si no hay precio verificado, consultar la búsqueda en Collectr. Estado declarado: cartas sin jugar, recién sacadas de sobre y protegidas en toploader. El precio final se confirma antes de comprar.");
  return lines.join("\r\n");
 }
 function drawCart(){
@@ -459,11 +459,13 @@ async function imageFor(c,img,placeholder,status,token){
 function tcgLink(c) {
  const a=document.createElement("a");
  a.className="tcg-link";
- a.href=market.quote(c).url||market.searchUrl(c);
+ const quote=market.quote(c);
+ const fromCollectr=quote.source==="collectr-search"||quote.source==="collectr";
+ a.href=quote.url||market.searchUrl(c);
  a.target="_blank";
  a.rel="noopener noreferrer";
- a.textContent="Ver en TCGplayer";
- a.title="Consultar el precio de esta carta en TCGplayer";
+ a.textContent=fromCollectr?"Ver en Collectr":"Ver en TCGplayer";
+ a.title=fromCollectr?"Buscar la carta exacta en Collectr":"Consultar el precio de esta carta en TCGplayer";
  return a;
 }
 
