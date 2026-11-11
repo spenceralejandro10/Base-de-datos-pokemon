@@ -68,7 +68,8 @@
     }
     // Sin coincidencia verificable: se publica un valor ORIENTATIVO, nunca un
     // Market Price inventado. Al disponer de la cotización exacta, se sustituye.
-    const special={270:0.18,231:2.95};
+    // Provisionales basados en referencias externas recientes mientras se sincroniza TCGCSV.
+    const special={270:0.18,231:2.95,289:19.45,296:1.09,297:1.65};
     const usd=special[Number(card.id)]||(
       (()=>{const g=groupFor(card),data=g&&getGroup(g);
         const values=(data?.products||[]).flatMap(p=>p.prices||[])
