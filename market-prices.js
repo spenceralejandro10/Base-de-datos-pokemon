@@ -36,6 +36,33 @@
     return item&&norm(item.name)===norm(card.name)&&number(item.number)===number(card.number)?item:null;
   };
   const seed=window.MARKET_SNAPSHOT||{groups:{}};
+  // Solo se acepta una instantánea de Collectr obtenida mediante una API autorizada.
+  // La vitrina pública no incluye ni expone claves de Collectr.
+  const collectr=window.COLLECTR_SNAPSHOT||{cards:{}};
+  function collectrSearchUrl(card){
+    const query=[card.name,card.number,card.set,card.language]
+      .map(s=>String(s||"").trim()).filter(Boolean).join(" ");
+    return "https://app.getcollectr.com/?query="+encodeURIComponent(query);
+  }
+  function collectrFallback(card){
+    const row=collectr.cards?.[String(card.id)];
+    if(row&&norm(row.name)===norm(card.name)&&
+      number(row.number)===number(card.number)&&norm(row.set)===norm(card.set)&&
+      norm(row.language)===norm(card.language)&&Number.isFinite(Number(row.usd))&&
+      Number(row.usd)>0&&Number.isFinite(Date.parse(row.updatedAt))){
+      const usd=Number(row.usd),rate=Number(fx?.cop);
+      const goodRate=rate>0&&Date.now()-Date.parse(fx?.updatedAt)<7*DAY;
+      const url=typeof row.url==="string"&&
+        /^https:\/\/app\.getcollectr\.com\/(?:explore\/product\/|sets\/)/.test(row.url)?
+        row.url:collectrSearchUrl(card);
+      return{status:"ready",source:"collectr",min:usd,max:usd,
+        copMin:goodRate?usd*rate:null,copMax:goodRate?usd*rate:null,
+        url,updatedAt:row.updatedAt,stale:Date.now()-Date.parse(row.updatedAt)>2*DAY,
+        reference:false,variants:[{usd,finish:"Sin gradar"}],fx};
+    }
+    return{status:"missing",source:"collectr-search",reason:"Consultar precio en Collectr",
+      url:collectrSearchUrl(card)};
+  }
   const listeners=new Set(),DAY=86400000;
   const formatCOP=n=>new Intl.NumberFormat("es-CO",{style:"currency",currency:"COP",maximumFractionDigits:0}).format(n)+" COP";
   const formatUSD=n=>"US$"+Number(n).toFixed(2);
@@ -81,14 +108,11 @@
         url:searchUrl(card),fx};
     }
     const group=groupFor(card);
-    if(!group)return{status:"missing",reason:"Precio por confirmar"};
+    if(!group)return collectrFallback(card);
     const data=getGroup(group),matches=match(card,data);
-    if(matches.length!==1){
-      const unavailable=true;
-      return{status:unavailable?"missing":"loading",reason:unavailable?"Precio por confirmar":"Consultando TCGplayer…"};
-    }
+    if(matches.length!==1)return collectrFallback(card);
     const product=matches[0],variants=product.prices||[],usd=variants.map(v=>v.usd).filter(v=>Number.isFinite(v)&&v>0);
-    if(!usd.length)return{status:"missing",reason:"Sin precio de mercado"};
+    if(!usd.length)return collectrFallback(card);
     const rate=Number(fx?.cop),validRate=rate>0&&Date.now()-Date.parse(fx?.updatedAt)<7*DAY;
     const min=Math.min(...usd),max=Math.max(...usd);
     return{status:"ready",min,max,copMin:validRate?min*rate:null,copMax:validRate?max*rate:null,
@@ -107,14 +131,30 @@
   }
   function element(card){
     const q=quote(card),box=document.createElement("div");box.className="card-market-price";
-    const label=document.createElement("small");label.textContent=q.manual?"Precio fijado por propietario":"TCGplayer · Market Price";
+    const label=document.createElement("small");
+    label.textContent=q.manual?"Precio fijado por propietario":
+      q.source==="collectr"?"Collectr · Precio de referencia":
+      q.source==="collectr-search"?"Alternativa: Collectr":"TCGplayer · Market Price";
+    if(q.status!=="ready"&&q.source==="collectr-search"){
+      const link=document.createElement("a");
+      link.textContent="Buscar precio en Collectr";
+      link.href=q.url;link.target="_blank";link.rel="noopener noreferrer";
+      link.title="Consultar nombre, número, colección e idioma en Collectr; el precio no se importa automáticamente.";
+      box.append(label,link);
+      return box;
+    }
     const value=document.createElement("strong");value.textContent=amount(q);box.append(label,value);
     if(q.status==="ready"){
       const detail=document.createElement("small");
-      detail.textContent=q.manual?formatUSD(q.min)+" · Precio indicado":formatUSD(q.min)+(q.min!==q.max?" – "+formatUSD(q.max)+" · Según acabado":" · "+q.variants[0].finish);
-      const updated=document.createElement("small");updated.textContent=q.manual?"Precio fijado: "+date(q.updatedAt):((q.stale?"Último dato: ":"Consulta: ")+date(q.updatedAt)+(q.reference?" · Referencia en inglés":""));
+      detail.textContent=q.manual?formatUSD(q.min)+" · Precio indicado":
+        q.source==="collectr"?formatUSD(q.min)+" · Sin gradar":
+        formatUSD(q.min)+(q.min!==q.max?" – "+formatUSD(q.max)+" · Según acabado":" · "+q.variants[0].finish);
+      const updated=document.createElement("small");
+      updated.textContent=q.manual?"Precio fijado: "+date(q.updatedAt):
+        ((q.stale?"Último dato: ":"Consulta: ")+date(q.updatedAt)+(q.reference?" · Referencia en inglés":""));
+      if(q.source==="collectr")updated.textContent+=" · Powered by Collectr";
       box.append(detail,updated);
-      box.title=q.manual?"Precio en USD establecido por el propietario. Se convierte a COP según el cambio USD/COP del sitio.":q.variants.map(v=>v.finish+": "+formatUSD(v.usd)).join(" · ")+". Referencia de mercado basada en ventas, sin envío. No describe el estado físico de esta carta.";
+      box.title=q.manual?"Precio en USD establecido por el propietario. Se convierte a COP según el cambio USD/COP del sitio.":q.source==="collectr"?"Referencia de Collectr obtenida mediante API autorizada; convertida a COP.":q.variants.map(v=>v.finish+": "+formatUSD(v.usd)).join(" · ")+". Referencia de mercado basada en ventas, sin envío. No describe el estado físico de esta carta.";
     }
     return box;
   }
@@ -128,5 +168,5 @@
     }catch(_){}
   }
   function rateText(){return fx?.cop>0?"1 USD = "+formatCOP(fx.cop)+" · cambio del "+date(fx.updatedAt):"Consultando cambio USD/COP…"}
-  window.CardPrices={searchUrl,quote,element,amount,formatCOP,rateText,init,subscribe:fn=>listeners.add(fn)};
+  window.CardPrices={searchUrl,collectrSearchUrl,quote,element,amount,formatCOP,rateText,init,subscribe:fn=>listeners.add(fn)};
 })();
