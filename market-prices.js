@@ -23,6 +23,17 @@
     "ondulagua ex":"walking wake ex","estudiante de paldea":"paldean student",
     "cloe":"lacey","e nigma":"iono","ferrocuello":"iron jugulis","furioseta":"brute bonnet",
     "calyrex jinete glacial vmax":"ice rider calyrex vmax"};
+  // Precios fijados expresamente por el propietario (USD); no se reemplazan por TCGCSV.
+  // Cada precio se ata al ID interno y a la identidad de la carta.
+  const fixedPrices=new Map([
+    [274,{name:"Boltund VMAX",number:"267/264",set:"Fusion Strike",usd:8}],
+    [294,{name:"Alcremie",number:"TG08/TG30",set:"Brilliant Stars Trainer Gallery",usd:5}],
+    [55,{name:"Estudiante de Paldea",number:"065/165",set:"Paldean Fates",usd:4}]
+  ]);
+  const ownerPrice=card=>{
+    const item=fixedPrices.get(Number(card.id));
+    return item&&norm(item.name)===norm(card.name)&&number(item.number)===number(card.number)&&norm(item.set)===norm(card.set)?item:null;
+  };
   const seed=window.MARKET_SNAPSHOT||{groups:{}};
   const listeners=new Set(),DAY=86400000;
   const formatCOP=n=>new Intl.NumberFormat("es-CO",{style:"currency",currency:"COP",maximumFractionDigits:0}).format(n)+" COP";
@@ -59,6 +70,15 @@
     return exact.length?exact:candidates;
   }
   function quote(card){
+    const fixed=ownerPrice(card);
+    if(fixed){
+      const rate=Number(fx?.cop)||Number(seed.fx?.cop);
+      const cop=rate>0?fixed.usd*rate:null;
+      return{status:"ready",manual:true,min:fixed.usd,max:fixed.usd,
+        copMin:cop,copMax:cop,updatedAt:"2026-11-11T12:00:00-05:00",
+        stale:false,reference:false,variants:[{usd:fixed.usd,finish:"Precio fijado por el propietario"}],
+        url:searchUrl(card),fx};
+    }
     const group=groupFor(card);
     if(!group)return{status:"missing",reason:"Precio por confirmar"};
     const data=getGroup(group),matches=match(card,data);
@@ -86,14 +106,14 @@
   }
   function element(card){
     const q=quote(card),box=document.createElement("div");box.className="card-market-price";
-    const label=document.createElement("small");label.textContent="TCGplayer · Market Price";
+    const label=document.createElement("small");label.textContent=q.manual?"Precio fijado por propietario":"TCGplayer · Market Price";
     const value=document.createElement("strong");value.textContent=amount(q);box.append(label,value);
     if(q.status==="ready"){
       const detail=document.createElement("small");
-      detail.textContent=formatUSD(q.min)+(q.min!==q.max?" – "+formatUSD(q.max)+" · Según acabado":" · "+q.variants[0].finish);
-      const updated=document.createElement("small");updated.textContent=(q.stale?"Último dato: ":"Consulta: ")+date(q.updatedAt)+(q.reference?" · Referencia en inglés":"");
+      detail.textContent=q.manual?formatUSD(q.min)+" · Precio indicado":formatUSD(q.min)+(q.min!==q.max?" – "+formatUSD(q.max)+" · Según acabado":" · "+q.variants[0].finish);
+      const updated=document.createElement("small");updated.textContent=q.manual?"Precio fijado: "+date(q.updatedAt):((q.stale?"Último dato: ":"Consulta: ")+date(q.updatedAt)+(q.reference?" · Referencia en inglés":""));
       box.append(detail,updated);
-      box.title=q.variants.map(v=>v.finish+": "+formatUSD(v.usd)).join(" · ")+". Referencia de mercado basada en ventas, sin envío. No describe el estado físico de esta carta.";
+      box.title=q.manual?"Precio en USD establecido por el propietario. Se convierte a COP según el cambio USD/COP del sitio.":q.variants.map(v=>v.finish+": "+formatUSD(v.usd)).join(" · ")+". Referencia de mercado basada en ventas, sin envío. No describe el estado físico de esta carta.";
     }
     return box;
   }
