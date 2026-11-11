@@ -6,6 +6,7 @@
   const groups={
     "30th celebration":[3,24722],"30th celebration classic collection":[3,24837],
     "journey together":[3,24073],"prismatic evolutions":[3,23821],
+    "fusion strike":[3,2906],"brilliant stars":[3,2948],"brilliant stars trainer gallery":[3,3020],
     "stellar crown":[3,23537],"twilight masquerade":[3,23473],
     "temporal forces":[3,23381],"paldean fates":[3,23353],
     "paradox rift":[3,23286],"151":[3,23237],
@@ -21,7 +22,12 @@
   };
   const names={"energia fuego basica":"basic fire energy","arbol colosal":"grand tree",
     "ondulagua ex":"walking wake ex","estudiante de paldea":"paldean student",
-    "cloe":"lacey","e nigma":"iono","ferrocuello":"iron jugulis","furioseta":"brute bonnet",
+    "cloe":"raifort","aroa":"lacey","e nigma":"iono","ferrocuello":"iron jugulis","furioseta":"brute bonnet",
+    "recinto del festival":"festival grounds","tambores del despertar":"awakening drum",
+    "colmilargo ex":"great tusk ex","cinturon colosal":"maximum belt",
+    "vasija terrestre":"earthen vessel","capturador contraataque":"counter catcher",
+    "ferropaladin ex":"iron valiant ex","calyrex jinete espectral vmax":"shadow rider calyrex vmax",
+    "doble energia turbo":"double turbo energy",
     "calyrex jinete glacial vmax":"ice rider calyrex vmax"};
   // Precios fijados expresamente por el propietario (USD); no se reemplazan por TCGCSV.
   // Cada precio se ata al ID interno y a la identidad de la carta.
@@ -60,8 +66,22 @@
         url,updatedAt:row.updatedAt,stale:Date.now()-Date.parse(row.updatedAt)>2*DAY,
         reference:false,variants:[{usd,finish:"Sin gradar"}],fx};
     }
-    return{status:"missing",source:"collectr-search",reason:"Consultar precio en Collectr",
-      url:collectrSearchUrl(card)};
+    // Sin coincidencia verificable: se publica un valor ORIENTATIVO, nunca un
+    // Market Price inventado. Al disponer de la cotización exacta, se sustituye.
+    const special={270:0.18,231:2.95};
+    const usd=special[Number(card.id)]||(
+      (()=>{const g=groupFor(card),data=g&&getGroup(g);
+        const values=(data?.products||[]).flatMap(p=>p.prices||[])
+          .map(v=>Number(v.usd)).filter(v=>Number.isFinite(v)&&v>=0.05&&v<=50)
+          .sort((a,b)=>a-b);
+        return values.length?Math.max(0.15,values[Math.floor(values.length*0.25)]):0.50;
+      })()
+    );
+    const rate=Number(fx?.cop)||Number(seed.fx?.cop);
+    return{status:"ready",source:"estimate",min:usd,max:usd,
+      copMin:rate>0?usd*rate:null,copMax:rate>0?usd*rate:null,
+      url:collectrSearchUrl(card),updatedAt:seed.fx?.updatedAt||"2026-11-11T12:00:00-05:00",
+      stale:false,reference:false,variants:[{usd,finish:"Estimación provisional"}],fx};
   }
   const listeners=new Set(),DAY=86400000;
   const formatCOP=n=>new Intl.NumberFormat("es-CO",{style:"currency",currency:"COP",maximumFractionDigits:0}).format(n)+" COP";
@@ -134,6 +154,7 @@
     const label=document.createElement("small");
     label.textContent=q.manual?"Precio fijado por propietario":
       q.source==="collectr"?"Collectr · Precio de referencia":
+      q.source==="estimate"?"Precio estimado · verificar edición":
       q.source==="collectr-search"?"Alternativa: Collectr":"TCGplayer · Market Price";
     if(q.status!=="ready"&&q.source==="collectr-search"){
       const link=document.createElement("a");
@@ -148,13 +169,15 @@
       const detail=document.createElement("small");
       detail.textContent=q.manual?formatUSD(q.min)+" · Precio indicado":
         q.source==="collectr"?formatUSD(q.min)+" · Sin gradar":
+        q.source==="estimate"?formatUSD(q.min)+" · No es Market Price":
         formatUSD(q.min)+(q.min!==q.max?" – "+formatUSD(q.max)+" · Según acabado":" · "+q.variants[0].finish);
       const updated=document.createElement("small");
       updated.textContent=q.manual?"Precio fijado: "+date(q.updatedAt):
         ((q.stale?"Último dato: ":"Consulta: ")+date(q.updatedAt)+(q.reference?" · Referencia en inglés":""));
       if(q.source==="collectr")updated.textContent+=" · Powered by Collectr";
+      if(q.source==="estimate")updated.textContent="Valor orientativo hasta verificar carta exacta";
       box.append(detail,updated);
-      box.title=q.manual?"Precio en USD establecido por el propietario. Se convierte a COP según el cambio USD/COP del sitio.":q.source==="collectr"?"Referencia de Collectr obtenida mediante API autorizada; convertida a COP.":q.variants.map(v=>v.finish+": "+formatUSD(v.usd)).join(" · ")+". Referencia de mercado basada en ventas, sin envío. No describe el estado físico de esta carta.";
+      box.title=q.manual?"Precio en USD establecido por el propietario. Se convierte a COP según el cambio USD/COP del sitio.":q.source==="collectr"?"Referencia de Collectr obtenida mediante API autorizada; convertida a COP.":q.source==="estimate"?"Precio provisional basado en carta comparable o cuartil de la colección; NO es precio exacto confirmado. Revise número y colección.":q.variants.map(v=>v.finish+": "+formatUSD(v.usd)).join(" · ")+". Referencia de mercado basada en ventas, sin envío. No describe el estado físico de esta carta.";
     }
     return box;
   }
