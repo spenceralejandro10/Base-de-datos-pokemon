@@ -13,7 +13,18 @@ const sold=Object.freeze([
  Object.freeze({id:28, name:"Jynx ex",number:"191/165",set:"151",language:"Inglés"}),
  Object.freeze({id:81, name:"Caterpie",number:"172/165",set:"Pokémon Card 151",language:"Japonés"}),
  Object.freeze({id:241,name:"Omanyte",number:"180/165",set:"Pokémon Card 151",language:"Japonés"}),
- Object.freeze({id:79, name:"Blastoise",number:"2/102",set:"Celebrations (Classic Collection)",language:"Inglés"})
+ Object.freeze({id:79, name:"Blastoise",number:"2/102",set:"Celebrations (Classic Collection)",language:"Inglés"}),
+ Object.freeze({"id":184,"name":"Pikachu ex","number":"150/128","set":"30th Celebration","language":"Inglés"}),
+ Object.freeze({"id":186,"name":"Mew ex","number":"158/128","set":"30th Celebration","language":"Inglés"}),
+ Object.freeze({"id":187,"name":"Jirachi ex","number":"155/128","set":"30th Celebration","language":"Inglés"}),
+ Object.freeze({"id":188,"name":"Sylveon ex","number":"153/128","set":"30th Celebration","language":"Inglés"}),
+ Object.freeze({"id":191,"name":"Mewtwo ex","number":"151/128","set":"30th Celebration","language":"Inglés"}),
+ Object.freeze({"id":192,"name":"Gengar ex","number":"154/128","set":"30th Celebration","language":"Inglés"}),
+ Object.freeze({"id":193,"name":"Mew ex","number":"152/128","set":"30th Celebration","language":"Inglés"}),
+ Object.freeze({"id":182,"name":"Lugia","number":"149/147","set":"30th Celebration - Classic Collection","language":"Inglés"}),
+ Object.freeze({"id":185,"name":"Magikarp","number":"203/193","set":"30th Celebration - Classic Collection","language":"Inglés"}),
+ Object.freeze({"id":195,"name":"Darkrai & Cresselia LEGEND","number":"100/102","set":"30th Celebration - Classic Collection","language":"Inglés"}),
+ Object.freeze({"id":196,"name":"Gengar","number":"94/102","set":"30th Celebration - Classic Collection","language":"Inglés"})
 ]);
 const byId=new Map(sold.map(x=>[x.id,x]));
 const isSold=card=>{
