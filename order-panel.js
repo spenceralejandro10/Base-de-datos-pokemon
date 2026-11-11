@@ -184,11 +184,11 @@ function cardItem(row,index){
  const msgPrice=row.price==null?"Por confirmar":cop(row.price);
  prices.append(line("div","Precio en mensaje",msgPrice,row.quantity>1&&row.price!=null?
   "Subtotal "+cop(row.price*row.quantity):""));
- let mktText="Precio por confirmar",hint="";
+ let mktText=card?"Consultando cotización":"Carta no identificada",hint="";
  if(mkt!=null){
   mktText=cop(mkt);
   if(quote.copMax!=null&&Math.round(quote.copMax)>mkt)mktText="Desde "+mktText;
-  hint=quote.manual?"Precio indicado por propietario":quote.source==="collectr"?"Powered by Collectr":(quote.stale?"Última referencia disponible":"TCGplayer Market Price");
+  hint=quote.manual?"Precio indicado por propietario":quote.source==="collectr"?"Powered by Collectr":quote.source==="estimate"?"Valor provisional; verificar número y expansión":(quote.stale?"Última referencia disponible":"TCGplayer Market Price");
   if(quote.reference)hint+=" · edición en inglés";
  }else if(quote?.status==="ready"&&Number.isFinite(quote.min)){
   mktText="US$"+quote.min.toFixed(2);
@@ -197,11 +197,11 @@ function cardItem(row,index){
   mktText="Consultar en Collectr";
   hint="No hay precio automático verificado";
  }
- prices.append(line("div",quote?.manual?"Precio del propietario":quote?.source==="collectr"?"Referencia Collectr":quote?.source==="collectr-search"?"Alternativa Collectr":"Mercado TCGplayer",mktText,hint));
+ prices.append(line("div",quote?.manual?"Precio del propietario":quote?.source==="collectr"?"Referencia Collectr":quote?.source==="estimate"?"Precio orientativo":quote?.source==="collectr-search"?"Alternativa Collectr":"Mercado TCGplayer",mktText,hint));
  wrap.append(prices);
  const actions=el("div","order-list-actions");
  if(card){
-  const collectrLookup=quote?.source==="collectr-search"||quote?.source==="collectr";
+  const collectrLookup=quote?.source==="collectr-search"||quote?.source==="collectr"||quote?.source==="estimate";
   const href=quote?.url||pricing.searchUrl(card);
   const link=el("a","order-tcg-link",collectrLookup?"Ver en Collectr":"Ver en TCGplayer");
   link.href=href;link.target="_blank";link.rel="noopener noreferrer";
