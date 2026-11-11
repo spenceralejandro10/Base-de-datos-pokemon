@@ -103,7 +103,7 @@ function displayTotals(){
  $("orderMatched").textContent=t.found+" / "+rows.length;
  $("orderUnits").textContent=t.count.toLocaleString("es-CO");
  $("orderClientTotal").textContent=cop(t.client)+(t.unpricedClient?"*":"");
- $("orderMarketTotal").textContent=t.unpricedMarket===rows.length?"Por confirmar":cop(t.market)+(t.unpricedMarket?"*":"");
+ $("orderMarketTotal").textContent=t.unpricedMarket===rows.length?"Sin cartas identificadas":cop(t.market)+(t.unpricedMarket?"*":"");
  $("orderMarketNote").textContent=t.unpricedMarket?
   t.unpricedMarket+" referencia(s) sin precio de referencia; total parcial.":"TCGplayer, precios propios o Collectr autorizado · valor mínimo si hay acabados";
  $("orderResultsDescription").textContent=rows.length+" referencias del cliente · "+t.count+
@@ -181,7 +181,7 @@ function cardItem(row,index){
  }else stockbox.append(el("small","order-stock-caution","Sin registro confirmado"));
  wrap.append(stockbox);
  const prices=el("div","order-list-prices");
- const msgPrice=row.price==null?"Por confirmar":cop(row.price);
+ const msgPrice=row.price==null?"No indicado por cliente":cop(row.price);
  prices.append(line("div","Precio en mensaje",msgPrice,row.quantity>1&&row.price!=null?
   "Subtotal "+cop(row.price*row.quantity):""));
  let mktText=card?"Consultando cotización":"Carta no identificada",hint="";
