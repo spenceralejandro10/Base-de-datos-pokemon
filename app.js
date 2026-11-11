@@ -460,11 +460,11 @@ function tcgLink(c) {
  const a=document.createElement("a");
  a.className="tcg-link";
  const quote=market.quote(c);
- const fromCollectr=quote.source==="collectr-search"||quote.source==="collectr";
+ const fromCollectr=quote.source==="collectr-search"||quote.source==="collectr"||quote.source==="estimate";
  a.href=quote.url||market.searchUrl(c);
  a.target="_blank";
  a.rel="noopener noreferrer";
- a.textContent=fromCollectr?"Ver en Collectr":"Ver en TCGplayer";
+ a.textContent=fromCollectr?"Consultar en Collectr":"Ver en TCGplayer";
  a.title=fromCollectr?"Buscar la carta exacta en Collectr":"Consultar el precio de esta carta en TCGplayer";
  return a;
 }
