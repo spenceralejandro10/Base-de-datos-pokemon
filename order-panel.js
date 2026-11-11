@@ -105,7 +105,7 @@ function displayTotals(){
  $("orderClientTotal").textContent=cop(t.client)+(t.unpricedClient?"*":"");
  $("orderMarketTotal").textContent=t.unpricedMarket===rows.length?"Por confirmar":cop(t.market)+(t.unpricedMarket?"*":"");
  $("orderMarketNote").textContent=t.unpricedMarket?
-  t.unpricedMarket+" referencia(s) sin precio de referencia; total parcial.":"TCGplayer o precios fijados por propietario · valor mínimo si hay acabados";
+  t.unpricedMarket+" referencia(s) sin precio de referencia; total parcial.":"TCGplayer, precios propios o Collectr autorizado · valor mínimo si hay acabados";
  $("orderResultsDescription").textContent=rows.length+" referencias del cliente · "+t.count+
   " unidades · "+(rows.length-t.found)+" sin coincidencia.";
 }
@@ -188,20 +188,24 @@ function cardItem(row,index){
  if(mkt!=null){
   mktText=cop(mkt);
   if(quote.copMax!=null&&Math.round(quote.copMax)>mkt)mktText="Desde "+mktText;
-  hint=quote.manual?"Precio indicado por propietario":(quote.stale?"Última referencia disponible":"TCGplayer Market Price");
+  hint=quote.manual?"Precio indicado por propietario":quote.source==="collectr"?"Powered by Collectr":(quote.stale?"Última referencia disponible":"TCGplayer Market Price");
   if(quote.reference)hint+=" · edición en inglés";
  }else if(quote?.status==="ready"&&Number.isFinite(quote.min)){
   mktText="US$"+quote.min.toFixed(2);
   hint="Sin conversión COP disponible";
+ }else if(quote?.source==="collectr-search"){
+  mktText="Consultar en Collectr";
+  hint="No hay precio automático verificado";
  }
- prices.append(line("div",quote?.manual?"Precio del propietario":"Mercado TCGplayer",mktText,hint));
+ prices.append(line("div",quote?.manual?"Precio del propietario":quote?.source==="collectr"?"Referencia Collectr":quote?.source==="collectr-search"?"Alternativa Collectr":"Mercado TCGplayer",mktText,hint));
  wrap.append(prices);
  const actions=el("div","order-list-actions");
  if(card){
-  const href=quote?.status==="ready"&&quote.url?quote.url:pricing.searchUrl(card);
-  const link=el("a","order-tcg-link","Ver en TCGplayer");
+  const collectrLookup=quote?.source==="collectr-search"||quote?.source==="collectr";
+  const href=quote?.url||pricing.searchUrl(card);
+  const link=el("a","order-tcg-link",collectrLookup?"Ver en Collectr":"Ver en TCGplayer");
   link.href=href;link.target="_blank";link.rel="noopener noreferrer";
-  link.title=quote?.url&&!quote.manual?"Abrir el producto de TCGplayer":"Buscar la carta en TCGplayer";
+  link.title=collectrLookup?"Abrir la consulta en Collectr":quote?.url&&!quote.manual?"Abrir el producto de TCGplayer":"Buscar la carta en TCGplayer";
   actions.append(link);
  }else actions.append(el("span","order-lookup-needed","Revisar identidad"));
  const remove=el("button","order-remove-local","Quitar de lista");
