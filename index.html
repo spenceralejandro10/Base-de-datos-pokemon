@@ -6,7 +6,7 @@
 <meta name="theme-color" content="#17304f">
 <title>Bóveda TCG | Colección de cartas Pokémon</title>
 <meta name="description" content="Explora Bóveda TCG: colección Pokémon, disponibilidad y selección de cartas.">
-<link rel="stylesheet" href="./styles.css?v=54">
+<link rel="stylesheet" href="./styles.css?v=55">
 </head>
 <body>
 <header class="top">
@@ -26,7 +26,12 @@
    <strong id="inventoryTotal" class="inventory-worth-amount" aria-live="polite" aria-atomic="true">Calculando…</strong>
    <p id="inventoryMeta" class="inventory-worth-meta">Cargando existencias y precios de las cartas disponibles…</p>
   </div>
-  <span class="inventory-worth-status">Actualización automática</span>
+  <div class="inventory-offer-cta">
+   <span class="inventory-worth-status">Actualización automática</span>
+   <h2>¿Te interesa toda la colección?</h2>
+   <p>Anímate a proponer un precio por <strong>todas las cartas disponibles</strong>. Guardaremos tu oferta en <strong>Mi selección</strong> con un código para compartirla.</p>
+   <button id="openInventoryOffer" class="inventory-offer-button" type="button" disabled>Realizar oferta por inventario total</button>
+  </div>
  </section>
  <section class="stats" aria-label="Inventario de la bóveda">
   <div class="stat"><strong id="total">—</strong><small>Referencias</small></div>
@@ -86,13 +91,34 @@
     <p class="order-bottom-note">Los precios de mercado son referencias de TCGplayer procesadas desde TCGCSV, precios propios indicados o datos autorizados de Collectr cuando estén disponibles. Si falta un precio, se puede consultar la búsqueda de Collectr. Para confirmar el valor vigente, abre la ficha de su fuente. Las existencias son las registradas en Bóveda TCG y pueden diferir de las unidades físicas.</p>
   </div>
 </dialog>
+<dialog id="inventoryOfferDialog" class="editor-dialog inventory-offer-dialog" aria-labelledby="inventoryOfferTitle">
+ <div class="dialog-top">
+  <h2 id="inventoryOfferTitle">Tu oferta por toda la colección</h2>
+  <button id="closeInventoryOffer" class="icon-button" type="button" aria-label="Cerrar">×</button>
+ </div>
+ <p>Elige cuánto ofrecerías por <strong>todas las cartas disponibles</strong>. Te daremos un código para enviarnos tu propuesta.</p>
+ <div class="offer-market-reference">
+  <small>Valor de referencia del inventario</small>
+  <strong id="offerReferenceTotal">—</strong>
+  <span id="offerReferenceUnits">—</span>
+ </div>
+ <form id="inventoryOfferForm">
+  <label for="offerAmount">Tu oferta (pesos colombianos)</label>
+  <div class="offer-input-wrap"><span aria-hidden="true">$</span><input id="offerAmount" type="number" min="1" step="1" placeholder="Ingresa tu oferta en COP" required inputmode="numeric" autocomplete="off"></div>
+  <p class="offer-preview" id="offerPreview" aria-live="polite"></p>
+  <p id="offerError" class="offer-error" role="alert" hidden></p>
+  <button id="saveInventoryOffer" class="primary offer-submit" type="submit">Agregar oferta a Mi selección</button>
+ </form>
+ <p class="offer-fineprint">La propuesta no es una compra ni reserva. Se confirmarán el precio y las existencias antes de aceptarla.</p>
+</dialog>
 <dialog id="cartDialog" class="editor-dialog cart-dialog">
  <div class="dialog-top"><h2>Mi selección de cartas</h2><button id="closeCart" class="icon-button" type="button" aria-label="Cerrar">×</button></div>
- <p>Agrega las cartas que te interesen y descarga el archivo de texto. Puedes enviárselo al vendedor para consultar disponibilidad y condiciones.</p>
+ <p>Aquí se guardan tus cartas y las ofertas por el inventario completo. Puedes copiar o enviar tu propuesta para que la revisemos.</p>
  <div id="cartItems"></div>
  <p id="cartSummary" class="cart-summary"></p>
  <button id="downloadCart" type="button" class="primary">Descargar lista .txt</button>
- <button id="copyCart" type="button">Copiar lista</button>
+ <button id="copyCart" type="button">Copiar propuesta</button>
+ <button id="shareCart" type="button" class="cart-share-button">Compartir por WhatsApp</button>
  <button id="clearCart" type="button" class="danger">Vaciar selección</button>
 </dialog>
 <dialog id="editorDialog" class="editor-dialog">
@@ -143,7 +169,7 @@
 <script src="./collectr-snapshot.js?v=1"></script>
 <script src="./market-prices.js?v=51"></script>
 <script src="./sold-cards.js?v=2"></script>
-<script src="./app.js?v=56"></script>
+<script src="./app.js?v=57"></script>
 <script src="./order-panel.js?v=57"></script>
 <script src="./visitors.js?v=1"></script>
 </body>
