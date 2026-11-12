@@ -10,8 +10,16 @@ async function refresh(force=false){
  const res=await fetch(BASE+"/rest/v1/pokemon_stock_overrides?select=card_id,quantity_available,is_listed",{headers:{apikey:KEY,Accept:"application/json"},cache:"no-store"});
  if(!res.ok){message="No fue posible consultar las existencias";emit();return overrides;}
  const data=await res.json();
- overrides=new Map(data.map(row=>[Number(row.card_id),row]));
- loaded=Date.now();message="";emit();return overrides;
+ const next=new Map(data.map(row=>[Number(row.card_id),row]));
+ const changed=next.size!==overrides.size||[...next].some(([id,row])=>{
+  const previous=overrides.get(id);
+  return !previous||Number(previous.quantity_available)!==Number(row.quantity_available)||
+   !!previous.is_listed!==!!row.is_listed;
+ });
+ overrides=next;
+ loaded=Date.now();message="";
+ if(changed)emit();
+ return overrides;
 }
 function get(card){const saved=overrides.get(Number(card.id));const q=saved?Number(saved.quantity_available):Number(card.quantity)||0;return {quantity:q,available:q>0&&(saved?!!saved.is_listed:true),override:!!saved,listed:saved?saved.is_listed:true};}
 async function save(card,amount,listed){
