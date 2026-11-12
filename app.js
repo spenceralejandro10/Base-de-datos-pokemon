@@ -704,8 +704,81 @@ el("resetFilters").addEventListener("click",()=>{
 });
 updateCartCount();
 adminDisplay();
-shared.subscribe(()=>{if(initialized)render()});
-meta.listen(()=>{if(initialized)applyMeta()});
+shared.subscribe(()=>{if(initialized){render();updatePhotoRecovery()}});
+meta.listen(()=>{if(initialized){applyMeta();updatePhotoRecovery()}});
+
+/* Recuperación no destructiva de fotos guardadas antes en este mismo navegador.
+   Solo se habilita desde el enlace de recuperación y nunca reemplaza imágenes de Supabase. */
+const recoverySection=el("photoRecovery");
+const recoveryButton=el("photoRecoveryButton");
+const recoveryStatus=el("photoRecoveryStatus");
+let recoveringPhotos=false;
+const recoveryMode=new URLSearchParams(location.search).has("recuperar-fotos") ||
+  new URLSearchParams(location.search).get("admin")==="1";
+if(recoveryMode)recoverySection.hidden=false;
+function localPhoto(card){
+ try{
+  const url=String(localStorage.getItem("pokemon-image-"+card.id)||"").trim();
+  return /^https:\/\//i.test(url)&&url.length<=2048?url:null;
+ }catch(_){return null}
+}
+function localPhotosNotSynced(){
+ return records.filter(card=>!shared.getShared(card)&&localPhoto(card));
+}
+function updatePhotoRecovery(){
+ if(!recoveryMode||recoveringPhotos||!initialized)return;
+ const unsynced=localPhotosNotSynced();
+ recoveryButton.disabled=!unsynced.length;
+ recoveryStatus.textContent=unsynced.length?
+  "Encontramos "+unsynced.length+" fotografías antiguas en este navegador que todavía no están sincronizadas.":
+  "No encontramos imágenes locales pendientes en este navegador. Las imágenes guardadas en la nube se mantienen intactas.";
+}
+async function restoreLocalPhotos(){
+ if(recoveringPhotos||!initialized)return;
+ recoveringPhotos=true;recoveryButton.disabled=true;
+ let restored=0,failed=0,skipped=0;
+ try{
+  await shared.loadShared(true);
+  const pending=localPhotosNotSynced();
+  if(!pending.length){
+   recoveryStatus.textContent="Este navegador no tiene fotografías locales pendientes de restauración.";
+   return;
+  }
+  for(const card of pending){
+   recoveryStatus.textContent="Recuperando fotografía "+(restored+failed+skipped+1)+" de "+pending.length+"…";
+   const url=localPhoto(card);
+   if(!url||shared.getShared(card)){skipped++;continue;}
+   // Verificar que el enlace de la foto siga mostrando una imagen real.
+   const working=await new Promise(resolve=>{
+    const check=new Image();let done=false;
+    const timeout=setTimeout(()=>finish(false),8500);
+    const finish=ok=>{
+     if(done)return;done=true;clearTimeout(timeout);
+     check.onload=null;check.onerror=null;resolve(ok);
+    };
+    check.onload=()=>finish(true);check.onerror=()=>finish(false);check.src=url;
+   });
+   if(!working){failed++;continue;}
+   try{
+    if(!shared.getShared(card)){
+     await shared.updateImage(card,url);
+     restored++;
+    }else skipped++;
+   }catch(_){failed++;}
+  }
+  await shared.loadShared(true);
+  applyMeta();
+  recoveryStatus.textContent="Recuperadas "+restored+" fotografías en Supabase"+
+   (failed?" · "+failed+" enlaces no se pudieron restaurar":"")+
+   (skipped?" · "+skipped+" conservadas sin cambios":"")+".";
+ }catch(_){recoveryStatus.textContent="No fue posible completar la sincronización. Las fotografías existentes permanecen intactas."}
+ finally{
+  recoveringPhotos=false;
+  recoveryButton.disabled=!localPhotosNotSynced().length;
+ }
+}
+recoveryButton.addEventListener("click",()=>void restoreLocalPhotos());
+
 stock.listen(()=>{if(initialized){updateStats();cleanCart();render()}});
 market.subscribe(()=>{updateInventoryValue();render();if(cartDialog.open)drawCart()});
 void market.init();
@@ -719,7 +792,7 @@ function refreshPublishedCatalog(){
  }).catch(()=>false);
 }
 Promise.allSettled([shared.init(),meta.fetchOverrides(true),stock.refresh(true),refreshPublishedCatalog()]).then(()=>{
- initialized=true;applyMeta();adminDisplay();
+ initialized=true;applyMeta();adminDisplay();updatePhotoRecovery();
  
 });
 document.addEventListener("visibilitychange",()=>{
