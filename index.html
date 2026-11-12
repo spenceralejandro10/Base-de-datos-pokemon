@@ -6,7 +6,7 @@
 <meta name="theme-color" content="#17304f">
 <title>Bóveda TCG | Colección de cartas Pokémon</title>
 <meta name="description" content="Explora Bóveda TCG: colección Pokémon, disponibilidad y selección de cartas.">
-<link rel="stylesheet" href="./styles.css?v=53">
+<link rel="stylesheet" href="./styles.css?v=54">
 </head>
 <body>
 <header class="top">
@@ -20,6 +20,14 @@
  </div>
 </header>
 <main class="wrap">
+ <section class="inventory-worth" aria-label="Valor del inventario disponible">
+  <div>
+   <p class="inventory-worth-label">VALOR TOTAL DEL INVENTARIO DISPONIBLE</p>
+   <strong id="inventoryTotal" class="inventory-worth-amount" aria-live="polite" aria-atomic="true">Calculando…</strong>
+   <p id="inventoryMeta" class="inventory-worth-meta">Cargando existencias y precios de las cartas disponibles…</p>
+  </div>
+  <span class="inventory-worth-status">Actualización automática</span>
+ </section>
  <section class="stats" aria-label="Inventario de la bóveda">
   <div class="stat"><strong id="total">—</strong><small>Referencias</small></div>
   <div class="stat"><strong id="copies">—</strong><small>Unidades en la colección</small></div>
@@ -129,13 +137,13 @@
 <script src="./cards.js?v=55"></script>
 <script src="./shared-images.js?v=39"></script>
 <script src="./catalog-overrides.js?v=31"></script>
-<script src="./card-stock.js?v=31"></script>
+<script src="./card-stock.js?v=32"></script>
 <script src="./card-images.js?v=45"></script>
 <script src="./market-snapshot.js?v=39"></script>
 <script src="./collectr-snapshot.js?v=1"></script>
 <script src="./market-prices.js?v=51"></script>
 <script src="./sold-cards.js?v=2"></script>
-<script src="./app.js?v=55"></script>
+<script src="./app.js?v=56"></script>
 <script src="./order-panel.js?v=57"></script>
 <script src="./visitors.js?v=1"></script>
 </body>
