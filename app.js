@@ -16,6 +16,16 @@ const ADMIN_ENABLED=false;
 let editingMode=false;
 let records=base.map(x=>({...x})),editing=null,epoch=0,busy=false,initialized=false;
 const CART_KEY="boveda-tcg-cart-v1";
+const WHOLE_OFFER_KEY="boveda-tcg-whole-inventory-offer-v1";
+let inventoryOffer=null;
+try{
+ const stored=JSON.parse(localStorage.getItem(WHOLE_OFFER_KEY)||"null");
+ if(stored&&/^BOV-\d{6}-[A-F0-9]{8}$/.test(stored.code)&&Number.isSafeInteger(stored.amount)&&stored.amount>0&&
+   Number.isFinite(stored.referenceTotal)&&Number.isInteger(stored.refs)&&Number.isInteger(stored.units)){
+  inventoryOffer=stored;
+ }
+}catch(_){}
+
 // Read-only bridge for customer-list preparation. It cannot enable administration
 // and intentionally exposes no database write functions.
 window.BovedaOrderBridge=Object.freeze({
@@ -48,37 +58,44 @@ function available(c){
 }
 function findCard(id){return records.find(c=>Number(c.id)===Number(id))}
 const tcgQuery=c=>market.searchUrl(c);
-function updateInventoryValue(){
- const amountEl=el("inventoryTotal"),detailEl=el("inventoryMeta");
- if(!amountEl||!detailEl)return;
- if(!initialized){
-  amountEl.textContent="Calculando…";
-  return;
- }
+const moneyCOP=value=>"$"+Math.round(value).toLocaleString("es-CO")+" COP";
+function inventorySnapshot(){
  let total=0,units=0,refs=0,unpriced=0;
  for(const card of records){
   const current=available(card);
   if(!current.available||current.quantity<=0)continue;
   refs++;
   units+=current.quantity;
-  const q=market.quote(card);
-  if(q.status!=="ready"||!Number.isFinite(q.copMin)){
+  const quote=market.quote(card);
+  if(quote.status!=="ready"||!Number.isFinite(quote.copMin)){
    unpriced++;
    continue;
   }
-  total+=q.copMin*current.quantity;
+  total+=quote.copMin*current.quantity;
  }
- amountEl.textContent="$"+Math.round(total).toLocaleString("es-CO")+" COP";
- detailEl.textContent=refs.toLocaleString("es-CO")+" referencias · "+
-  units.toLocaleString("es-CO")+" unidades disponibles · "+
-  (unpriced?unpriced+" referencias sin precio; total parcial":"Precios de referencia (incluye estimaciones)");
+ return {total:Math.round(total),units,refs,unpriced};
+}
+function updateInventoryValue(){
+ const amountEl=el("inventoryTotal"),detailEl=el("inventoryMeta");
+ if(!amountEl||!detailEl)return;
+ if(!initialized){
+  amountEl.textContent="Calculando…";
+  el("openInventoryOffer").disabled=true;
+  return;
+ }
+ const summary=inventorySnapshot();
+ amountEl.textContent=moneyCOP(summary.total);
+ detailEl.textContent=summary.refs.toLocaleString("es-CO")+" referencias · "+
+  summary.units.toLocaleString("es-CO")+" unidades disponibles · "+
+  (summary.unpriced?summary.unpriced+" referencias sin precio; total parcial":"Precios de referencia (incluye estimaciones)");
+ el("openInventoryOffer").disabled=summary.units<=0||summary.unpriced>0;
 }
 function updateStats(){
  el("total").textContent=records.length;
  el("copies").textContent=records.reduce((sum,c)=>sum+available(c).quantity,0).toLocaleString("es-CO");
  updateInventoryValue();
 }
-function updateCartCount(){el("cartCount").textContent=[...cart.values()].reduce((s,n)=>s+n,0)}
+function updateCartCount(){el("cartCount").textContent=([...cart.values()].reduce((s,n)=>s+n,0)+(inventoryOffer?1:0))}
 function cleanCart(){
  let changed=false;
  for(const [id,qty] of cart){
@@ -364,35 +381,124 @@ function updateCartQty(c,newQty){
  if(!a.available||n===0)cart.delete(c.id);else cart.set(c.id,n);
  saveCart();drawCart();render();
 }
+const offerDialog=el("inventoryOfferDialog");
+const offerForm=el("inventoryOfferForm");
+const offerAmountInput=el("offerAmount");
+function newOfferCode(){
+ const now=new Date();
+ const date=String(now.getFullYear()).slice(-2)+String(now.getMonth()+1).padStart(2,"0")+String(now.getDate()).padStart(2,"0");
+ const bytes=new Uint8Array(4);
+ crypto.getRandomValues(bytes);
+ return "BOV-"+date+"-"+Array.from(bytes,b=>b.toString(16).padStart(2,"0")).join("").toUpperCase();
+}
+function openOfferDialog(){
+ if(!initialized)return;
+ const summary=inventorySnapshot();
+ if(summary.units===0||summary.unpriced>0)return;
+ el("offerReferenceTotal").textContent=moneyCOP(summary.total);
+ el("offerReferenceUnits").textContent=summary.refs+" referencias · "+summary.units+" unidades disponibles";
+ offerAmountInput.value=inventoryOffer?inventoryOffer.amount:"";
+ el("offerError").hidden=true;
+ el("offerPreview").textContent=inventoryOffer?"Oferta anterior: "+moneyCOP(inventoryOffer.amount)+" · Al guardar se generará un nuevo código.":"";
+ if(cartDialog.open)cartDialog.close();
+ offerDialog.showModal();
+ offerAmountInput.focus();
+}
+el("openInventoryOffer").addEventListener("click",openOfferDialog);
+el("closeInventoryOffer").addEventListener("click",()=>offerDialog.close());
+offerDialog.addEventListener("click",event=>{if(event.target===offerDialog)offerDialog.close()});
+offerAmountInput.addEventListener("input",()=>{
+ const amount=Number(offerAmountInput.value);
+ el("offerPreview").textContent=offerAmountInput.value&&Number.isSafeInteger(amount)&&amount>0?
+  "Tu propuesta: "+moneyCOP(amount):"";
+ el("offerError").hidden=true;
+});
+offerForm.addEventListener("submit",event=>{
+ event.preventDefault();
+ const amount=Number(offerAmountInput.value),summary=inventorySnapshot();
+ if(!Number.isSafeInteger(amount)||amount<=0||!offerAmountInput.value||summary.units<=0||summary.unpriced>0){
+  el("offerError").textContent="Ingresa un valor válido para crear tu oferta.";
+  el("offerError").hidden=false;
+  return;
+ }
+ const proposal={
+  code:newOfferCode(),amount,
+  referenceTotal:summary.total,refs:summary.refs,units:summary.units,
+  createdAt:new Date().toISOString()
+ };
+ try{
+  localStorage.setItem(WHOLE_OFFER_KEY,JSON.stringify(proposal));
+ }catch(_){
+  el("offerError").textContent="No se pudo guardar la oferta en este navegador.";
+  el("offerError").hidden=false;
+  return;
+ }
+ inventoryOffer=proposal;
+ updateCartCount();
+ offerDialog.close();
+ drawCart();
+ cartDialog.showModal();
+});
 function listText(){
  const now=new Date();
  const lines=[
- "BÓVEDA TCG — LISTA DE INTERÉS",
- "Fecha: "+now.toLocaleString("es-CO"),
+ "BÓVEDA TCG — PROPUESTA DE COMPRA",
+ "Fecha de envío: "+now.toLocaleString("es-CO"),
  "Catálogo: https://spenceralejandro10.github.io/Base-de-datos-pokemon/",
- "Consulta de disponibilidad; NO representa pedido pagado ni reserva.",
- "","CARTAS SELECCIONADAS",""
+ "Consulta de disponibilidad; NO representa pedido pagado ni reserva."
  ];
- let total=0;
- for(const [id,quantity] of cart){
-  const c=findCard(id);if(!c)continue;total+=quantity;
-  const quote=market.quote(c);
-  lines.push(cardCode(c)+" | "+c.name+" | "+c.number+" | "+(c.set||"Sin colección")+" | "+(c.language||"Sin idioma")+" | Referencia por carta: "+market.amount(quote)+" | Unidades solicitadas: "+quantity);
+ if(inventoryOffer){
+  lines.push("","OFERTA POR TODO EL INVENTARIO DISPONIBLE",
+   "CÓDIGO DE OFERTA: "+inventoryOffer.code,
+   "OFERTA TOTAL DEL COMPRADOR: "+moneyCOP(inventoryOffer.amount),
+   "Valor de referencia al crear la oferta: "+moneyCOP(inventoryOffer.referenceTotal),
+   "Inventario ofertado: "+inventoryOffer.refs+" referencias · "+inventoryOffer.units+" unidades",
+   "Fecha de creación: "+new Date(inventoryOffer.createdAt).toLocaleString("es-CO"),
+   "Incluye todas las cartas disponibles al crear la oferta. Sujeto a revisión y confirmación de existencias.");
  }
- lines.push("","REFERENCIAS DISTINTAS: "+cart.size,"UNIDADES SOLICITADAS: "+total,"",market.rateText(),"Referencias disponibles: TCGplayer Market Price, precio fijado por propietario o Collectr autorizado, según cada carta. Los precios en COP no incluyen envío. Si no hay precio verificado, consultar la búsqueda en Collectr. Estado declarado: cartas sin jugar, recién sacadas de sobre y protegidas en toploader. El precio final se confirma antes de comprar.");
+ if(cart.size){
+  lines.push("","CARTAS SELECCIONADAS","");let total=0;
+  for(const [id,quantity] of cart){
+   const c=findCard(id);if(!c)continue;total+=quantity;
+   const quote=market.quote(c);
+   lines.push(cardCode(c)+" | "+c.name+" | "+c.number+" | "+(c.set||"Sin colección")+
+    " | "+(c.language||"Sin idioma")+" | Referencia por carta: "+market.amount(quote)+" | Unidades solicitadas: "+quantity);
+  }
+  lines.push("","REFERENCIAS DISTINTAS: "+cart.size,"UNIDADES SOLICITADAS: "+total);
+ }
+ lines.push("","Las propuestas están sujetas a confirmación del vendedor. Los precios de referencia pueden cambiar. Envío no incluido.");
  return lines.join("\r\n");
 }
 function drawCart(){
  const host=el("cartItems");host.replaceChildren();
  cleanCart();
- if(!cart.size){
-  host.textContent="Todavía no has seleccionado cartas.";
+ const hasContent=Boolean(cart.size||inventoryOffer);
+ el("downloadCart").disabled=!hasContent;
+ el("copyCart").disabled=!hasContent;
+ el("shareCart").disabled=!hasContent;
+ if(!hasContent){
+  host.textContent="Todavía no has seleccionado cartas ni creado ofertas.";
   el("cartSummary").textContent="";
-  el("downloadCart").disabled=true;
-  el("copyCart").disabled=true;
   return;
  }
- el("downloadCart").disabled=false;el("copyCart").disabled=false;
+ if(inventoryOffer){
+  const box=document.createElement("section");box.className="cart-whole-offer";
+  box.innerHTML='<span class="cart-offer-tag">Oferta por toda la colección</span>'+
+   '<span class="cart-offer-code">Código: '+esc(inventoryOffer.code)+'</span>'+
+   '<strong class="cart-offer-price">'+esc(moneyCOP(inventoryOffer.amount))+'</strong>'+
+   '<small>Valor de referencia: '+esc(moneyCOP(inventoryOffer.referenceTotal))+' · '+inventoryOffer.refs+' referencias · '+inventoryOffer.units+' unidades</small>'+
+   '<p>Envía el código y el monto de tu propuesta para que podamos revisarla.</p>';
+  const actions=document.createElement("div");actions.className="cart-offer-actions";
+  const edit=document.createElement("button");edit.type="button";edit.textContent="Cambiar mi oferta";
+  edit.addEventListener("click",openOfferDialog);
+  const remove=document.createElement("button");remove.type="button";remove.textContent="Quitar oferta";
+  remove.addEventListener("click",()=>{
+   inventoryOffer=null;
+   localStorage.removeItem(WHOLE_OFFER_KEY);
+   updateCartCount();drawCart();
+  });
+  actions.append(edit,remove);box.append(actions);host.append(box);
+ }
  for(const [id,qty] of cart){
   const c=findCard(id);if(!c)continue;
   const row=document.createElement("div");row.className="cart-row";
@@ -405,23 +511,37 @@ function drawCart(){
   const remove=document.createElement("button");remove.textContent="Quitar";remove.type="button";remove.addEventListener("click",()=>removeFromCart(c));
   controls.append(minus,count,plus,remove);row.append(controls);host.append(row);
  }
- el("cartSummary").textContent=cart.size+" referencias · "+[...cart.values()].reduce((s,v)=>s+v,0)+" unidades solicitadas";
+ const chosenUnits=[...cart.values()].reduce((s,v)=>s+v,0);
+ el("cartSummary").textContent=(inventoryOffer?"1 oferta por todo el inventario":"")+
+  (cart.size?(inventoryOffer?" · ":"")+cart.size+" referencias · "+chosenUnits+" unidades seleccionadas":"");
 }
 el("cartOpen").addEventListener("click",()=>{drawCart();cartDialog.showModal()});
 el("closeCart").addEventListener("click",()=>cartDialog.close());
 cartDialog.addEventListener("click",e=>{if(e.target===cartDialog)cartDialog.close()});
-el("clearCart").addEventListener("click",()=>{if(!cart.size)return;if(!confirm("¿Vaciar tu lista de interés?"))return;cart.clear();saveCart();drawCart();render()});
+el("clearCart").addEventListener("click",()=>{
+ if(!cart.size&&!inventoryOffer)return;
+ if(!confirm("¿Vaciar tus cartas seleccionadas y ofertas?"))return;
+ cart.clear();inventoryOffer=null;localStorage.removeItem(WHOLE_OFFER_KEY);
+ saveCart();drawCart();render();
+});
 el("downloadCart").addEventListener("click",()=>{
- if(!cart.size)return;
+ if(!cart.size&&!inventoryOffer)return;
  const blob=new Blob(["\uFEFF"+listText()],{type:"text/plain;charset=utf-8"});
  const url=URL.createObjectURL(blob);
- const a=document.createElement("a");a.href=url;a.download="Boveda-TCG-seleccion.txt";
+ const a=document.createElement("a");a.href=url;a.download="Boveda-TCG-propuesta.txt";
  document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),2000);
 });
 el("copyCart").addEventListener("click",async()=>{
- if(!cart.size)return;
- try{await navigator.clipboard.writeText(listText());el("copyCart").textContent="Copiado";setTimeout(()=>el("copyCart").textContent="Copiar lista",2500)}
- catch(_){alert("No fue posible copiar. Utiliza el botón de descarga.")}
+ if(!cart.size&&!inventoryOffer)return;
+ try{
+  await navigator.clipboard.writeText(listText());
+  el("copyCart").textContent="Propuesta copiada";
+  setTimeout(()=>el("copyCart").textContent="Copiar propuesta",2500);
+ }catch(_){alert("No fue posible copiar. Utiliza el botón de descarga.")}
+});
+el("shareCart").addEventListener("click",()=>{
+ if(!cart.size&&!inventoryOffer)return;
+ window.open("https://wa.me/?text="+encodeURIComponent(listText()),"_blank","noopener,noreferrer");
 });
 
 async function loadImage(url){
