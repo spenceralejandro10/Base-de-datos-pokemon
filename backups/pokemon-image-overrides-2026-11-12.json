@@ -1,0 +1,679 @@
+{
+  "snapshot": "2026-11-12",
+  "table": "pokemon_image_overrides",
+  "note": "Conserva todas las asignaciones de fotografías manuales existentes antes de la recuperación del catálogo.",
+  "rows": [
+    {
+      "card_key": "100|gengar ex|090/128|30th celebration|ingles",
+      "image_url": "https://cnivcnexsqobipvqxero.supabase.co/storage/v1/object/public/pokemon-gallery-overrides/cards/manual-100-97c5aa03cd358c49862f08b6.jpg",
+      "image_source": "manual",
+      "updated_at": "2026-10-28 01:55:12.601275+00"
+    },
+    {
+      "card_key": "101|fuecoco ex|015/128|30th celebration|ingles",
+      "image_url": "https://cnivcnexsqobipvqxero.supabase.co/storage/v1/object/public/pokemon-gallery-overrides/cards/manual-101-9aa1c09676824b5a82fe5db8.jpg",
+      "image_source": "manual",
+      "updated_at": "2026-10-28 01:55:24.77363+00"
+    },
+    {
+      "card_key": "102|salamence ex|109/128|30th celebration|ingles",
+      "image_url": "https://cnivcnexsqobipvqxero.supabase.co/storage/v1/object/public/pokemon-gallery-overrides/cards/manual-102-a1983dbeef465f89ea4d5f9e.jpg",
+      "image_source": "manual",
+      "updated_at": "2026-10-28 01:55:24.782543+00"
+    },
+    {
+      "card_key": "103|mew ex|066/128|30th celebration|ingles",
+      "image_url": "https://cnivcnexsqobipvqxero.supabase.co/storage/v1/object/public/pokemon-gallery-overrides/cards/manual-103-514e1b439f47689da0a6653b.jpg",
+      "image_source": "manual",
+      "updated_at": "2026-10-28 01:55:24.678685+00"
+    },
+    {
+      "card_key": "104|jirachi ex|102/128|30th celebration|ingles",
+      "image_url": "https://cnivcnexsqobipvqxero.supabase.co/storage/v1/object/public/pokemon-gallery-overrides/cards/manual-104-8e79cfdc0569a150bf43d3ba.jpg",
+      "image_source": "manual",
+      "updated_at": "2026-10-28 01:55:36.426498+00"
+    },
+    {
+      "card_key": "105|espeon ex|070/128|30th celebration|ingles",
+      "image_url": "https://cnivcnexsqobipvqxero.supabase.co/storage/v1/object/public/pokemon-gallery-overrides/cards/manual-105-a201b268cddde1dc385c46fb.jpg",
+      "image_source": "manual",
+      "updated_at": "2026-10-28 01:55:36.41611+00"
+    },
+    {
+      "card_key": "106|scraggy|140/128|30th celebration|ingles",
+      "image_url": "https://cnivcnexsqobipvqxero.supabase.co/storage/v1/object/public/pokemon-gallery-overrides/cards/manual-106-dcaaa2c1a8d9d7d0bf8d7593.jpg",
+      "image_source": "manual",
+      "updated_at": "2026-10-28 01:55:35.859104+00"
+    },
+    {
+      "card_key": "107|chandelure|137/128|30th celebration|ingles",
+      "image_url": "https://cnivcnexsqobipvqxero.supabase.co/storage/v1/object/public/pokemon-gallery-overrides/cards/manual-107-c844756e35846890bf1b9cde.jpg",
+      "image_source": "manual",
+      "updated_at": "2026-10-28 01:55:36.393039+00"
+    },
+    {
+      "card_key": "108|kommo-o|143/128|30th celebration|ingles",
+      "image_url": "https://cnivcnexsqobipvqxero.supabase.co/storage/v1/object/public/pokemon-gallery-overrides/cards/manual-108-a2b304d0e7a052efeef2e98c.jpg",
+      "image_source": "manual",
+      "updated_at": "2026-10-28 01:55:48.082735+00"
+    },
+    {
+      "card_key": "109|gholdengo|142/128|30th celebration|ingles",
+      "image_url": "https://cnivcnexsqobipvqxero.supabase.co/storage/v1/object/public/pokemon-gallery-overrides/cards/manual-109-4b5268633fc3bf4f0e70b36a.jpg",
+      "image_source": "manual",
+      "updated_at": "2026-10-28 01:55:47.773813+00"
+    },
+    {
+      "card_key": "110|greninja ex|021/128|30th celebration|ingles",
+      "image_url": "https://cnivcnexsqobipvqxero.supabase.co/storage/v1/object/public/pokemon-gallery-overrides/cards/manual-110-fa38952443171bc113ec7273.jpg",
+      "image_source": "manual",
+      "updated_at": "2026-10-28 01:55:47.914209+00"
+    },
+    {
+      "card_key": "111|drifloon|136/128|30th celebration|ingles",
+      "image_url": "https://cnivcnexsqobipvqxero.supabase.co/storage/v1/object/public/pokemon-gallery-overrides/cards/manual-111-b456c36c1d936c0f2381adc7.jpg",
+      "image_source": "manual",
+      "updated_at": "2026-10-28 01:55:47.927092+00"
+    },
+    {
+      "card_key": "112|pikachu ex|054/128|30th celebration|ingles",
+      "image_url": "https://cnivcnexsqobipvqxero.supabase.co/storage/v1/object/public/pokemon-gallery-overrides/cards/manual-112-3d8809310ea9ad887d55f89c.jpg",
+      "image_source": "manual",
+      "updated_at": "2026-10-28 01:55:59.689629+00"
+    },
+    {
+      "card_key": "113|mewtwo ex|064/128|30th celebration|ingles",
+      "image_url": "https://cnivcnexsqobipvqxero.supabase.co/storage/v1/object/public/pokemon-gallery-overrides/cards/manual-113-9ff2bf8c992995d7817f9030.jpg",
+      "image_source": "manual",
+      "updated_at": "2026-10-28 01:55:59.872813+00"
+    },
+    {
+      "card_key": "115|ninetales|110/108|ruler of the black flame|japones",
+      "image_url": "https://cnivcnexsqobipvqxero.supabase.co/storage/v1/object/public/pokemon-gallery-overrides/cards/manual-115-aa808ebfa2412a8b4c5e1655.jpg",
+      "image_source": "manual",
+      "updated_at": "2026-10-28 01:56:12.654927+00"
+    },
+    {
+      "card_key": "132|kingambit|089/078|scarlet ex|japones",
+      "image_url": "https://cnivcnexsqobipvqxero.supabase.co/storage/v1/object/public/pokemon-gallery-overrides/cards/manual-132-4148cc92d1bc497830316452.jpg",
+      "image_source": "manual",
+      "updated_at": "2026-10-28 01:56:49.814494+00"
+    },
+    {
+      "card_key": "133|iron moth|069/066|future flash|japones",
+      "image_url": "https://cnivcnexsqobipvqxero.supabase.co/storage/v1/object/public/pokemon-gallery-overrides/cards/manual-133-66c2e36b955dc49b695e440f.jpg",
+      "image_source": "manual",
+      "updated_at": "2026-10-28 01:55:59.547176+00"
+    },
+    {
+      "card_key": "134|drowzee|086/078|violet ex|japones",
+      "image_url": "https://cnivcnexsqobipvqxero.supabase.co/storage/v1/object/public/pokemon-gallery-overrides/cards/manual-134-c2a38d8a1e2447c24aac939a.jpg",
+      "image_source": "manual",
+      "updated_at": "2026-10-28 01:57:17.133976+00"
+    },
+    {
+      "card_key": "135|cleffa|113/108|ruler of the black flame|japones",
+      "image_url": "https://cnivcnexsqobipvqxero.supabase.co/storage/v1/object/public/pokemon-gallery-overrides/cards/manual-135-4eb38dbe4285ba7b1809ddda.jpg",
+      "image_source": "manual",
+      "updated_at": "2026-10-28 01:56:12.366116+00"
+    },
+    {
+      "card_key": "136|slowpoke|082/078|violet ex|japones",
+      "image_url": "https://cnivcnexsqobipvqxero.supabase.co/storage/v1/object/public/pokemon-gallery-overrides/cards/manual-136-38d8d68364c4edb7edf6a6e2.jpg",
+      "image_source": "manual",
+      "updated_at": "2026-10-28 01:57:29.684059+00"
+    },
+    {
+      "card_key": "138|pidgey|118/108|ruler of the black flame|japones",
+      "image_url": "https://cnivcnexsqobipvqxero.supabase.co/storage/v1/object/public/pokemon-gallery-overrides/cards/manual-138-e4d32dab1c862e506f222ee2.jpg",
+      "image_source": "manual",
+      "updated_at": "2026-10-28 01:56:25.250975+00"
+    },
+    {
+      "card_key": "144|armarouge|080/078|scarlet ex|japones",
+      "image_url": "https://cnivcnexsqobipvqxero.supabase.co/storage/v1/object/public/pokemon-gallery-overrides/cards/manual-144-4d995300c53bed49bb4aae01.jpg",
+      "image_source": "manual",
+      "updated_at": "2026-10-28 01:56:49.736284+00"
+    },
+    {
+      "card_key": "145|riolu|086/078|scarlet ex|japones",
+      "image_url": "https://cnivcnexsqobipvqxero.supabase.co/storage/v1/object/public/pokemon-gallery-overrides/cards/manual-145-1cd19dc4661351e1a23408a9.jpg",
+      "image_source": "manual",
+      "updated_at": "2026-10-28 01:57:02.741487+00"
+    },
+    {
+      "card_key": "147|ralts|083/078|scarlet ex|japones",
+      "image_url": "https://cnivcnexsqobipvqxero.supabase.co/storage/v1/object/public/pokemon-gallery-overrides/cards/manual-147-6e5babe2f8cbbfb55f080477.jpg",
+      "image_source": "manual",
+      "updated_at": "2026-10-28 01:57:02.597919+00"
+    },
+    {
+      "card_key": "148|kirlia|084/078|scarlet ex|japones",
+      "image_url": "https://cnivcnexsqobipvqxero.supabase.co/storage/v1/object/public/pokemon-gallery-overrides/cards/manual-148-7338267885d807b60a7a7912.jpg",
+      "image_source": "manual",
+      "updated_at": "2026-10-28 01:57:02.89474+00"
+    },
+    {
+      "card_key": "149|professor turo's scenario|091/066|future flash|japones",
+      "image_url": "https://cnivcnexsqobipvqxero.supabase.co/storage/v1/object/public/pokemon-gallery-overrides/cards/manual-149-cd0c42df16c2eb20cdab9780.jpg",
+      "image_source": "manual",
+      "updated_at": "2026-10-28 01:55:59.497802+00"
+    },
+    {
+      "card_key": "150|houndour|115/108|ruler of the black flame|japones",
+      "image_url": "https://cnivcnexsqobipvqxero.supabase.co/storage/v1/object/public/pokemon-gallery-overrides/cards/manual-150-d424ce51ad6ee594ded9c30d.jpg",
+      "image_source": "manual",
+      "updated_at": "2026-10-28 01:56:25.436422+00"
+    },
+    {
+      "card_key": "153|dondozo|082/078|scarlet ex|japones",
+      "image_url": "https://cnivcnexsqobipvqxero.supabase.co/storage/v1/object/public/pokemon-gallery-overrides/cards/manual-153-b0adc1dc87d79e2cd25e71b1.jpg",
+      "image_source": "manual",
+      "updated_at": "2026-10-28 01:57:02.597418+00"
+    },
+    {
+      "card_key": "154|iron hands ex|079/066|future flash|japones",
+      "image_url": "https://cnivcnexsqobipvqxero.supabase.co/storage/v1/object/public/pokemon-gallery-overrides/cards/manual-154-7a5a5c02c7e2abbdd2775bbc.jpg",
+      "image_source": "manual",
+      "updated_at": "2026-10-28 01:56:12.514414+00"
+    },
+    {
+      "card_key": "155|espathra|073/066|future flash|japones",
+      "image_url": "https://cnivcnexsqobipvqxero.supabase.co/storage/v1/object/public/pokemon-gallery-overrides/cards/manual-155-b44982a67b3d9843c020e357.jpg",
+      "image_source": "manual",
+      "updated_at": "2026-10-28 01:56:12.494807+00"
+    },
+    {
+      "card_key": "156|klawf|088/078|scarlet ex|japones",
+      "image_url": "https://cnivcnexsqobipvqxero.supabase.co/storage/v1/object/public/pokemon-gallery-overrides/cards/manual-156-0565891e6e164173eb4c2c1d.jpg",
+      "image_source": "manual",
+      "updated_at": "2026-10-28 01:57:16.594905+00"
+    },
+    {
+      "card_key": "157|larvitar|114/108|ruler of the black flame|japones",
+      "image_url": "https://cnivcnexsqobipvqxero.supabase.co/storage/v1/object/public/pokemon-gallery-overrides/cards/manual-157-89d51cab4970cf9f8737cb8c.jpg",
+      "image_source": "manual",
+      "updated_at": "2026-10-28 01:56:24.974956+00"
+    },
+    {
+      "card_key": "158|infernape|070/066|crimson haze|japones",
+      "image_url": "https://cnivcnexsqobipvqxero.supabase.co/storage/v1/object/public/pokemon-gallery-overrides/cards/manual-158-f7098d37b15ccb3a0aa80fd1.jpg",
+      "image_source": "manual",
+      "updated_at": "2026-10-28 01:55:24.444549+00"
+    },
+    {
+      "card_key": "159|lechonk|120/108|ruler of the black flame|japones",
+      "image_url": "https://cnivcnexsqobipvqxero.supabase.co/storage/v1/object/public/pokemon-gallery-overrides/cards/manual-159-cd40114d8d40e80a73ea0847.jpg",
+      "image_source": "manual",
+      "updated_at": "2026-10-28 01:56:25.13749+00"
+    },
+    {
+      "card_key": "160|lycanroc|138/128|30th celebration|ingles",
+      "image_url": "https://cnivcnexsqobipvqxero.supabase.co/storage/v1/object/public/pokemon-gallery-overrides/cards/manual-160-8b1cdd024a233a9ad98b621a.jpg",
+      "image_source": "manual",
+      "updated_at": "2026-10-28 01:57:42.670949+00"
+    },
+    {
+      "card_key": "161|delcatty|5/109|30th celebration - classic collection|ingles",
+      "image_url": "https://cnivcnexsqobipvqxero.supabase.co/storage/v1/object/public/pokemon-gallery-overrides/cards/manual-161-f55701ca3f0bfc325d526037.jpg",
+      "image_source": "manual",
+      "updated_at": "2026-10-28 01:58:29.052398+00"
+    },
+    {
+      "card_key": "162|zacian v|138/202|30th celebration - classic collection|ingles",
+      "image_url": "https://cnivcnexsqobipvqxero.supabase.co/storage/v1/object/public/pokemon-gallery-overrides/cards/manual-162-5b1ff81d3aba1ff6212995dd.jpg",
+      "image_source": "manual",
+      "updated_at": "2026-10-28 01:58:29.037373+00"
+    },
+    {
+      "card_key": "163|solgaleo-gx|89/149|30th celebration - classic collection|ingles",
+      "image_url": "https://cnivcnexsqobipvqxero.supabase.co/storage/v1/object/public/pokemon-gallery-overrides/cards/manual-163-2dcca2da861d73ed076e9b07.jpg",
+      "image_source": "manual",
+      "updated_at": "2026-10-28 01:58:44.852526+00"
+    },
+    {
+      "card_key": "164|crobat g|47/127|30th celebration - classic collection|ingles",
+      "image_url": "https://cnivcnexsqobipvqxero.supabase.co/storage/v1/object/public/pokemon-gallery-overrides/cards/manual-164-191a6f4226811f0362c4500c.jpg",
+      "image_source": "manual",
+      "updated_at": "2026-10-28 01:58:44.709515+00"
+    },
+    {
+      "card_key": "165|misty|18/132|30th celebration - classic collection|ingles",
+      "image_url": "https://cnivcnexsqobipvqxero.supabase.co/storage/v1/object/public/pokemon-gallery-overrides/cards/manual-165-6fdc970129f0fe4f818ca380.jpg",
+      "image_source": "manual",
+      "updated_at": "2026-10-28 01:58:44.771296+00"
+    },
+    {
+      "card_key": "166|sneasel|25/111|30th celebration - classic collection|ingles",
+      "image_url": "https://cnivcnexsqobipvqxero.supabase.co/storage/v1/object/public/pokemon-gallery-overrides/cards/manual-166-ba00209cc4b24278284f4388.jpg",
+      "image_source": "manual",
+      "updated_at": "2026-10-28 01:58:44.625302+00"
+    },
+    {
+      "card_key": "167|articuno|132/128|30th celebration|ingles",
+      "image_url": "https://cnivcnexsqobipvqxero.supabase.co/storage/v1/object/public/pokemon-gallery-overrides/cards/manual-167-03fe66268502ecafd86b2f2b.webp",
+      "image_source": "manual",
+      "updated_at": "2026-10-28 01:57:41.811217+00"
+    },
+    {
+      "card_key": "168|hisuian zorua|145/128|30th celebration|ingles",
+      "image_url": "https://cnivcnexsqobipvqxero.supabase.co/storage/v1/object/public/pokemon-gallery-overrides/cards/manual-168-2ccad342c0f1e366f76dba47.jpg",
+      "image_source": "manual",
+      "updated_at": "2026-10-28 01:57:42.846056+00"
+    },
+    {
+      "card_key": "169|lapras|131/128|30th celebration|ingles",
+      "image_url": "https://cnivcnexsqobipvqxero.supabase.co/storage/v1/object/public/pokemon-gallery-overrides/cards/manual-169-8fc32139d09530d1111f2239.jpg",
+      "image_source": "manual",
+      "updated_at": "2026-10-28 01:57:56.568042+00"
+    },
+    {
+      "card_key": "170|morpeko|135/128|30th celebration|ingles",
+      "image_url": "https://cnivcnexsqobipvqxero.supabase.co/storage/v1/object/public/pokemon-gallery-overrides/cards/manual-170-f249f1cf4ee821b6d556e385.jpg",
+      "image_source": "manual",
+      "updated_at": "2026-10-28 01:57:56.304665+00"
+    },
+    {
+      "card_key": "171|alolan exeggutor|129/128|30th celebration|ingles",
+      "image_url": "https://cnivcnexsqobipvqxero.supabase.co/storage/v1/object/public/pokemon-gallery-overrides/cards/manual-171-e66e425b3a5c546079512e1e.jpg",
+      "image_source": "manual",
+      "updated_at": "2026-10-28 01:57:56.395072+00"
+    },
+    {
+      "card_key": "172|uxie|43/146|30th celebration - classic collection|ingles",
+      "image_url": "https://cnivcnexsqobipvqxero.supabase.co/storage/v1/object/public/pokemon-gallery-overrides/cards/manual-172-fff42ce08c72912bceb31898.jpg",
+      "image_source": "manual",
+      "updated_at": "2026-10-28 01:59:05.383562+00"
+    },
+    {
+      "card_key": "173|zapdos|133/128|30th celebration|ingles",
+      "image_url": "https://cnivcnexsqobipvqxero.supabase.co/storage/v1/object/public/pokemon-gallery-overrides/cards/manual-173-7cad7eb020f0a9d6d9f1a98e.jpg",
+      "image_source": "manual",
+      "updated_at": "2026-10-28 01:57:56.543136+00"
+    },
+    {
+      "card_key": "174|moltres|130/128|30th celebration|ingles",
+      "image_url": "https://cnivcnexsqobipvqxero.supabase.co/storage/v1/object/public/pokemon-gallery-overrides/cards/manual-174-0677385ce3035faaac85ddd4.jpg",
+      "image_source": "manual",
+      "updated_at": "2026-10-28 01:58:15.25118+00"
+    },
+    {
+      "card_key": "175|galarian meowth|141/128|30th celebration|ingles",
+      "image_url": "https://cnivcnexsqobipvqxero.supabase.co/storage/v1/object/public/pokemon-gallery-overrides/cards/manual-175-5b9b2dde2a77ec9e1207e4de.jpg",
+      "image_source": "manual",
+      "updated_at": "2026-10-28 01:58:15.570925+00"
+    },
+    {
+      "card_key": "176|genesect-ex|11/101|30th celebration - classic collection|ingles",
+      "image_url": "https://cnivcnexsqobipvqxero.supabase.co/storage/v1/object/public/pokemon-gallery-overrides/cards/manual-176-ee38b71ff823d84d41588b24.jpg",
+      "image_source": "manual",
+      "updated_at": "2026-10-28 01:59:05.172548+00"
+    },
+    {
+      "card_key": "177|alolan meowth|139/128|30th celebration|ingles",
+      "image_url": "https://cnivcnexsqobipvqxero.supabase.co/storage/v1/object/public/pokemon-gallery-overrides/cards/manual-177-5360e3f4af42328bcb6d1080.jpg",
+      "image_source": "manual",
+      "updated_at": "2026-10-28 01:58:15.560807+00"
+    },
+    {
+      "card_key": "178|maushold|146/128|30th celebration|ingles",
+      "image_url": "https://cnivcnexsqobipvqxero.supabase.co/storage/v1/object/public/pokemon-gallery-overrides/cards/manual-178-6298e9f5a011b91810208b3b.jpg",
+      "image_source": "manual",
+      "updated_at": "2026-10-28 01:58:15.117366+00"
+    },
+    {
+      "card_key": "179|toxtricity|134/128|30th celebration|ingles",
+      "image_url": "https://cnivcnexsqobipvqxero.supabase.co/storage/v1/object/public/pokemon-gallery-overrides/cards/manual-179-5408eb5a3e598677dc974236.jpg",
+      "image_source": "manual",
+      "updated_at": "2026-10-28 01:58:29.427082+00"
+    },
+    {
+      "card_key": "180|meowth|144/128|30th celebration|ingles",
+      "image_url": "https://cnivcnexsqobipvqxero.supabase.co/storage/v1/object/public/pokemon-gallery-overrides/cards/manual-180-2c7d2015f79ae6c1b39d23fd.jpg",
+      "image_source": "manual",
+      "updated_at": "2026-10-28 01:58:29.181905+00"
+    },
+    {
+      "card_key": "181|metagross δ|11/113|30th celebration - classic collection|ingles",
+      "image_url": "https://cnivcnexsqobipvqxero.supabase.co/storage/v1/object/public/pokemon-gallery-overrides/cards/manual-181-377b19284a9eb94697515d18.jpg",
+      "image_source": "manual",
+      "updated_at": "2026-10-28 01:59:05.38425+00"
+    },
+    {
+      "card_key": "182|lugia|149/147|30th celebration - classic collection|ingles",
+      "image_url": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSaTNuYsyY7CK313B7fAIGbkHPalDH4E1-3NihkKA2FxA&s=10",
+      "image_source": "manual",
+      "updated_at": "2026-10-28 11:34:24.849+00"
+    },
+    {
+      "card_key": "183|pikachu ex|149/128|30th celebration|ingles",
+      "image_url": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTimWZ_VY6HLRhz-SfaZnnNDIvaOe-UrapFsovyTIQdgA&s=10",
+      "image_source": "manual",
+      "updated_at": "2026-10-28 11:30:05.461+00"
+    },
+    {
+      "card_key": "184|pikachu ex|150/128|30th celebration|ingles",
+      "image_url": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTOXTxqKI9VRK7JUS9mL_AKZiIgVVW2rcPU2gz7kdggUQ&s=10",
+      "image_source": "manual",
+      "updated_at": "2026-10-28 11:30:25.45+00"
+    },
+    {
+      "card_key": "185|magikarp|203/193|30th celebration - classic collection|ingles",
+      "image_url": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRyjMjg0_x1u3Wbz_4zpGNPmKLsrpMtpju4Hh3155Vghw&s=10",
+      "image_source": "manual",
+      "updated_at": "2026-10-28 11:34:36.962+00"
+    },
+    {
+      "card_key": "186|mew ex|158/128|30th celebration|ingles",
+      "image_url": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQX-9FZYHVOzUopHysM4VZM8EqV2Koe1I0wDfWidc-QAA&s=10",
+      "image_source": "manual",
+      "updated_at": "2026-10-28 11:30:53.359+00"
+    },
+    {
+      "card_key": "187|jirachi ex|155/128|30th celebration|ingles",
+      "image_url": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSBCW_vIklEmA3olP9K33uJ9TKACHebHZiHOZOo93zPYg&s=10",
+      "image_source": "manual",
+      "updated_at": "2026-10-28 11:31:10.12+00"
+    },
+    {
+      "card_key": "188|sylveon ex|153/128|30th celebration|ingles",
+      "image_url": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRhQanLa2I4sGzc7VKDo_pXMgHEm6qFqRxleYCRUS9QzQ&s=10",
+      "image_source": "manual",
+      "updated_at": "2026-10-28 11:31:35.646+00"
+    },
+    {
+      "card_key": "189|pikachu|58/102|30th celebration - classic collection|ingles",
+      "image_url": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRs8eYjYhuAisCHB_j32zhcYCFWX2JJDx6KB6clpc_neA&s=10",
+      "image_source": "manual",
+      "updated_at": "2026-10-28 11:35:13.763+00"
+    },
+    {
+      "card_key": "190|mewtwo ex|157/128|30th celebration|ingles",
+      "image_url": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRrL5Sf082V7DPj4xuFK9r3n3Tq7KGMejn0M7vlWJVqcw&s",
+      "image_source": "manual",
+      "updated_at": "2026-10-28 11:31:55.561+00"
+    },
+    {
+      "card_key": "191|mewtwo ex|151/128|30th celebration|ingles",
+      "image_url": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRLjXxThCI32BDpiX4vjKI4McnTV0Fb1mXSDSz3y6K8Dw&s",
+      "image_source": "manual",
+      "updated_at": "2026-10-28 11:32:07.078+00"
+    },
+    {
+      "card_key": "192|gengar ex|154/128|30th celebration|ingles",
+      "image_url": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTUnPXcmU9vEL5GEfLdC0puURaiAkbo5ieTCim6BlHGBA&s=10",
+      "image_source": "manual",
+      "updated_at": "2026-10-28 11:32:25.302+00"
+    },
+    {
+      "card_key": "193|mew ex|152/128|30th celebration|ingles",
+      "image_url": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTQuFQ9fib4DMfpEcabhtefdYMiq36CSFJ0_DoVr6Z8FA&s=10",
+      "image_source": "manual",
+      "updated_at": "2026-10-28 11:32:40.279+00"
+    },
+    {
+      "card_key": "194|greninja break|41/122|30th celebration - classic collection|ingles",
+      "image_url": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRUlSXDwyq1bViW8ZsLl5OSPYt2jtohqzB_DqaVWjloqw&s=10",
+      "image_source": "manual",
+      "updated_at": "2026-10-28 11:35:30.351+00"
+    },
+    {
+      "card_key": "195|darkrai & cresselia legend|100/102|30th celebration - classic collection|ingles",
+      "image_url": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSCfiZPqYIYGMeF-mZdhzgbQdq-jz0u9ZT4smkYXvv8fQ&s=10",
+      "image_source": "manual",
+      "updated_at": "2026-10-28 11:35:44.037+00"
+    },
+    {
+      "card_key": "196|gengar|94/102|30th celebration - classic collection|ingles",
+      "image_url": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT3bC2tMPSaKcerPfVta-v7QRdiUE2WuICrbjpWA5YJWA&s=10",
+      "image_source": "manual",
+      "updated_at": "2026-10-28 11:35:56.117+00"
+    },
+    {
+      "card_key": "197|greninja ex|148/128|30th celebration|ingles",
+      "image_url": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT5P9ZBKqK87GUEGZMk1OI01fKIZlmYlJiJGkbAs6aE3g&s",
+      "image_source": "manual",
+      "updated_at": "2026-10-28 11:33:13.981+00"
+    },
+    {
+      "card_key": "198|pikachu & zekrom-gx|33/181|30th celebration - classic collection|ingles",
+      "image_url": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRdk_SjBOlB3f-y0eVYqaOuIqUiveKQSwznqP0bKtuS1g&s=10",
+      "image_source": "manual",
+      "updated_at": "2026-10-28 11:36:10.495+00"
+    },
+    {
+      "card_key": "199|arceus vstar|123/172|30th celebration - classic collection|ingles",
+      "image_url": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQRsCgxZxknk4Ln0EkWlIMW1ntWm0ixs6twftBwsSELkQ&s",
+      "image_source": "manual",
+      "updated_at": "2026-10-28 11:36:23.443+00"
+    },
+    {
+      "card_key": "200|erika's jigglypuff|69/132|30th celebration - classic collection|ingles",
+      "image_url": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ4D7iqq6Q0g5LoJKyd9KAXy5FENLwdBC02en6giVp2lw&s",
+      "image_source": "manual",
+      "updated_at": "2026-10-28 13:02:52.418+00"
+    },
+    {
+      "card_key": "201|raikou|050/185|30th celebration - classic collection|ingles",
+      "image_url": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTeCnKurbmrPsyGKjgaAq5fKsTYCdj68vMVwhyVdQGZKA&s",
+      "image_source": "manual",
+      "updated_at": "2026-10-28 13:02:28.82+00"
+    },
+    {
+      "card_key": "202|palkia lv.x|106/106|30th celebration - classic collection|ingles",
+      "image_url": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSWYul7V_FlPRxUkEqwcA4vCPSDlcO3tguNl0tSc4vH8A&s=10",
+      "image_source": "manual",
+      "updated_at": "2026-10-28 11:37:06.976+00"
+    },
+    {
+      "card_key": "203|scizor ex|108/115|30th celebration - classic collection|ingles",
+      "image_url": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ2UvHNs2BlzYMkcu11rcu8VHNiXdU1F4vW7abZAqla5g&s=10",
+      "image_source": "manual",
+      "updated_at": "2026-10-28 11:37:21.235+00"
+    },
+    {
+      "card_key": "204|fuecoco ex|147/128|30th celebration|ingles",
+      "image_url": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR4DA56WMDpAMQqf1UZKm5f-1JIVSVUwSaYkWyP4z_1wg&s=10",
+      "image_source": "manual",
+      "updated_at": "2026-10-28 11:33:48.458+00"
+    },
+    {
+      "card_key": "205|m gardevoir-ex|106/160|30th celebration - classic collection|ingles",
+      "image_url": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRqQ2NCcbLWMELi2qN5n9Vummgj2Ttx67Yy4CTindG4Ug&s=10",
+      "image_source": "manual",
+      "updated_at": "2026-10-28 11:37:34.084+00"
+    },
+    {
+      "card_key": "206|dark tyranitar|19/109|30th celebration - classic collection|ingles",
+      "image_url": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQNIlLdcJBBcuoMkA5_q7iS-LclwHlVBjw7Ip1Ah8ZMvA&s=10",
+      "image_source": "manual",
+      "updated_at": "2026-10-28 11:37:47.33+00"
+    },
+    {
+      "card_key": "208|maushold ex|057/066|future flash|japones",
+      "image_url": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQXH20DVnGABetXbILcfEp9I0t2yFxfWoTUYKY4-AK4-Q&s=10",
+      "image_source": "manual",
+      "updated_at": "2026-10-28 12:05:47.359+00"
+    },
+    {
+      "card_key": "209|altaria ex|046/066|future flash|japones",
+      "image_url": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTCRp7z_UKHmfo8gq3BHXGjxMI3yWiS6xdMNHGSVpKb8Q&s=10",
+      "image_source": "manual",
+      "updated_at": "2026-10-28 12:06:10.312+00"
+    },
+    {
+      "card_key": "21|giratina vstar|131/196|lost origin|ingles",
+      "image_url": "https://cnivcnexsqobipvqxero.supabase.co/storage/v1/object/public/pokemon-gallery-overrides/cards/manual-21-f6fd9e7c55b0e7be425b7c90.jpg",
+      "image_source": "manual",
+      "updated_at": "2026-10-28 01:57:29.866485+00"
+    },
+    {
+      "card_key": "210|aegislash ex|045/066|future flash|japones",
+      "image_url": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTNdK5nChYxtnB8q3LSHysN1A1eJ71e9Wj9t_-USxklkg&s=10",
+      "image_source": "manual",
+      "updated_at": "2026-10-28 12:06:25.805+00"
+    },
+    {
+      "card_key": "211|iron valiant ex|038/066|future flash|japones",
+      "image_url": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSG7unmi88iqW0FjWVFsHT_IBS7d8fk378mdkWPtEwsWA&s=10",
+      "image_source": "manual",
+      "updated_at": "2026-10-28 12:06:42.03+00"
+    },
+    {
+      "card_key": "221|iron jugulis|058/066|future flash|japones",
+      "image_url": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSzIpus_rCzvsXR2AXXranTnMS0Z9qhFK0ZGhhTKec8tQ&s=10",
+      "image_source": "manual",
+      "updated_at": "2026-10-28 12:07:17.526+00"
+    },
+    {
+      "card_key": "228|toxtricity ex|081/066|future flash|japones",
+      "image_url": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRhjnS22EY7Nv-gxQct-GIMoC_VM-KoEtFVJ6Gzr3ZugA&s=10",
+      "image_source": "manual",
+      "updated_at": "2026-10-28 12:07:36.905+00"
+    },
+    {
+      "card_key": "231|doble energia turbo|216/172|brilliant stars|espanol",
+      "image_url": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSA3Ajur3M0myYuP_Ok2kq_9de3eiv8bwbbGs5jwyi3mQ&s=10",
+      "image_source": "manual",
+      "updated_at": "2026-10-28 12:08:55.538+00"
+    },
+    {
+      "card_key": "234|bellibolt|112/108|ruler of the black flame|japones",
+      "image_url": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTFedJ458U2t9909GHdv3XjC2K-awjGGhuEQbflDTbhRQ&s=10",
+      "image_source": "manual",
+      "updated_at": "2026-10-28 12:08:23.051+00"
+    },
+    {
+      "card_key": "237|varoom|117/108|ruler of the black flame|japones",
+      "image_url": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT5gAzODWl-vvouijcQJTLXG4Rv3yFpGtXtlSjDgdT22w&s=10",
+      "image_source": "manual",
+      "updated_at": "2026-10-28 12:08:42.237+00"
+    },
+    {
+      "card_key": "238|toedscruel|068/066|future flash|japones",
+      "image_url": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRMQyVAZ42mSe_EisJJ3I8pbd-_Q-1tj-tM4QARZQmsEw&s=10",
+      "image_source": "manual",
+      "updated_at": "2026-10-28 12:07:48.512+00"
+    },
+    {
+      "card_key": "250|swablu|076/066|future flash|japones",
+      "image_url": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQHOFy0jq_pe-Be9DK_iCURh0uoHW060IzhRLd9rDFbkA&s=10",
+      "image_source": "manual",
+      "updated_at": "2026-10-28 12:08:08.586+00"
+    },
+    {
+      "card_key": "270|basic psychic energy|sin numero|151|ingles",
+      "image_url": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ2CQcH4VgXu_8F-ceYiOpOOPheLBoS7uxoT-WCWVNQCw&s=10",
+      "image_source": "manual",
+      "updated_at": "2026-10-28 13:00:42.85+00"
+    },
+    {
+      "card_key": "274|boltund vmax|267/264|fusion strike|ingles",
+      "image_url": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSsT0FEqYvc7ycvfvC-d2cN5T-NkH5kU4Qr5pOVYMxcew&s=10",
+      "image_source": "manual",
+      "updated_at": "2026-10-28 12:55:26.969+00"
+    },
+    {
+      "card_key": "289|eevee|tg11/tg30|brilliant stars trainer gallery|espanol",
+      "image_url": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS8ApOMA7Dh8agoMfQWa3BxC50RWk7-cEmLWC_D9DwkNA&s=10",
+      "image_source": "manual",
+      "updated_at": "2026-10-28 14:12:33.334+00"
+    },
+    {
+      "card_key": "294|alcremie|tg08/tg30|brilliant stars trainer gallery|espanol",
+      "image_url": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRrpt4sQbfJhryMHPDebYbP-dceNUSAg49EHy4rXfOuhQ&s=10",
+      "image_source": "manual",
+      "updated_at": "2026-10-28 14:12:47.062+00"
+    },
+    {
+      "card_key": "295|calyrex jinete espectral vmax|tg30/tg30|astral radiance trainer gallery|espanol",
+      "image_url": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcScJd9brC4PA2-LZUFdpHrrlcKTbqWm9tLXZKfwBXP6cA&s",
+      "image_source": "manual",
+      "updated_at": "2026-10-28 14:10:51.418+00"
+    },
+    {
+      "card_key": "46|oranguru v|133/189|astral radiance|espanol",
+      "image_url": "https://cnivcnexsqobipvqxero.supabase.co/storage/v1/object/public/pokemon-gallery-overrides/cards/manual-46-4b8f2e7e57e534a2c9b20370.jpg",
+      "image_source": "manual",
+      "updated_at": "2026-10-28 01:57:29.844765+00"
+    },
+    {
+      "card_key": "56|gardevoir|tg05/tg30|astral radiance trainer gallery|espanol",
+      "image_url": "https://cnivcnexsqobipvqxero.supabase.co/storage/v1/object/public/pokemon-gallery-overrides/cards/manual-56-e309df935a587127b700943b.jpg",
+      "image_source": "manual",
+      "updated_at": "2026-10-28 01:56:37.370102+00"
+    },
+    {
+      "card_key": "58|luxray v|050/189|astral radiance|espanol",
+      "image_url": "https://cnivcnexsqobipvqxero.supabase.co/storage/v1/object/public/pokemon-gallery-overrides/cards/manual-58-b51b5f5d0f0ae9722d424660.jpg",
+      "image_source": "manual",
+      "updated_at": "2026-10-28 01:57:42.596339+00"
+    },
+    {
+      "card_key": "63|greavard|087/078|violet ex|japones",
+      "image_url": "https://cnivcnexsqobipvqxero.supabase.co/storage/v1/object/public/pokemon-gallery-overrides/cards/manual-63-2a8e52714e020d6df48a9b85.jpg",
+      "image_source": "manual",
+      "updated_at": "2026-10-28 01:57:17.461142+00"
+    },
+    {
+      "card_key": "64|fidough|085/078|scarlet ex|japones",
+      "image_url": "https://cnivcnexsqobipvqxero.supabase.co/storage/v1/object/public/pokemon-gallery-overrides/cards/manual-64-8fddfc06b6acf9907c0b41d1.jpg",
+      "image_source": "manual",
+      "updated_at": "2026-10-28 01:56:49.665102+00"
+    },
+    {
+      "card_key": "67|magnezone vstar|057/196|lost origin|espanol",
+      "image_url": "https://cnivcnexsqobipvqxero.supabase.co/storage/v1/object/public/pokemon-gallery-overrides/cards/manual-67-2b4eae165e2cd33f8cb0d516.jpg",
+      "image_source": "manual",
+      "updated_at": "2026-10-28 01:57:29.66909+00"
+    },
+    {
+      "card_key": "70|calyrex jinete glacial vmax|tg29/tg30|astral radiance trainer gallery|espanol",
+      "image_url": "https://cnivcnexsqobipvqxero.supabase.co/storage/v1/object/public/pokemon-gallery-overrides/cards/manual-70-b9454858e5a507de8a6d4d68.jpg",
+      "image_source": "manual",
+      "updated_at": "2026-10-28 01:56:37.112408+00"
+    },
+    {
+      "card_key": "79|blastoise|2/102|celebrations (classic collection)|ingles",
+      "image_url": "https://cnivcnexsqobipvqxero.supabase.co/storage/v1/object/public/pokemon-gallery-overrides/cards/manual-79-72fd0804030eb2584231cdcb.jpg",
+      "image_source": "manual",
+      "updated_at": "2026-10-28 01:56:36.839324+00"
+    },
+    {
+      "card_key": "83|charmander|004/165|151|ingles",
+      "image_url": "https://cnivcnexsqobipvqxero.supabase.co/storage/v1/object/public/pokemon-gallery-overrides/cards/manual-83-50cb12af0517b82efa03437e.jpg",
+      "image_source": "manual",
+      "updated_at": "2026-10-28 01:56:37.092012+00"
+    },
+    {
+      "card_key": "94|dolliv|079/078|scarlet ex|japones",
+      "image_url": "https://cnivcnexsqobipvqxero.supabase.co/storage/v1/object/public/pokemon-gallery-overrides/cards/manual-94-c1d8fc4d123fc50225fa6c43.jpg",
+      "image_source": "manual",
+      "updated_at": "2026-10-28 01:56:49.819776+00"
+    },
+    {
+      "card_key": "95|pachirisu|084/078|violet ex|japones",
+      "image_url": "https://cnivcnexsqobipvqxero.supabase.co/storage/v1/object/public/pokemon-gallery-overrides/cards/manual-95-5b6b969f325215fed13a4d41.jpg",
+      "image_source": "manual",
+      "updated_at": "2026-10-28 01:57:16.982174+00"
+    },
+    {
+      "card_key": "97|sylveon ex|071/128|30th celebration|ingles",
+      "image_url": "https://cnivcnexsqobipvqxero.supabase.co/storage/v1/object/public/pokemon-gallery-overrides/cards/manual-97-d12532c8f1dbde854fa8140d.jpg",
+      "image_source": "manual",
+      "updated_at": "2026-10-28 01:55:12.170057+00"
+    },
+    {
+      "card_key": "98|pikachu ex|053/128|30th celebration|ingles",
+      "image_url": "https://cnivcnexsqobipvqxero.supabase.co/storage/v1/object/public/pokemon-gallery-overrides/cards/manual-98-68515e813eedd79b54689570.jpg",
+      "image_source": "manual",
+      "updated_at": "2026-10-28 01:55:12.423924+00"
+    },
+    {
+      "card_key": "99|umbreon ex|092/128|30th celebration|ingles",
+      "image_url": "https://cnivcnexsqobipvqxero.supabase.co/storage/v1/object/public/pokemon-gallery-overrides/cards/manual-99-297a5c01a75343e27017500d.jpg",
+      "image_source": "manual",
+      "updated_at": "2026-10-28 01:55:12.696873+00"
+    }
+  ]
+}
