@@ -448,3 +448,11 @@ body.editing-mode .item { border-color:#cbddeb; }
 .cart-offer-actions button{background:#fff!important;border:1px solid #aec8de!important;color:#315d81!important;margin:0!important;padding:8px 11px!important}
 .cart-share-button{background:#e8f4ed!important;border-color:#b9dac8!important;color:#246343!important}
 @media(max-width:720px){.inventory-worth{align-items:stretch}.inventory-offer-cta{flex:1 1 100%;max-width:none;border-top:1px solid #d9e7f5;padding-top:16px}.cart-offer-price{font-size:23px}}
+
+/* Restauración manual de enlaces fotográficos que quedaron en el navegador. */
+.photo-recovery{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;padding:15px 19px;margin:0 0 18px;border-radius:11px;border:1px solid #bad6e8;background:#f2f8fd;color:#234763}
+.photo-recovery strong{font-size:13px}
+.photo-recovery p{font-size:12px;color:#4c718d;line-height:1.5;margin:5px 0 0}
+.photo-recovery button{border-radius:8px;padding:11px 15px;background:#24628d;color:#fff;border:1px solid #24628d;font-weight:750;font-size:12px}
+.photo-recovery button:disabled{opacity:.55;cursor:not-allowed}
+@media(max-width:650px){.photo-recovery button{width:100%}}
