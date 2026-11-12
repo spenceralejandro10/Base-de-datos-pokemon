@@ -92,7 +92,7 @@ function updateInventoryValue(){
 }
 function updateStats(){
  el("total").textContent=records.length;
- el("copies").textContent=records.reduce((sum,c)=>sum+available(c).quantity,0).toLocaleString("es-CO");
+ el("copies").textContent=records.reduce((sum,c)=>{const stock=available(c);return sum+(stock.available?stock.quantity:0)},0).toLocaleString("es-CO");
  updateInventoryValue();
 }
 function updateCartCount(){el("cartCount").textContent=([...cart.values()].reduce((s,n)=>s+n,0)+(inventoryOffer?1:0))}
