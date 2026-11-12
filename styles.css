@@ -407,3 +407,11 @@ body.editing-mode .item { border-color:#cbddeb; }
 @media(max-width:650px){
  .item.is-marked-sold .sold-image-stamp{top:112px;font-size:18px;padding:7px 12px;}
 }
+
+/* Valor actualizado de las cartas disponibles */
+.inventory-worth{display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;padding:25px 29px;margin-bottom:19px;border:1px solid #c8daed;border-radius:16px;background:linear-gradient(115deg,#edf5fd,#fff 70%);box-shadow:0 3px 14px #16375a0b}
+.inventory-worth-label{font-size:11px;letter-spacing:.1em;font-weight:800;color:#567292;margin:0 0 10px}
+.inventory-worth-amount{display:block;color:#173b63;font-size:clamp(29px,4.5vw,43px);font-weight:800;letter-spacing:-.035em;line-height:1.15;font-variant-numeric:tabular-nums}
+.inventory-worth-meta{color:#667c94;font-size:12px;line-height:1.5;margin:12px 0 0}
+.inventory-worth-status{font-size:11px;font-weight:750;color:#245f79;background:#e4f1f5;border:1px solid #cce6ec;padding:8px 12px;border-radius:999px;white-space:nowrap}
+@media(max-width:650px){.inventory-worth{padding:20px 17px;gap:14px}.inventory-worth-amount{font-size:clamp(27px,7.5vw,37px)}.inventory-worth-status{font-size:10px}}
