@@ -14,6 +14,7 @@ const sold=Object.freeze([
  Object.freeze({id:81, name:"Caterpie",number:"172/165",set:"Pokémon Card 151",language:"Japonés"}),
  Object.freeze({id:241,name:"Omanyte",number:"180/165",set:"Pokémon Card 151",language:"Japonés"}),
  Object.freeze({id:79, name:"Blastoise",number:"2/102",set:"Celebrations (Classic Collection)",language:"Inglés"}),
+ Object.freeze({"id":91,"name":"Scream Tail ex","number":"094/167","set":"Twilight Masquerade","language":"Inglés"}),
  Object.freeze({"id":301,"name":"Aroa","number":"166/142","set":"Stellar Crown","language":"Español"}),
  Object.freeze({"id":315,"name":"Medicham ex","number":"080/142","set":"Stellar Crown","language":"Español"}),
  Object.freeze({"id":8,"name":"Articuno","number":"161/159","set":"Journey Together","language":"Inglés"}),
