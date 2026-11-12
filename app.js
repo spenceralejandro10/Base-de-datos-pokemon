@@ -48,9 +48,35 @@ function available(c){
 }
 function findCard(id){return records.find(c=>Number(c.id)===Number(id))}
 const tcgQuery=c=>market.searchUrl(c);
+function updateInventoryValue(){
+ const amountEl=el("inventoryTotal"),detailEl=el("inventoryMeta");
+ if(!amountEl||!detailEl)return;
+ if(!initialized){
+  amountEl.textContent="Calculando…";
+  return;
+ }
+ let total=0,units=0,refs=0,unpriced=0;
+ for(const card of records){
+  const current=available(card);
+  if(!current.available||current.quantity<=0)continue;
+  refs++;
+  units+=current.quantity;
+  const q=market.quote(card);
+  if(q.status!=="ready"||!Number.isFinite(q.copMin)){
+   unpriced++;
+   continue;
+  }
+  total+=q.copMin*current.quantity;
+ }
+ amountEl.textContent="$"+Math.round(total).toLocaleString("es-CO")+" COP";
+ detailEl.textContent=refs.toLocaleString("es-CO")+" referencias · "+
+  units.toLocaleString("es-CO")+" unidades disponibles · "+
+  (unpriced?unpriced+" referencias sin precio; total parcial":"Precios de referencia (incluye estimaciones)");
+}
 function updateStats(){
  el("total").textContent=records.length;
  el("copies").textContent=records.reduce((sum,c)=>sum+available(c).quantity,0).toLocaleString("es-CO");
+ updateInventoryValue();
 }
 function updateCartCount(){el("cartCount").textContent=[...cart.values()].reduce((s,n)=>s+n,0)}
 function cleanCart(){
@@ -561,7 +587,7 @@ adminDisplay();
 shared.subscribe(()=>{if(initialized)render()});
 meta.listen(()=>{if(initialized)applyMeta()});
 stock.listen(()=>{if(initialized){updateStats();cleanCart();render()}});
-market.subscribe(()=>{render();if(cartDialog.open)drawCart()});
+market.subscribe(()=>{updateInventoryValue();render();if(cartDialog.open)drawCart()});
 void market.init();
 rebuildPublicCodes();
 refreshOptions();updateStats();render();
@@ -581,6 +607,9 @@ document.addEventListener("visibilitychange",()=>{
   Promise.allSettled([shared.loadShared(true),meta.fetchOverrides(true),
     stock.refresh(true),refreshPublishedCatalog()]).then(applyMeta);
 });
+setInterval(()=>{
+ if(document.visibilityState==="visible")void stock.refresh(true);
+},15000);
 setInterval(()=>Promise.allSettled([shared.loadShared(true),meta.fetchOverrides(true),
  stock.refresh(true),refreshPublishedCatalog()]).then(applyMeta),90000);
 })();
