@@ -6,6 +6,8 @@
 "use strict";
 const normal=s=>String(s??"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").trim().toLowerCase().replace(/\s+/g," ");
 const sold=Object.freeze([
+ Object.freeze({"id":151,"name":"Gardevoir ex","number":"328/190","set":"Shiny Treasure ex","language":"Japonés"}),
+ Object.freeze({"id":83,"name":"Charmander","number":"004/165","set":"151","language":"Inglés"}),
  Object.freeze({"id":223,"name":"Sprigatito ex","number":"087","set":"Scarlet & Violet Promo","language":"Español"}),
  Object.freeze({id:27, name:"Venusaur ex",number:"001/142",set:"Stellar Crown",language:"Inglés"}),
  Object.freeze({id:272,name:"Wugtrio",number:"224/091",set:"Paldean Fates",language:"Inglés"}),
