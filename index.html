@@ -6,7 +6,7 @@
 <meta name="theme-color" content="#17304f">
 <title>Bóveda TCG | Colección de cartas Pokémon</title>
 <meta name="description" content="Explora Bóveda TCG: colección Pokémon, disponibilidad y selección de cartas.">
-<link rel="stylesheet" href="./styles.css?v=55">
+<link rel="stylesheet" href="./styles.css?v=56">
 </head>
 <body>
 <header class="top">
@@ -32,6 +32,13 @@
    <p>Anímate a proponer un precio por <strong>todas las cartas disponibles</strong>. Guardaremos tu oferta en <strong>Mi selección</strong> con un código para compartirla.</p>
    <button id="openInventoryOffer" class="inventory-offer-button" type="button" disabled>Realizar oferta por inventario total</button>
   </div>
+ </section>
+ <section id="photoRecovery" class="photo-recovery" hidden aria-label="Recuperar fotografías anteriores">
+  <div>
+   <strong>Recuperación de fotografías anteriores</strong>
+   <p id="photoRecoveryStatus" role="status" aria-live="polite">Comprobando imágenes de este navegador…</p>
+  </div>
+  <button id="photoRecoveryButton" type="button" disabled>Restaurar fotos guardadas</button>
  </section>
  <section class="stats" aria-label="Inventario de la bóveda">
   <div class="stat"><strong id="total">—</strong><small>Referencias</small></div>
@@ -169,7 +176,7 @@
 <script src="./collectr-snapshot.js?v=1"></script>
 <script src="./market-prices.js?v=51"></script>
 <script src="./sold-cards.js?v=2"></script>
-<script src="./app.js?v=57"></script>
+<script src="./app.js?v=58"></script>
 <script src="./order-panel.js?v=57"></script>
 <script src="./visitors.js?v=1"></script>
 </body>
