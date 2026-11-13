@@ -33,9 +33,6 @@
   });
   // Explicit owner prices stay separate from market quotations.
   const ownerPrices = Object.freeze([
-    {id:472,name:"Blastoise ex",number:"016/049",set:"Venusaur & Charizard & Blastoise Special Deck Set ex",usd:2.73},
-    {id:473,name:"Charizard ex",number:"009/049",set:"Venusaur & Charizard & Blastoise Special Deck Set ex",usd:4.86},
-    {id:474,name:"Venusaur ex",number:"003/049",set:"Venusaur & Charizard & Blastoise Special Deck Set ex",usd:1.66},
     {id:274,name:"Boltund VMAX",number:"267/264",set:"Fusion Strike",usd:8},
     {id:294,name:"Alcremie",number:"TG08/TG30",set:"Brilliant Stars Trainer Gallery",usd:5},
     {id:55,name:"Estudiante de Paldea",number:"065/165",set:"Paldean Fates",usd:4}
@@ -43,6 +40,15 @@
   // Referencias TCGplayer facilitadas por el propietario.
   // Este registro independiente sobrevive a la regeneración diaria de market-snapshot.json.
   const linkedTCGPrices = Object.freeze({
+    472: {name:"Blastoise ex",number:"016/049",
+      set:"Venusaur & Charizard & Blastoise Special Deck Set ex",
+      tcgId:589021,usd:2.73,updatedAt:"2026-11-11T00:00:00.000Z",group:"85-23600"},
+    473: {name:"Charizard ex",number:"009/049",
+      set:"Venusaur & Charizard & Blastoise Special Deck Set ex",
+      tcgId:589027,usd:4.86,updatedAt:"2026-11-11T00:00:00.000Z",group:"85-23600"},
+    474: {name:"Venusaur ex",number:"003/049",
+      set:"Venusaur & Charizard & Blastoise Special Deck Set ex",
+      tcgId:589065,usd:1.66,updatedAt:"2026-11-12T00:00:00.000Z",group:"85-23600"},
     455: {name:"Glimmora ex",number:"213/197",
       set:"Obsidian Flames",tcgId:509962,usd:0.81,
       updatedAt:"2026-11-13T20:03:03.000Z",group:"3-23228"},
