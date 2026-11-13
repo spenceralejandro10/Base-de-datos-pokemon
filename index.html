@@ -26,7 +26,7 @@ html.vault-open #vaultAccess{display:none}
  <div class="brand">
   <div><p class="eyebrow">COLECCIÓN DE CARTAS POKÉMON</p><h1>Bóveda TCG</h1><p class="sub">Explora nuestra colección, revisa las cartas disponibles y guarda tus favoritas.</p></div>
   <div class="header-actions">
-   <button id="managementEntry" type="button" class="manage-entry" aria-label="Activar herramientas de edición" aria-pressed="false" hidden disabled>Modo administrador</button>
+   <button id="managementEntry" type="button" class="manage-entry" aria-label="Desactivar herramientas de edición" aria-pressed="true">Modo administrador</button>
    <button id="orderOpen" class="cart-trigger order-entry" type="button">Consultar lista</button>
    <button id="cartOpen" class="cart-trigger" type="button">Mi selección <span id="cartCount">0</span></button>
   </div>
@@ -67,7 +67,7 @@ html.vault-open #vaultAccess{display:none}
   <select id="view" aria-label="Vista"><option value="grid">Galería</option><option value="table">Tabla</option></select>
   <button id="resetFilters" type="button">Limpiar filtros</button>
  </div>
- <p id="editingBanner" class="editing-banner" hidden>Modo administrador activo: pulsa <strong>Editar carta</strong> para cambiar fotos, cantidades o fichas. Estos cambios son públicos y cualquier visitante puede editarlos. <button id="autoFillImages" type="button" class="primary">Completar fotos automáticamente</button> <span id="autoFillProgress" role="status" aria-live="polite"></span></p>
+ <p id="editingBanner" class="editing-banner">Modo administrador activo: en cada carta selecciona <strong>Editar imagen, cantidad e idioma</strong>. <button id="autoFillImages" type="button" class="primary">Buscar imágenes faltantes automáticamente</button> <span id="autoFillProgress" role="status" aria-live="polite"></span></p>
  <p class="notice simple-price-note"><strong>Cartas sin jugar, recién sacadas de sobre y protegidas en toploader</strong> (estado declarado por el propietario). Los precios muestran <strong>TCGplayer Market Price</strong> en <strong>COP</strong> como referencia de ventas realizadas, salvo las cartas identificadas como <strong>Precio fijado por propietario</strong>, cuyo valor en USD se convierte a pesos. No se toma el anuncio de un vendedor ni se etiqueta tu carta como usada o dañada. Si no existe precio verificable en TCGplayer, aparece un enlace de búsqueda directa en Collectr. La consulta automática de precios de Collectr necesita acceso autorizado a su API; cuando tampoco exista coincidencia verificable, se mostrará un precio orientativo identificado como estimación, no como Market Price. El valor final se confirma según edición, idioma y acabado; no incluye envío.<br><span id="exchangeRate"></span> · <a href="https://help.tcgplayer.com/hc/en-us/articles/213588017-TCGplayer-Market-Price" target="_blank" rel="noopener noreferrer">Cómo se calcula Market Price</a> · Datos de <a href="https://tcgcsv.com" target="_blank" rel="noopener noreferrer">TCGCSV</a> · Cambio de <a href="https://www.exchangerate-api.com" target="_blank" rel="noopener noreferrer">ExchangeRate-API</a>.</p>
  <div id="results" class="grid" aria-live="polite"></div>
 </main>
@@ -151,13 +151,10 @@ html.vault-open #vaultAccess{display:none}
   <input id="adminQuantity" type="number" min="0" max="100000" step="1">
   <label class="inline-check"><input id="adminListed" type="checkbox"> Mostrar como disponible</label>
   <button id="saveStock" type="button" class="primary">Guardar cantidad y disponibilidad</button>
-  <h3>Ficha de la carta</h3>
-  <label for="adminSet">Colección</label><input id="adminSet" type="text" maxlength="140" placeholder="Nombre de la colección">
-  <label for="adminLanguage">Idioma</label>
+  <h3>Idioma</h3>
+  <label for="adminLanguage">Idioma de la carta</label>
   <select id="adminLanguage"><option value="">Sin especificar</option><option>Inglés</option><option>Español</option><option>Japonés</option><option>Chino</option><option>Coreano</option><option>Francés</option><option>Alemán</option><option>Italiano</option><option>Portugués</option></select>
-  <label for="adminNote">Observaciones (opcional)</label><input id="adminNote" type="text" maxlength="500" placeholder="Observaciones">
-  <button id="saveCardInfo" type="button" class="primary">Guardar colección e idioma</button>
-  <button id="resetCardInfo" type="button">Restaurar ficha del Excel</button>
+  <button id="saveCardInfo" type="button" class="primary">Guardar idioma</button>
   <h3>Imagen de la carta</h3>
   <p class="hint">Busca la imagen por nombre, número, colección e idioma, y revisa que corresponda a la versión exacta.</p>
   <div class="image-search-actions">
@@ -174,10 +171,7 @@ html.vault-open #vaultAccess{display:none}
   <div class="or-label">O subir fotografía</div>
   <input id="imageUpload" type="file" accept="image/jpeg,image/png,image/webp">
   <button id="saveImageFile" type="button" class="primary">Subir fotografía</button>
-  <button id="removeImageShared" type="button" class="danger">Quitar imagen personalizada</button>
  </div>
- <hr>
- <button id="migrateOldImages" type="button">Sincronizar imágenes antiguas de este equipo</button>
 </dialog>
 <footer class="footer">Bóveda TCG · Colección Pokémon · Sin pagos en línea.</footer>
 
@@ -195,7 +189,7 @@ html.vault-open #vaultAccess{display:none}
 <script>
 (function(){
  "use strict";
- const names=["./cards.js?v=74","./shared-images.js?v=39","./catalog-overrides.js?v=31","./card-stock.js?v=32","./card-images.js?v=45","./market-snapshot.js?v=39","./collectr-snapshot.js?v=1","./market-prices.js?v=51","./sold-cards.js?v=17","./app.js?v=60","./order-panel.js?v=57","./visitors.js?v=1"];
+ const names=["./cards.js?v=74","./shared-images.js?v=39","./catalog-overrides.js?v=31","./card-stock.js?v=32","./card-images.js?v=45","./market-snapshot.js?v=39","./collectr-snapshot.js?v=1","./market-prices.js?v=51","./sold-cards.js?v=17","./app.js?v=61","./order-panel.js?v=57","./visitors.js?v=1"];
  const key="boveda-locked-session-v1";
  const hash="8f4058ca5034f5c84788b7923a4527de6bad5b28af70bab38f89479b8f3dd29b";
  const encoder=new TextEncoder();
