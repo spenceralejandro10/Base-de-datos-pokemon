@@ -77,7 +77,7 @@
   function element(card) {
     const q=quote(card),box=document.createElement("div");box.className="card-market-price";
     const label=document.createElement("small"),value=document.createElement("strong");
-    label.textContent=q.manual?"Precio fijado por propietario":q.linked?"TCGplayer · precio enlazado":q.source==="collectr"?"Collectr · Sin gradar":
+    label.textContent=q.manual?"Precio fijado por propietario":q.source==="collectr"?"Collectr · Sin gradar":
       q.source==="tcgplayer"?"TCGplayer · Market Price":"Precio pendiente de verificar";
     value.textContent=amount(q);box.append(label,value);
     if (q.status === "unavailable") {
@@ -85,11 +85,12 @@
     }
     const detail=document.createElement("small"),updated=document.createElement("small");
     detail.textContent=formatUSD(q.min)+" · "+q.variants[0].finish;
-    updated.textContent=q.manual?"Precio indicado por el propietario":q.linked?"Referencia TCGplayer guardada: "+date(q.updatedAt)+(q.reference?" · referencia de edición inglesa":""):
+    updated.textContent=q.linked?"":q.manual?"Precio indicado por el propietario":
       (q.stale?"Dato vencido: ":"Dato de mercado: ")+date(q.updatedAt)+(q.reference?" · referencia en inglés":"");
     if (q.source === "collectr") updated.textContent+=" · Powered by Collectr";
     if (!q.usable) {const note=document.createElement("small");note.textContent="No incluido en el total hasta verificar la actualización.";box.append(note);}
-    box.append(detail,updated);
+    box.append(detail);
+    if(updated.textContent)box.append(updated);
     box.title=q.manual?"Precio en USD fijado expresamente por el propietario.":
       q.variants.map(v=>v.finish+": "+formatUSD(v.usd)).join(" · ")+". Referencia de mercado sin envío; no certifica condición ni precio de venta.";
     return box;
