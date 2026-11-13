@@ -159,7 +159,7 @@ function refreshOptions(){
   const option=document.createElement("option");
   option.value="";option.textContent=key==="set"?"Todas las colecciones":"Todos los idiomas";control.append(option);
   (key==="set" ? orderCollections([...new Set(records.map(c=>c.set).filter(Boolean))])
-    : [...new Set(records.map(c=>c[key]).filter(Boolean))].sort((a,b)=>a.localeCompare(b,"es"))
+    : [...new Set(records.flatMap(c=>c.languageQuantities?Object.keys(c.languageQuantities):[c.language]).filter(Boolean))].sort((a,b)=>a.localeCompare(b,"es"))
   ).forEach(value=>{
    const opt=document.createElement("option");opt.value=value;opt.textContent=value;control.append(opt);
   });
@@ -171,7 +171,7 @@ function filtering(){
  return orderedCards(records.filter(c=>{
   const a=available(c);
   if(setFilter.value&&setFilter.value!==c.set)return false;
-  if(langFilter.value&&langFilter.value!==c.language)return false;
+  if(langFilter.value&&langFilter.value!==c.language&&!Object.hasOwn(c.languageQuantities||{},langFilter.value))return false;
   if(availability.value==="available"&&!a.available)return false;
   if(availability.value==="soldout"&&a.available)return false;
   return !search||[cardCode(c),c.name,c.number,c.set,c.language,c.year,c.ordinal].join(" ").toLocaleLowerCase("es").includes(search);
@@ -636,7 +636,7 @@ function galleryCard(c,token) {
  const a=available(c);
  const item=document.createElement("article");
  item.className="item"+(a.soldVisual?" is-marked-sold":"");
- const details=[c.set,c.language].filter(Boolean).join(" · ");
+ const details=[c.set,c.languageQuantities?Object.entries(c.languageQuantities).map(([lang,qty])=>lang+": "+qty).join(" · "):c.language].filter(Boolean).join(" · ");
  item.innerHTML='<div class="art"><div class="placeholder"><span class="loader"></span><span>Cargando imagen…</span></div><img hidden loading="lazy" referrerpolicy="no-referrer"><span class="pill">'+esc(cardCode(c))+'</span></div>'+
  (a.soldVisual?'<div class="sold-image-stamp" aria-label="Carta vendida">VENDIDA</div>':'')+
  '<div class="details"><h3>'+esc(c.name)+'</h3><div class="num">'+esc(c.number)+'</div>'+
@@ -657,7 +657,7 @@ function tableCard(c,token) {
  const tr=document.createElement("tr");
  if(a.soldVisual)tr.className="is-marked-sold";
  tr.innerHTML='<td class="thumbnail"><div class="mini-art"><img hidden loading="lazy" referrerpolicy="no-referrer"><span>—</span></div></td>'+
- [cardCode(c),c.name,c.number,c.set,c.language,a.quantity,a.soldVisual?"Vendida":a.available?"Disponible":a.override&&a.quantity===0?"Vendida":"No disponible"]
+ [cardCode(c),c.name,c.number,c.set,c.languageQuantities?Object.entries(c.languageQuantities).map(([lang,qty])=>lang+": "+qty).join(" · "):c.language,a.quantity,a.soldVisual?"Vendida":a.available?"Disponible":a.override&&a.quantity===0?"Vendida":"No disponible"]
  .map((x,i)=>'<td'+(i===2?' class="num-col"':"")+'>'+esc(x==null||x===""?"—":x)+'</td>').join("")+
  '<td class="table-market"></td><td class="table-action"></td>';
  tr.querySelector(".table-market").append(market.element(c),tcgLink(c));
