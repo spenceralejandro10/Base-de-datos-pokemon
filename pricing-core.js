@@ -40,6 +40,9 @@
   // Referencias TCGplayer facilitadas por el propietario.
   // Este registro independiente sobrevive a la regeneración diaria de market-snapshot.json.
   const linkedTCGPrices = Object.freeze({
+    219: {name:"Maushold ex",number:"155/182",
+      set:"Paradox Rift",tcgId:523836,usd:1.63,
+      updatedAt:"2026-11-12T00:00:00.000Z",group:"3-23286"},
     299: {name:"Ferropaladín ex",number:"089/182",
       set:"Paradox Rift",tcgId:565469,usd:1.72,
       updatedAt:"2026-11-12T00:00:00.000Z",group:"3-22880",
