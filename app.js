@@ -224,6 +224,11 @@ function adminDisplay(){
  el("editingBanner").hidden=!editingMode;
  document.body.classList.toggle("editing-mode",editingMode);
 }
+function updateImageAuthUI(){
+ const authorized=shared.signedIn();
+ el("imageLoginPanel").hidden=authorized;
+ el("imageLoginActive").hidden=!authorized;
+}
 function showEditor(card){
  if(!editingMode||!card)return;
  editing=findCard(card.id)||card;
@@ -234,6 +239,7 @@ function showEditor(card){
  el("adminLanguage").value=editing.language||"";
  el("imageUrl").value=shared.getShared(editing)||localStorage.getItem("pokemon-image-"+editing.id)||"";
  el("imageUpload").value="";
+ updateImageAuthUI();
  resetImageSuggestion();
  el("searchCardImage").href=imageSearchUrl(editing);
  el("editingCard").textContent=cardCode(editing)+" · "+editing.name+" · "+editing.number;
@@ -319,6 +325,23 @@ el("closeEditor").addEventListener("click",()=>editor.close());
 editor.addEventListener("click",e=>{if(e.target===editor)editor.close()});
 el("saveStock").addEventListener("click",()=>{if(editing)doAdmin(()=>stock.save(editing,el("adminQuantity").value,el("adminListed").checked),"Cantidad y estado publicados correctamente.")});
 el("saveCardInfo").addEventListener("click",()=>{if(editing)doAdmin(()=>meta.save(editing,{set:editing.set||"",language:el("adminLanguage").value,validation_note:editing.adminNote||""}),"Idioma guardado correctamente.")});
+el("imageLoginForm").addEventListener("submit",async e=>{
+ e.preventDefault();
+ if(busy)return;
+ const button=el("imageLoginButton");
+ button.disabled=true;
+ flash("Verificando acceso del administrador…");
+ try{
+  await shared.signIn(el("imageLoginEmail").value,el("imageLoginPassword").value);
+  el("imageLoginPassword").value="";
+  updateImageAuthUI();
+  flash("Acceso autorizado. Ya puedes subir fotografías y guardar enlaces.");
+ }catch(err){flash(err.message||"No se pudo iniciar sesión.",true)}
+ finally{button.disabled=false}
+});
+el("imageLoginSignOut").addEventListener("click",()=>{
+ shared.signOut();updateImageAuthUI();flash("Sesión cerrada.");
+});
 el("saveImageUrl").addEventListener("click",()=>{if(editing)doAdmin(()=>shared.updateImage(editing,el("imageUrl").value),"Imagen guardada para todos los visitantes.")});
 el("saveImageFile").addEventListener("click",()=>{if(editing)doAdmin(()=>shared.uploadImage(editing,el("imageUpload").files[0]),"Fotografía subida correctamente.")});
 let syncingManualImages=false;
