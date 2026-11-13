@@ -156,6 +156,17 @@ html.vault-open #vaultAccess{display:none}
   <select id="adminLanguage"><option value="">Sin especificar</option><option>Inglés / Español</option><option>Inglés</option><option>Español</option><option>Japonés</option><option>Chino</option><option>Coreano</option><option>Francés</option><option>Alemán</option><option>Italiano</option><option>Portugués</option></select>
   <button id="saveCardInfo" type="button" class="primary">Guardar idioma</button>
   <h3>Imagen de la carta</h3>
+  <div id="imageLoginPanel" class="image-auth-panel">
+   <p class="hint">Inicia sesión con tu cuenta de administrador para guardar imágenes.</p>
+   <form id="imageLoginForm" autocomplete="on">
+    <label for="imageLoginEmail">Correo del administrador</label>
+    <input id="imageLoginEmail" type="email" autocomplete="username" required placeholder="Correo de Supabase">
+    <label for="imageLoginPassword">Contraseña</label>
+    <input id="imageLoginPassword" type="password" autocomplete="current-password" required>
+    <button id="imageLoginButton" class="primary" type="submit">Iniciar sesión</button>
+   </form>
+  </div>
+  <div id="imageLoginActive" hidden><span class="hint">Sesión de imágenes activa.</span> <button id="imageLoginSignOut" type="button">Cerrar sesión</button></div>
   <p class="hint">Busca la imagen por nombre, número, colección e idioma, y revisa que corresponda a la versión exacta.</p>
   <div class="image-search-actions">
    <button id="findCatalogImage" type="button" class="primary">Buscar imagen automáticamente</button>
@@ -178,7 +189,7 @@ html.vault-open #vaultAccess{display:none}
 <script>
 (function(){
  "use strict";
- const names=["./cards.js?v=76-idiomas","./shared-images.js?v=66-idiomas","./catalog-overrides.js?v=32","./card-stock.js?v=33","./card-images.js?v=45","./pricing-core.js?v=80-ferropaladin","./market-prices.js?v=79-enlaces-fijos","./sold-cards.js?v=17","./app.js?v=66-total","./order-panel.js?v=66-total","./visitors.js?v=2"];
+ const names=["./cards.js?v=76-idiomas","./shared-images.js?v=81-auth-imagenes","./catalog-overrides.js?v=32","./card-stock.js?v=33","./card-images.js?v=45","./pricing-core.js?v=80-ferropaladin","./market-prices.js?v=81-precios-limpios","./sold-cards.js?v=17","./app.js?v=81-auth-imagenes","./order-panel.js?v=66-total","./visitors.js?v=2"];
  const key="boveda-locked-session-v1";
  const hash="8f4058ca5034f5c84788b7923a4527de6bad5b28af70bab38f89479b8f3dd29b";
  const encoder=new TextEncoder();
