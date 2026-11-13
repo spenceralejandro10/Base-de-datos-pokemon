@@ -40,6 +40,15 @@
   // Referencias TCGplayer facilitadas por el propietario.
   // Este registro independiente sobrevive a la regeneración diaria de market-snapshot.json.
   const linkedTCGPrices = Object.freeze({
+    261: {name:"Gardevoir ex",number:"217/091",
+      set:"Paldean Fates",tcgId:535530,usd:8.01,
+      updatedAt:"2026-11-12T00:00:00.000Z",group:null},
+    371: {name:"Scizor",number:"116/108",
+      set:"Ruler of the Black Flame",tcgId:567070,usd:4.87,
+      updatedAt:"2026-11-13T20:02:40.000Z",group:"85-23609"},
+    387: {name:"Sprigatito ex",number:"087",
+      set:"Scarlet & Violet Promo",tcgId:542468,usd:1.23,
+      updatedAt:"2026-11-12T00:00:00.000Z",group:null},
     472: {name:"Blastoise ex",number:"016/049",
       set:"Venusaur & Charizard & Blastoise Special Deck Set ex",
       tcgId:589021,usd:2.73,updatedAt:"2026-11-11T00:00:00.000Z",group:null},
