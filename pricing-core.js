@@ -150,7 +150,7 @@
       const usd = fresh ? selected.usd : linked.usd;
       const updatedAt = fresh ? groupData.updatedAt : linked.updatedAt;
       return make({source:"tcgplayer",linked:true,min:usd,max:usd,stale:false,
-        variants:[{usd,finish:linked.edition ? "Holofoil · " + linked.edition : "Holofoil"}],updatedAt,
+        variants:[{usd,finish:"Holofoil"}],updatedAt,
         reference:norm(card.language) !== "ingles",url:"https://www.tcgplayer.com/product/" + linked.tcgId});
     }
     const group = groupFor(card), data = snapshot?.groups?.[group], matches = match(card,data);
