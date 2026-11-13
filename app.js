@@ -14,8 +14,8 @@ const publicCodes=new Map();
 const cardCode=c=>publicCodes.get(Number(c.id))||
   "BTCG-"+String(c.id).padStart(4,"0");
 // Desactivado por solicitud del propietario; se restaura solo cuando lo solicite.
-const ADMIN_ENABLED=false;
-let editingMode=false;
+const ADMIN_ENABLED=true;
+let editingMode=true;
 let records=base.map(x=>({...x})),editing=null,epoch=0,busy=false,initialized=false;
 const CART_KEY="boveda-tcg-cart-v1";
 const WHOLE_OFFER_KEY="boveda-tcg-whole-inventory-offer-v1";
@@ -243,9 +243,7 @@ function showEditor(card){
  const a=available(editing);
  el("adminQuantity").value=String(a.quantity);
  el("adminListed").checked=a.listed;
- el("adminSet").value=editing.set||"";
  el("adminLanguage").value=editing.language||"";
- el("adminNote").value=editing.adminNote||"";
  el("imageUrl").value=shared.getShared(editing)||localStorage.getItem("pokemon-image-"+editing.id)||"";
  el("imageUpload").value="";
  resetImageSuggestion();
@@ -332,15 +330,9 @@ el("assignFoundImage").addEventListener("click",()=>{
 el("closeEditor").addEventListener("click",()=>editor.close());
 editor.addEventListener("click",e=>{if(e.target===editor)editor.close()});
 el("saveStock").addEventListener("click",()=>{if(editing)doAdmin(()=>stock.save(editing,el("adminQuantity").value,el("adminListed").checked),"Cantidad y estado publicados correctamente.")});
-el("saveCardInfo").addEventListener("click",()=>{if(editing)doAdmin(()=>meta.save(editing,{set:el("adminSet").value,language:el("adminLanguage").value,validation_note:el("adminNote").value}),"Colección e idioma publicados correctamente.")});
-el("resetCardInfo").addEventListener("click",()=>{
- if(editing&&confirm("¿Restaurar colección e idioma originales de esta ficha?"))doAdmin(()=>meta.remove(editing),"Ficha restaurada desde la copia del inventario.");
-});
+el("saveCardInfo").addEventListener("click",()=>{if(editing)doAdmin(()=>meta.save(editing,{set:editing.set||"",language:el("adminLanguage").value,validation_note:editing.adminNote||""}),"Idioma guardado correctamente.")});
 el("saveImageUrl").addEventListener("click",()=>{if(editing)doAdmin(()=>shared.updateImage(editing,el("imageUrl").value),"Imagen guardada para todos los visitantes.")});
 el("saveImageFile").addEventListener("click",()=>{if(editing)doAdmin(()=>shared.uploadImage(editing,el("imageUpload").files[0]),"Fotografía subida correctamente.")});
-el("removeImageShared").addEventListener("click",()=>{
- if(editing&&confirm("¿Eliminar la imagen personalizada de "+editing.name+"?"))doAdmin(()=>shared.removeImage(editing),"Imagen personalizada eliminada.");
-});
 let syncingManualImages=false;
 async function syncManualImages(silent=false){
  if(!editingMode||syncingManualImages)return;
@@ -365,7 +357,7 @@ async function syncManualImages(silent=false){
   if(initialized)render();
  }finally{syncingManualImages=false}
 }
-el("migrateOldImages").addEventListener("click",()=>{void syncManualImages(false).catch(e=>flash(e.message,true))});
+
 
 function addToCart(c){
  const a=available(c);
@@ -618,7 +610,7 @@ function tcgLink(c) {
 function editButton(c){
  if(!editingMode)return null;
  const button=document.createElement("button");button.type="button";button.className="image-button";
- button.textContent="Editar carta";button.addEventListener("click",()=>showEditor(c));return button;
+ button.textContent="Editar imagen, cantidad e idioma";button.addEventListener("click",()=>showEditor(c));return button;
 }
 function quickImageSearchButton(c){
  if(!editingMode)return null;
@@ -655,7 +647,7 @@ function galleryCard(c,token) {
  actions.before(market.element(c));
  actions.append(tcgLink(c),cartButton(c));
  const admin=editButton(c);if(admin)actions.append(admin);
- const search=quickImageSearchButton(c);if(search)actions.append(search);
+
  imageFor(c,item.querySelector(".art>img"),item.querySelector(".placeholder"),null,token);
  return item;
 }
@@ -671,7 +663,7 @@ function tableCard(c,token) {
  tr.querySelector(".table-market").append(market.element(c),tcgLink(c));
  tr.querySelector(".table-action").append(cartButton(c));
  const admin=editButton(c);if(admin)tr.querySelector(".table-action").append(admin);
- const search=quickImageSearchButton(c);if(search)tr.querySelector(".table-action").append(search);
+
  imageFor(c,tr.querySelector(".mini-art img"),tr.querySelector(".mini-art span"),null,token);
  return tr;
 }
