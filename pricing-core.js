@@ -118,6 +118,19 @@
     if (owner) return make({source:"owner",manual:true,min:owner.usd,max:owner.usd,
       stale:false,reference:false,url:searchUrl(card),updatedAt:null,
       variants:[{usd:owner.usd,finish:"Precio fijado por propietario"}]});
+    // Squirtle BTCG-0165 has two English units and one Japanese unit.
+    // Display the verified English TCGplayer reference without pricing the Japanese copy as English.
+    if (Number(card.id) === 329 && norm(card.name) === "squirtle" &&
+        number(card.number) === "170/165" &&
+        card.languageQuantities?.["Inglés"] === 2 && card.languageQuantities?.["Japonés"] === 1) {
+      const data = snapshot?.groups?.["3-23237"];
+      const product = data?.products?.find(p => p.id === 502549 && number(p.number) === "170/165");
+      const usd = product?.prices?.find(v => v.finish === "Holofoil")?.usd;
+      if (positive(usd)) return {...make({source:"tcgplayer",min:usd,max:usd,
+        variants:[{usd,finish:"Holofoil · versión inglesa"}],
+        stale:!recent(data.updatedAt,now),updatedAt:data.updatedAt,
+        reference:true,url:"https://www.tcgplayer.com/product/502549"}),usable:false};
+    }
     const group = groupFor(card), data = snapshot?.groups?.[group], matches = match(card,data);
     let tcg = null;
     if (group && matches.length === 1) {
