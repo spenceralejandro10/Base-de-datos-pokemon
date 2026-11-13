@@ -1,6 +1,8 @@
 (function(){
 "use strict";
 let base=window.CARDS||[];
+// Frozen display sequence. The immutable internal ID keeps photos, prices and stock attached to the right card.
+const fixedDisplayOrder=new Map(base.map((card,index)=>[Number(card.id),index]));
 const shared=window.SharedImages,meta=window.CatalogOverrides,stock=window.CardStock,market=window.CardPrices;
 const el=id=>document.getElementById(id);
 const q=el("q"),setFilter=el("set"),langFilter=el("lang"),availability=el("availability"),view=el("view"),results=el("results");
@@ -132,11 +134,9 @@ function orderCollections(names){
  a.localeCompare(b,"es"));
 }
 function orderedCards(list){
- const groups=orderCollections([...new Set(records.map(c=>c.set).filter(Boolean))]);
- const positions=new Map(groups.map((name,i)=>[name,i]));
- return list.sort((a,b)=>(positions.get(a.set)??999)-(positions.get(b.set)??999)||
- (Number(b.year)||0)-(Number(a.year)||0)||
- (Number(a.ordinal)||0)-(Number(b.ordinal)||0));
+ // Never regroup or reorder when cards are removed or metadata changes.
+ return list.sort((a,b)=>(fixedDisplayOrder.get(Number(a.id))??Number.MAX_SAFE_INTEGER)-
+ (fixedDisplayOrder.get(Number(b.id))??Number.MAX_SAFE_INTEGER));
 }
 function rebuildPublicCodes(){
  publicCodes.clear();
