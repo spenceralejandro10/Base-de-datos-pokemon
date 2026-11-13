@@ -9,43 +9,6 @@ const URL_BASE="https://cnivcnexsqobipvqxero.supabase.co";
 const KEY="sb_publishable_6UjwLuM-op0-OBKWlbusTw_qmLNZVfU";
 const TABLE="pokemon_image_overrides";
 const BUCKET="pokemon-gallery-overrides";
-const SESSION_KEY="pokemon-gallery-admin-session";
-let adminSession=null;
-try {adminSession=JSON.parse(sessionStorage.getItem(SESSION_KEY)||"null")}catch(_){}
-function signedIn(){return Boolean(adminSession?.access_token && adminSession?.refresh_token)}
-function saveSession(data){
- const userId=String(data?.user?.id||adminSession?.user_id||"");
- if(!data?.access_token||!data?.refresh_token||!userId)throw Error("Supabase no devolvió una sesión válida.");
- adminSession={access_token:data.access_token,refresh_token:data.refresh_token,
-  expires_at:Date.now()+Math.max(60,Number(data.expires_in)||3600)*1000,user_id:userId};
- sessionStorage.setItem(SESSION_KEY,JSON.stringify(adminSession));
- return adminSession;
-}
-async function signIn(email,password){
- const address=String(email||"").trim();
- if(!address||!password)throw Error("Escribe el correo y la contraseña del administrador.");
- const res=await fetch(URL_BASE+"/auth/v1/token?grant_type=password",{
-  method:"POST",headers:{apikey:KEY,"Content-Type":"application/json"},
-  body:JSON.stringify({email:address,password:String(password)})
- });
- const data=await res.json().catch(()=>({}));
- if(!res.ok)throw Error("No se pudo iniciar sesión. Comprueba el correo y la contraseña del administrador.");
- return saveSession(data);
-}
-async function authorize(){
- if(!signedIn())throw Error("Para guardar fotos compartidas, inicia sesión como administrador en este editor.");
- if(Date.now() < Number(adminSession.expires_at)-60000)return adminSession;
- const res=await fetch(URL_BASE+"/auth/v1/token?grant_type=refresh_token",{
-  method:"POST",headers:{apikey:KEY,"Content-Type":"application/json"},
-  body:JSON.stringify({refresh_token:adminSession.refresh_token})
- });
- const data=await res.json().catch(()=>({}));
- if(!res.ok){signOut();throw Error("Sesión vencida. Inicia sesión de nuevo para guardar imágenes.")}
- return saveSession(data);
-}
-function signOut(){adminSession=null;sessionStorage.removeItem(SESSION_KEY)}
-function authorizedHeaders(session){return {apikey:KEY,Authorization:"Bearer "+session.access_token}}
-
 let rows=new Map(),imagesById=new Map(),lastError="",lastLoaded=0;
 const watchers=new Set();
   function imageKey(card) {
@@ -137,14 +100,13 @@ const watchers=new Set();
 
 async function init(){await loadShared(true)}
 async function updateImage(card,imageUrl){
- const session=await authorize();
  const url=String(imageUrl||"").trim();
  let parsed;
  try{parsed=new URL(url)}catch(_){throw Error("Introduce una URL HTTPS válida.")}
  if(parsed.protocol!=="https:"||url.length>2048)throw Error("La imagen debe usar HTTPS y una URL válida.");
- const payload={card_key:imageKey(card),image_url:url,image_source:"manual",updated_by:session.user_id,updated_at:new Date().toISOString()};
+ const payload={card_key:imageKey(card),image_url:url,image_source:"manual",updated_by:null,updated_at:new Date().toISOString()};
  const response=await fetch(URL_BASE+"/rest/v1/"+TABLE+"?on_conflict=card_key",{
-  method:"POST",headers:{...authorizedHeaders(session),"Content-Type":"application/json",Prefer:"resolution=merge-duplicates,return=representation"},
+  method:"POST",headers:{apikey:KEY,"Content-Type":"application/json",Prefer:"resolution=merge-duplicates,return=representation"},
   body:JSON.stringify(payload)
  });
  if(!response.ok){const d=await response.json().catch(()=>({}));throw Error(d.message||"No se pudo guardar la imagen compartida.")}
@@ -155,18 +117,17 @@ async function updateImage(card,imageUrl){
 // Solo añade fotos oficiales verificadas; nunca sustituye una foto guardada a mano.
 async function saveCatalogImage(card,imageUrl){
   if(getShared(card)) return false;
-  const session=await authorize();
-  const url=String(imageUrl||"").trim();
+   const url=String(imageUrl||"").trim();
   if(!/^https:\/\/(?:assets\.tcgdex\.net|images\.pokemontcg\.io)\//i.test(url) || url.length>2048){
     throw Error("La imagen automática no procede de un catálogo autorizado.");
   }
   const payload={
     card_key:imageKey(card), image_url:url, image_source:"tcgdex-auto",
-    updated_by:session.user_id, updated_at:new Date().toISOString()
+    updated_by:null, updated_at:new Date().toISOString()
   };
   const response=await fetch(URL_BASE+"/rest/v1/"+TABLE+"?on_conflict=card_key",{
     method:"POST",
-    headers:{...authorizedHeaders(session),"Content-Type":"application/json",
+    headers:{apikey:KEY,"Content-Type":"application/json",
       Prefer:"resolution=ignore-duplicates,return=minimal"},
     body:JSON.stringify(payload)
   });
@@ -182,13 +143,12 @@ async function saveCatalogImage(card,imageUrl){
 }
 
 async function removeImage(card){
- const session=await authorize();
  const id=Number(card.id),primary=imageKey(card);
  const keys=[...rows.keys()].filter(key=>key===primary||Number(key.split("|")[0])===id);
  if(id===37&&imagesById.has(54))keys.push(...[...rows.keys()].filter(key=>Number(key.split("|")[0])===54));
  for(const key of new Set(keys)){
   const response=await fetch(URL_BASE+"/rest/v1/"+TABLE+"?card_key=eq."+encodeURIComponent(key),{
-   method:"DELETE",headers:authorizedHeaders(session)
+   method:"DELETE",headers:{apikey:KEY}
   });
   if(!response.ok)throw Error("No se pudo quitar la imagen compartida.");
   rows.delete(key);
@@ -199,13 +159,12 @@ async function removeImage(card){
  updateWatchers();
 }
 async function uploadImage(card,file){
- const session=await authorize();
  if(!file||!["image/png","image/jpeg","image/webp"].includes(file.type))throw Error("Selecciona una fotografía JPG, PNG o WebP.");
  if(file.size>6291456)throw Error("La imagen supera el máximo de 6 MB.");
  const name=crypto.randomUUID()+"."+(file.type==="image/png"?"png":file.type==="image/webp"?"webp":"jpg");
  const path="cards/"+name;
  const res=await fetch(URL_BASE+"/storage/v1/object/"+BUCKET+"/"+path,{
-  method:"POST",headers:{...authorizedHeaders(session),"Content-Type":file.type,"cache-control":"3600","x-upsert":"false"},
+  method:"POST",headers:{apikey:KEY,"Content-Type":file.type,"cache-control":"3600","x-upsert":"false"},
   body:file
  });
  if(!res.ok){const d=await res.json().catch(()=>({}));throw Error(d.message||"No se pudo subir la fotografía.")}
@@ -214,5 +173,5 @@ async function uploadImage(card,file){
  return url;
 }
 function subscribe(callback){watchers.add(callback);return()=>watchers.delete(callback)}
-window.SharedImages={init,loadShared,loadCatalog,getShared,imageKey,updateImage,saveCatalogImage,removeImage,uploadImage,signIn,signOut,signedIn,subscribe,getError:()=>lastError};
+window.SharedImages={init,loadShared,loadCatalog,getShared,imageKey,updateImage,saveCatalogImage,removeImage,uploadImage,subscribe,getError:()=>lastError};
 })();
