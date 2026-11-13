@@ -639,16 +639,27 @@ function languageStockLabel(c,a){
  if(a.quantity!==baseTotal)return (a.available?"Disponible · "+a.quantity+" ud.":"No disponible")+" · Revisar desglose por idioma";
  return (a.available?"Disponible · "+a.quantity+" ud.":"No disponible")+" · "+entries.map(([lang,q])=>q+" "+lang.toLowerCase()).join(" + ");
 }
+function languageQuantityBadges(c) {
+ const quantities=c.languageQuantities;
+ if(!quantities)return "";
+ const entries=Object.entries(quantities).filter(([,quantity])=>Number(quantity)>0);
+ if(!entries.length)return "";
+ return '<div class="language-quantities" aria-label="Cantidad disponible por idioma">'+
+  entries.map(([language,quantity])=>
+   '<span class="language-quantity">'+esc(language)+': <strong>'+esc(quantity)+'</strong> ud.</span>'
+  ).join("")+'</div>';
+}
 function galleryCard(c,token) {
  const a=available(c);
  const item=document.createElement("article");
  item.className="item"+(a.soldVisual?" is-marked-sold":"");
- const details=[c.set,c.languageQuantities?Object.entries(c.languageQuantities).map(([lang,qty])=>lang+": "+qty).join(" · "):c.language].filter(Boolean).join(" · ");
+ const details=[c.set,c.languageQuantities?Object.keys(c.languageQuantities).join(" / "):c.language].filter(Boolean).join(" · ");
  item.innerHTML='<div class="art"><div class="placeholder"><span class="loader"></span><span>Cargando imagen…</span></div><img hidden loading="lazy" referrerpolicy="no-referrer"><span class="pill">'+esc(cardCode(c))+'</span></div>'+
  (a.soldVisual?'<div class="sold-image-stamp" aria-label="Carta vendida">VENDIDA</div>':'')+
  '<div class="details"><h3>'+esc(c.name)+'</h3><div class="num">'+esc(c.number)+'</div>'+
  (details?'<div class="meta">'+esc(details)+'</div>':'')+
- '<div class="stock-status '+(a.available?"is-available":"is-soldout")+'">'+esc(languageStockLabel(c,a))+'</div>'+
+ '<div class="stock-status '+(a.available?"is-available":"is-soldout")+'">'+esc(a.available?'Disponible · '+a.quantity+' ud.':a.soldVisual?'Vendida':'No disponible')+'</div>'+
+ languageQuantityBadges(c)+
  '<div class="links"></div></div>';
  const actions=item.querySelector(".links");
  actions.before(market.element(c));
