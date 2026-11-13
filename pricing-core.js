@@ -37,6 +37,19 @@
     {id:294,name:"Alcremie",number:"TG08/TG30",set:"Brilliant Stars Trainer Gallery",usd:5},
     {id:55,name:"Estudiante de Paldea",number:"065/165",set:"Paldean Fates",usd:4}
   ]);
+  // Referencias TCGplayer facilitadas por el propietario.
+  // Este registro independiente sobrevive a la regeneración diaria de market-snapshot.json.
+  const linkedTCGPrices = Object.freeze({
+    321: {name:"Darkrai & Cresselia LEGEND (Bottom)",number:"100/102",
+      set:"30th Celebration - Classic Collection",tcgId:716200,usd:14.85,
+      updatedAt:"2026-11-12T20:06:19.000Z",group:"3-24837"},
+    324: {name:"Iron Hands ex",number:"070/182",
+      set:"Paradox Rift",tcgId:523706,usd:0.66,
+      updatedAt:"2026-11-12T20:06:19.000Z",group:"3-23286"},
+    329: {name:"Squirtle",number:"170/165",
+      set:"Pokémon Card 151",tcgId:502549,usd:76.35,
+      updatedAt:"2026-11-12T20:06:19.000Z",group:"3-23237"}
+  });
   const norm = s => String(s ?? "").normalize("NFD").replace(/[\u0300-\u036f]/g, "")
     .toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
   const number = s => String(s ?? "").toUpperCase().replace(/\s/g, "").split("/")
@@ -118,29 +131,23 @@
     if (owner) return make({source:"owner",manual:true,min:owner.usd,max:owner.usd,
       stale:false,reference:false,url:searchUrl(card),updatedAt:null,
       variants:[{usd:owner.usd,finish:"Precio fijado por propietario"}]});
-    // Owner-supplied TCGplayer link is for the English printing; Japanese inventory stays Japanese.
-    if (Number(card.id) === 324 && norm(card.name) === "iron hands ex" &&
-        number(card.number) === "70/182" && norm(card.language) === "japones") {
-      const data = snapshot?.groups?.["3-23286"];
-      const product = data?.products?.find(p => p.id === 523706 && number(p.number) === "70/182");
-      const usd = product?.prices?.find(v => norm(v.finish) === "holofoil")?.usd;
-      if (positive(usd)) return {...make({source:"tcgplayer",min:usd,max:usd,
-        variants:[{usd,finish:"Holofoil · referencia inglesa"}],
-        stale:!recent(data.updatedAt,now),updatedAt:data.updatedAt,
-        reference:true,url:"https://www.tcgplayer.com/product/523706"}),usable:false};
-    }
-    // Squirtle BTCG-0165 has two English units and one Japanese unit.
-    // Display the verified English TCGplayer reference without pricing the Japanese copy as English.
-    if (Number(card.id) === 329 && norm(card.name) === "squirtle" &&
-        number(card.number) === "170/165" &&
-        card.languageQuantities?.["Inglés"] === 2 && card.languageQuantities?.["Japonés"] === 1) {
-      const data = snapshot?.groups?.["3-23237"];
-      const product = data?.products?.find(p => p.id === 502549 && number(p.number) === "170/165");
-      const usd = product?.prices?.find(v => v.finish === "Holofoil")?.usd;
-      if (positive(usd)) return {...make({source:"tcgplayer",min:usd,max:usd,
-        variants:[{usd,finish:"Holofoil · versión inglesa"}],
-        stale:!recent(data.updatedAt,now),updatedAt:data.updatedAt,
-        reference:true,url:"https://www.tcgplayer.com/product/502549"}),usable:false};
+    const linked = linkedTCGPrices[Number(card.id)];
+    if (linked && norm(linked.name) === norm(card.name) &&
+      number(linked.number) === number(card.number) && norm(linked.set) === norm(card.set)) {
+      // Si la publicación diaria trae la ficha exacta, preferir su precio más reciente.
+      // Si no aparece en TCGCSV, preservar el precio manual, nunca volver a «Sin precio verificado».
+      const groupData = snapshot?.groups?.[linked.group];
+      const refreshedProduct = groupData?.products?.find(p =>
+        p.id === linked.tcgId && number(p.number) === number(linked.number));
+      const prices = (refreshedProduct?.prices || []).filter(p => positive(p.usd));
+      const selected = prices.find(p => norm(p.finish) === "holofoil") || prices[0];
+      const fresh = selected && recent(groupData.updatedAt,now) &&
+        Date.parse(groupData.updatedAt) >= Date.parse(linked.updatedAt);
+      const usd = fresh ? selected.usd : linked.usd;
+      const updatedAt = fresh ? groupData.updatedAt : linked.updatedAt;
+      return make({source:"tcgplayer",linked:true,min:usd,max:usd,stale:false,
+        variants:[{usd,finish:"Holofoil"}],updatedAt,
+        reference:norm(card.language) !== "ingles",url:"https://www.tcgplayer.com/product/" + linked.tcgId});
     }
     const group = groupFor(card), data = snapshot?.groups?.[group], matches = match(card,data);
     let tcg = null;
