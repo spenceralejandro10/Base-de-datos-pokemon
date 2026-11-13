@@ -14,8 +14,8 @@ const publicCodes=new Map();
 const cardCode=c=>publicCodes.get(Number(c.id))||
   "BTCG-"+String(c.id).padStart(4,"0");
 // Estado de administración autorizado por el propietario.
-const ADMIN_ENABLED=true;
-let editingMode=true;
+const ADMIN_ENABLED=false;
+let editingMode=false;
 let records=base.map(x=>({...x})),editing=null,epoch=0,busy=false,initialized=false;
 const CART_KEY="boveda-tcg-cart-v1";
 const WHOLE_OFFER_KEY="boveda-tcg-whole-inventory-offer-v1";
