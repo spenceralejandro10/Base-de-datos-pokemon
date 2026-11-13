@@ -632,6 +632,13 @@ function cartButton(c){
  button.addEventListener("click",()=>{addToCart(c);render()});
  return button;
 }
+function languageStockLabel(c,a){
+ if(!c.languageQuantities)return a.soldVisual?"Vendida":a.available?"Disponible · "+a.quantity+" ud.":a.override&&a.quantity===0?"Vendida":"No disponible";
+ const entries=Object.entries(c.languageQuantities).filter(([,q])=>Number(q)>0);
+ const baseTotal=entries.reduce((sum,[,q])=>sum+Number(q),0);
+ if(a.quantity!==baseTotal)return (a.available?"Disponible · "+a.quantity+" ud.":"No disponible")+" · Revisar desglose por idioma";
+ return (a.available?"Disponible · "+a.quantity+" ud.":"No disponible")+" · "+entries.map(([lang,q])=>q+" "+lang.toLowerCase()).join(" + ");
+}
 function galleryCard(c,token) {
  const a=available(c);
  const item=document.createElement("article");
@@ -641,7 +648,7 @@ function galleryCard(c,token) {
  (a.soldVisual?'<div class="sold-image-stamp" aria-label="Carta vendida">VENDIDA</div>':'')+
  '<div class="details"><h3>'+esc(c.name)+'</h3><div class="num">'+esc(c.number)+'</div>'+
  (details?'<div class="meta">'+esc(details)+'</div>':'')+
- '<div class="stock-status '+(a.available?"is-available":"is-soldout")+'">'+(a.soldVisual?"Vendida":a.available?"Disponible · "+a.quantity+" ud.":a.override&&a.quantity===0?"Vendida":"No disponible")+'</div>'+
+ '<div class="stock-status '+(a.available?"is-available":"is-soldout")+'">'+esc(languageStockLabel(c,a))+'</div>'+
  '<div class="links"></div></div>';
  const actions=item.querySelector(".links");
  actions.before(market.element(c));
@@ -657,7 +664,7 @@ function tableCard(c,token) {
  const tr=document.createElement("tr");
  if(a.soldVisual)tr.className="is-marked-sold";
  tr.innerHTML='<td class="thumbnail"><div class="mini-art"><img hidden loading="lazy" referrerpolicy="no-referrer"><span>—</span></div></td>'+
- [cardCode(c),c.name,c.number,c.set,c.languageQuantities?Object.entries(c.languageQuantities).map(([lang,qty])=>lang+": "+qty).join(" · "):c.language,a.quantity,a.soldVisual?"Vendida":a.available?"Disponible":a.override&&a.quantity===0?"Vendida":"No disponible"]
+ [cardCode(c),c.name,c.number,c.set,c.languageQuantities?Object.entries(c.languageQuantities).map(([lang,qty])=>lang+": "+qty).join(" · "):c.language,a.quantity,languageStockLabel(c,a)]
  .map((x,i)=>'<td'+(i===2?' class="num-col"':"")+'>'+esc(x==null||x===""?"—":x)+'</td>').join("")+
  '<td class="table-market"></td><td class="table-action"></td>';
  tr.querySelector(".table-market").append(market.element(c),tcgLink(c));
