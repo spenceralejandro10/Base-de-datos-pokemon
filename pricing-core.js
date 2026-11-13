@@ -33,6 +33,9 @@
   });
   // Explicit owner prices stay separate from market quotations.
   const ownerPrices = Object.freeze([
+    {id:472,name:"Blastoise ex",number:"016/049",set:"Venusaur & Charizard & Blastoise Special Deck Set ex",usd:2.73},
+    {id:473,name:"Charizard ex",number:"009/049",set:"Venusaur & Charizard & Blastoise Special Deck Set ex",usd:4.86},
+    {id:474,name:"Venusaur ex",number:"003/049",set:"Venusaur & Charizard & Blastoise Special Deck Set ex",usd:1.66},
     {id:274,name:"Boltund VMAX",number:"267/264",set:"Fusion Strike",usd:8},
     {id:294,name:"Alcremie",number:"TG08/TG30",set:"Brilliant Stars Trainer Gallery",usd:5},
     {id:55,name:"Estudiante de Paldea",number:"065/165",set:"Paldean Fates",usd:4}
