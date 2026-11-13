@@ -86,7 +86,7 @@ function marketCop(quote){
  return quote?.usable&&Number.isFinite(quote.copMin)?quote.copMin:null;
 }
 function totals(){
- let client=0,market=0,marketMax=0,count=0,unpricedClient=0,unpricedMarket=0,found=0;
+ let client=0,market=0,count=0,unpricedClient=0,unpricedMarket=0,found=0;
  for(const row of rows){
   const card=resolved(row);
   const quote=marketData(card);
@@ -94,18 +94,18 @@ function totals(){
   if(card)found++;
   count+=row.quantity;
   if(row.price===null)unpricedClient++;else client+=row.quantity*row.price;
-  if(marketUnit===null)unpricedMarket++;else {market+=row.quantity*marketUnit;marketMax+=row.quantity*quote.copMax;}
+  if(marketUnit===null)unpricedMarket++;else market+=row.quantity*marketUnit;
  }
- return{client,market,marketMax,count,found,unpricedClient,unpricedMarket};
+ return{client,market,count,found,unpricedClient,unpricedMarket};
 }
 function displayTotals(){
  const t=totals();
  $("orderMatched").textContent=t.found+" / "+rows.length;
  $("orderUnits").textContent=t.count.toLocaleString("es-CO");
  $("orderClientTotal").textContent=cop(t.client)+(t.unpricedClient?"*":"");
- $("orderMarketTotal").textContent=t.unpricedMarket===rows.length?"Sin cotizaciones vigentes":cop(t.market)+(t.marketMax!==t.market?" – "+cop(t.marketMax):"")+(t.unpricedMarket?"*":"");
+ $("orderMarketTotal").textContent=t.unpricedMarket===rows.length?"Sin cotizaciones vigentes":cop(t.market)+(t.unpricedMarket?"*":"");
  $("orderMarketNote").textContent=t.unpricedMarket?
-  t.unpricedMarket+" referencia(s) sin precio de referencia; total parcial.":"TCGplayer, precios propios o Collectr verificado · rango según acabado";
+  t.unpricedMarket+" referencia(s) sin precio de referencia; total parcial.":"Precio unitario de cada referencia × unidades solicitadas";
  $("orderResultsDescription").textContent=rows.length+" referencias del cliente · "+t.count+
   " unidades · "+(rows.length-t.found)+" sin coincidencia.";
 }
@@ -187,7 +187,6 @@ function cardItem(row,index){
  let mktText=card?"Consultando cotización":"Carta no identificada",hint="";
  if(mkt!=null){
   mktText=cop(mkt);
-  if(quote.copMax!=null&&Math.round(quote.copMax)>mkt)mktText="Desde "+mktText;
   hint=quote.manual?"Precio indicado por propietario":quote.source==="collectr"?"Powered by Collectr":(quote.stale?"Última referencia disponible":"TCGplayer Market Price");
   if(quote.reference)hint+=" · edición en inglés";
  }else if((quote?.status==="ready"||quote?.status==="stale")&&Number.isFinite(quote.min)){

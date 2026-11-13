@@ -125,8 +125,12 @@
       let variants = (product.prices || []).filter(v => positive(v.usd) && typeof v.finish === "string");
       if (card.finish) variants = variants.filter(v => norm(v.finish) === norm(card.finish));
       if (Number.isSafeInteger(product.id) && product.id > 0 && variants.length) {
-        const values = variants.map(v => v.usd);
-        tcg = make({source:"tcgplayer",min:Math.min(...values),max:Math.max(...values),variants,
+        // One unit price: exact requested finish, otherwise the standard printing.
+        // This never averages different printings or uses a seller's listing price.
+        const priority = finish => ({"holofoil":0,"normal":1,"reverse holofoil":2}[norm(finish)] ?? 3);
+        const selected = variants.slice().sort((a,b)=>priority(a.finish)-priority(b.finish) ||
+          a.finish.localeCompare(b.finish,"en"))[0];
+        tcg = make({source:"tcgplayer",min:selected.usd,max:selected.usd,variants:[selected],
           stale:!recent(data.updatedAt,now),updatedAt:data.updatedAt,
           reference:["espanol","spanish","es","ingles espanol"].includes(norm(card.language)),
           url:"https://www.tcgplayer.com/product/" + product.id});
@@ -141,6 +145,24 @@
     return {status:"unavailable",usable:false,source:"collectr-search",reason:"Sin precio verificado",
       min:null,max:null,copMin:null,copMax:null,url:collectrSearchUrl(card),fx};
   }
+  function inventoryTotal(cards, availabilityFor, quoteFor) {
+    let total=0n,refs=0,units=0,unpriced=0,unpricedUnits=0;
+    for (const card of cards) {
+      const current=availabilityFor(card);
+      if (!current.available || current.quantity===0) continue;
+      const quantity=current.quantity;
+      if (!Number.isSafeInteger(quantity) || quantity<0) throw new RangeError("Cantidad no válida");
+      refs++;units+=quantity;
+      const q=quoteFor(card);
+      if (!q?.usable || !Number.isSafeInteger(q.copMin) || q.copMin<0) {
+        unpriced++;unpricedUnits+=quantity;continue;
+      }
+      // Exact sum of the same whole-peso unit amounts shown on the cards.
+      total+=BigInt(q.copMin)*BigInt(quantity);
+    }
+    if (total>BigInt(Number.MAX_SAFE_INTEGER) || !Number.isSafeInteger(units)) throw new RangeError("Total fuera del rango exacto");
+    return {total:Number(total),units,refs,unpriced,unpricedUnits,complete:unpriced===0};
+  }
   root.BovedaPricingCore = Object.freeze({DAY,groups,norm,number,positive,bogotaDay,recent,validFX,
-    toCOP,groupFor,match,searchUrl,collectrSearchUrl,quote});
+    toCOP,groupFor,match,searchUrl,collectrSearchUrl,quote,inventoryTotal});
 })(globalThis);

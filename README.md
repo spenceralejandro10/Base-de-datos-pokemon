@@ -12,7 +12,8 @@ El catálogo y las correcciones de idioma y existencias se leen de Supabase. Las
 
 - Se usa exclusivamente `marketPrice` de TCGplayer, distribuido por TCGCSV. No se usan ofertas, mínimos anunciados, medias de anuncios ni estimaciones para completar huecos.
 - Se valida colección, nombre, número completo e idioma. El precio inglés usado para una carta española se identifica como referencia. Una carta japonesa no recibe un precio inglés por coincidencia de número.
-- Cuando una identidad presenta distintos acabados, se conserva el rango. Los subtotales suman los extremos del rango; no presentan el mínimo como un precio exacto de todos los acabados.
+- Se muestra un único precio unitario por referencia. Se utiliza el acabado explícito de la carta o la impresión estándar (Holofoil, Normal y después Reverse Holofoil); no se promedian acabados. El acabado elegido se identifica en la carta.
+- El inventario suma exactamente precio unitario COP × cantidad disponible por cada referencia publicada, con enteros; los filtros, el carrito y las ofertas no cambian el inventario que entra en ese cálculo.
 - Los precios fijados expresamente por el propietario siguen identificados como tales. No se presentan como cotizaciones de mercado.
 - La conversión prioriza la TRM oficial de Superfinanciera en datos.gov.co y verifica su periodo de vigencia según la fecha de Bogotá, incluidos fines de semana y festivos. Si falla, ExchangeRate-API se identifica como cambio de mercado. Una tasa vencida no se suma al total.
 - La conversión se redondea por unidad al peso más cercano con aritmética de punto fijo. El total coincide con la suma de los precios unitarios mostrados por sus cantidades.

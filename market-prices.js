@@ -72,7 +72,7 @@
   function amount(q) {
     if (q.status === "unavailable") return q.reason;
     if (q.copMin === null) return "Cambio COP pendiente";
-    return formatCOP(q.copMin)+(q.min!==q.max?" – "+formatCOP(q.copMax):"");
+    return formatCOP(q.copMin);
   }
   function element(card) {
     const q=quote(card),box=document.createElement("div");box.className="card-market-price";
@@ -84,7 +84,7 @@
       return box;
     }
     const detail=document.createElement("small"),updated=document.createElement("small");
-    detail.textContent=formatUSD(q.min)+(q.min!==q.max?" – "+formatUSD(q.max)+" · según acabado":" · "+q.variants[0].finish);
+    detail.textContent=formatUSD(q.min)+" · "+q.variants[0].finish;
     updated.textContent=q.manual?"Precio indicado por el propietario":
       (q.stale?"Dato vencido: ":"Dato de mercado: ")+date(q.updatedAt)+(q.reference?" · referencia en inglés":"");
     if (q.source === "collectr") updated.textContent+=" · Powered by Collectr";

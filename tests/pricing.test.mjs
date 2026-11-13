@@ -32,9 +32,9 @@ test('ambiguous products, stamped editions and invalid prices are rejected',()=>
  assert.equal(core.quote(card,snapshot([{...product,name:'Gengar ex (Stamped)'}]),fx,now).status,'unavailable');
  for(const usd of [null,0,-1,NaN,Infinity,'5',true])assert.equal(core.quote(card,snapshot([{...product,prices:[{usd,finish:'Normal'}]}]),fx,now).status,'unavailable');
 });
-test('all reported finishes stay visible and explicit finish selection is exact',()=>{
+test('one unit price uses the standard finish, with exact explicit finish selection',()=>{
  const data=snapshot([{...product,prices:[{usd:1.25,finish:'Normal'},{usd:2.55,finish:'Reverse Holofoil'}]}]);
- const q=core.quote(card,data,fx,now);assert.equal(q.min,1.25);assert.equal(q.max,2.55);assert.equal(q.copMax,8420);
+ const q=core.quote(card,data,fx,now);assert.equal(q.min,1.25);assert.equal(q.max,1.25);assert.equal(q.copMin,4127);assert.equal(q.copMax,4127);assert.equal(q.variants.length,1);
  assert.equal(core.quote({...card,finish:'Reverse Holofoil'},data,fx,now).min,2.55);
  assert.equal(core.quote({...card,finish:'Master Ball'},data,fx,now).status,'unavailable');
 });
@@ -83,4 +83,32 @@ test('a verified English/Spanish stock breakdown retains its English market refe
  const mixed={...card,language:'Inglés / Español',quantity:10,languageQuantities:{'Inglés':9,'Español':1}};
  const q=core.quote(mixed,snapshot(),fx,now);assert.equal(q.status,'ready');assert.equal(q.reference,true);
  assert.equal(core.quote({...mixed,languageQuantities:{'Inglés':9,'Japonés':1}},snapshot(),fx,now).status,'unavailable');
+});
+
+test('3000 COP per card times 6 units is exactly 18000 COP',()=>{
+ const cards=[{id:1,quantity:6}];
+ const result=core.inventoryTotal(cards,c=>({available:true,quantity:c.quantity}),()=>({usable:true,copMin:3000}));
+ assert.equal(result.total,18000);assert.equal(result.units,6);assert.equal(result.refs,1);assert.equal(result.complete,true);
+});
+test('the total sums every published quantity independently and never reorders the catalog',()=>{
+ const cards=[{id:97,quantity:6},{id:4,quantity:3},{id:108,quantity:10}];
+ const before=JSON.stringify(cards),prices={97:3000,4:2500,108:2311};
+ const result=core.inventoryTotal(cards,c=>({available:true,quantity:c.quantity}),c=>({usable:true,copMin:prices[c.id]}));
+ assert.equal(result.total,18000+7500+23110);assert.equal(result.units,19);assert.equal(result.refs,3);
+ assert.equal(JSON.stringify(cards),before);
+});
+test('stock overrides and published availability control the units included in the total',()=>{
+ const cards=[{id:1,quantity:99},{id:2,quantity:20},{id:3,quantity:5}];
+ const stock={1:{available:true,quantity:6},2:{available:false,quantity:20},3:{available:false,quantity:0}};
+ const result=core.inventoryTotal(cards,c=>stock[c.id],()=>({usable:true,copMin:3000}));
+ assert.equal(result.total,18000);assert.equal(result.units,6);assert.equal(result.refs,1);
+});
+test('missing prices are counted explicitly and can never be presented as a complete total',()=>{
+ const cards=[{id:1,quantity:6},{id:2,quantity:3}];
+ const result=core.inventoryTotal(cards,c=>({available:true,quantity:c.quantity}),c=>c.id===1?{usable:true,copMin:3000}:{usable:false,copMin:null});
+ assert.equal(result.total,18000);assert.equal(result.units,9);assert.equal(result.unpriced,1);assert.equal(result.unpricedUnits,3);assert.equal(result.complete,false);
+});
+test('unsafe monetary totals or fractional quantities fail instead of rounding silently',()=>{
+ assert.throws(()=>core.inventoryTotal([{id:1}],()=>({available:true,quantity:2}),()=>({usable:true,copMin:Number.MAX_SAFE_INTEGER})),RangeError);
+ assert.throws(()=>core.inventoryTotal([{id:1}],()=>({available:true,quantity:1.5}),()=>({usable:true,copMin:3000})),RangeError);
 });

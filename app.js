@@ -62,22 +62,7 @@ function findCard(id){return records.find(c=>Number(c.id)===Number(id))}
 const tcgQuery=c=>market.searchUrl(c);
 const moneyCOP=value=>"$"+Math.round(value).toLocaleString("es-CO")+" COP";
 function inventorySnapshot(){
- let total=0,totalMax=0,units=0,refs=0,unpriced=0,ranges=0;
- for(const card of records){
-  const current=available(card);
-  if(!current.available||current.quantity<=0)continue;
-  refs++;
-  units+=current.quantity;
-  const quote=market.quote(card);
-  if(!quote.usable||!Number.isFinite(quote.copMin)){
-   unpriced++;
-   continue;
-  }
-  total+=quote.copMin*current.quantity;
-  totalMax+=quote.copMax*current.quantity;
-  if(quote.min!==quote.max)ranges++;
- }
- return {total:Math.round(total),totalMax:Math.round(totalMax),units,refs,unpriced,ranges};
+ return window.BovedaPricingCore.inventoryTotal(records,available,card=>market.quote(card));
 }
 function updateInventoryValue(){
  const amountEl=el("inventoryTotal"),detailEl=el("inventoryMeta");
@@ -88,12 +73,11 @@ function updateInventoryValue(){
   return;
  }
  const summary=inventorySnapshot();
- amountEl.textContent=summary.unpriced===summary.refs?"Pendiente de cotización":moneyCOP(summary.total)+
-  (summary.totalMax!==summary.total?" – "+moneyCOP(summary.totalMax):"");
+ el("inventoryValueLabel").textContent=summary.complete?"VALOR TOTAL DEL INVENTARIO PUBLICADO":"SUBTOTAL DEL INVENTARIO CON PRECIO VERIFICADO";
+ amountEl.textContent=summary.refs>0&&summary.unpriced===summary.refs?"Pendiente de cotización":moneyCOP(summary.total);
  detailEl.textContent=summary.refs.toLocaleString("es-CO")+" referencias · "+
   summary.units.toLocaleString("es-CO")+" unidades disponibles · "+
-  (summary.unpriced?summary.unpriced+" referencias sin precio vigente; total parcial":"Precios de referencia verificados")+
-  (summary.ranges?" · "+summary.ranges+" referencias con rango según acabado":"");
+  (summary.unpriced?summary.unpriced+" referencias ("+summary.unpricedUnits+" unidades) pendientes de precio; subtotal parcial":"Total = precio unitario × unidades de cada referencia");
  el("openInventoryOffer").disabled=summary.units<=0;
 }
 function updateStats(){
@@ -389,15 +373,14 @@ function newOfferCode(){
 }
 function referenceText(offer){
  if(offer.unpriced===offer.refs)return "Sin cotización vigente";
- const max=Number.isSafeInteger(offer.referenceTotalMax)?offer.referenceTotalMax:offer.referenceTotal;
- return moneyCOP(offer.referenceTotal)+(max!==offer.referenceTotal?" – "+moneyCOP(max):"")+
+ return moneyCOP(offer.referenceTotal)+
   (offer.unpriced?" · subtotal parcial; "+offer.unpriced+" referencias sin precio":"");
 }
 function openOfferDialog(){
  if(!initialized)return;
  const summary=inventorySnapshot();
  if(summary.units===0)return;
- el("offerReferenceTotal").textContent=referenceText({referenceTotal:summary.total,referenceTotalMax:summary.totalMax,unpriced:summary.unpriced,refs:summary.refs});
+ el("offerReferenceTotal").textContent=referenceText({referenceTotal:summary.total,unpriced:summary.unpriced,refs:summary.refs});
  el("offerReferenceUnits").textContent=summary.refs+" referencias · "+summary.units+" unidades disponibles";
  offerAmountInput.value=inventoryOffer?inventoryOffer.amount:"";
  el("offerError").hidden=true;
@@ -425,7 +408,7 @@ offerForm.addEventListener("submit",event=>{
  }
  const proposal={
   code:newOfferCode(),amount,
-  referenceTotal:summary.total,referenceTotalMax:summary.totalMax,unpriced:summary.unpriced,refs:summary.refs,units:summary.units,
+  referenceTotal:summary.total,unpriced:summary.unpriced,refs:summary.refs,units:summary.units,
   createdAt:new Date().toISOString()
  };
  try{
