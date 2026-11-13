@@ -40,6 +40,15 @@
   // Referencias TCGplayer facilitadas por el propietario.
   // Este registro independiente sobrevive a la regeneración diaria de market-snapshot.json.
   const linkedTCGPrices = Object.freeze({
+    323: {name:"Lechonk",number:"209/197",
+      set:"Obsidian Flames",tcgId:509957,usd:10.23,
+      updatedAt:"2026-11-13T00:00:00.000Z",group:"3-23228"},
+    268: {name:"Skeledirge ex",number:"081",
+      set:"Scarlet & Violet Promo",tcgId:537975,usd:4.05,
+      updatedAt:"2026-11-07T00:00:00.000Z",group:"3-22872"},
+    47: {name:"Mewtwo",number:"052",
+      set:"Scarlet & Violet Promo",tcgId:518872,usd:37.07,
+      updatedAt:"2026-11-12T20:03:14.000Z",group:"3-22872"},
     219: {name:"Maushold ex",number:"155/182",
       set:"Paradox Rift",tcgId:523836,usd:1.63,
       updatedAt:"2026-11-12T00:00:00.000Z",group:"3-23286"},
