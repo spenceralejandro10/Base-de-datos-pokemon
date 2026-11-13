@@ -41,8 +41,8 @@
   // Este registro independiente sobrevive a la regeneración diaria de market-snapshot.json.
   const linkedTCGPrices = Object.freeze({
     455: {name:"Glimmora ex",number:"213/197",
-      set:"Obsidian Flames",tcgId:509962,usd:0.83,
-      updatedAt:"2026-11-12T00:00:00.000Z",group:"3-23228"},
+      set:"Obsidian Flames",tcgId:509962,usd:0.81,
+      updatedAt:"2026-11-13T20:03:03.000Z",group:"3-23228"},
     408: {name:"Zapdos ex",number:"145/165",
       set:"Pokémon Card 151",tcgId:516708,usd:1.31,
       updatedAt:"2026-11-13T00:00:00.000Z",group:"3-23237"},
