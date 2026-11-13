@@ -40,6 +40,10 @@
   // Referencias TCGplayer facilitadas por el propietario.
   // Este registro independiente sobrevive a la regeneración diaria de market-snapshot.json.
   const linkedTCGPrices = Object.freeze({
+    299: {name:"Ferropaladín ex",number:"089/182",
+      set:"Paradox Rift",tcgId:565469,usd:1.72,
+      updatedAt:"2026-11-12T00:00:00.000Z",group:"3-22880",
+      edition:"Prize Pack Series Cards (inglés)"},
     321: {name:"Darkrai & Cresselia LEGEND (Bottom)",number:"100/102",
       set:"30th Celebration - Classic Collection",tcgId:716200,usd:14.85,
       updatedAt:"2026-11-12T20:06:19.000Z",group:"3-24837"},
@@ -146,7 +150,7 @@
       const usd = fresh ? selected.usd : linked.usd;
       const updatedAt = fresh ? groupData.updatedAt : linked.updatedAt;
       return make({source:"tcgplayer",linked:true,min:usd,max:usd,stale:false,
-        variants:[{usd,finish:"Holofoil"}],updatedAt,
+        variants:[{usd,finish:linked.edition ? "Holofoil · " + linked.edition : "Holofoil"}],updatedAt,
         reference:norm(card.language) !== "ingles",url:"https://www.tcgplayer.com/product/" + linked.tcgId});
     }
     const group = groupFor(card), data = snapshot?.groups?.[group], matches = match(card,data);
