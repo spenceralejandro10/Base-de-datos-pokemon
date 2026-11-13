@@ -118,6 +118,17 @@
     if (owner) return make({source:"owner",manual:true,min:owner.usd,max:owner.usd,
       stale:false,reference:false,url:searchUrl(card),updatedAt:null,
       variants:[{usd:owner.usd,finish:"Precio fijado por propietario"}]});
+    // Owner-supplied TCGplayer link is for the English printing; Japanese inventory stays Japanese.
+    if (Number(card.id) === 324 && norm(card.name) === "iron hands ex" &&
+        number(card.number) === "70/182" && norm(card.language) === "japones") {
+      const data = snapshot?.groups?.["3-23286"];
+      const product = data?.products?.find(p => p.id === 523706 && number(p.number) === "70/182");
+      const usd = product?.prices?.find(v => norm(v.finish) === "holofoil")?.usd;
+      if (positive(usd)) return {...make({source:"tcgplayer",min:usd,max:usd,
+        variants:[{usd,finish:"Holofoil · referencia inglesa"}],
+        stale:!recent(data.updatedAt,now),updatedAt:data.updatedAt,
+        reference:true,url:"https://www.tcgplayer.com/product/523706"}),usable:false};
+    }
     // Squirtle BTCG-0165 has two English units and one Japanese unit.
     // Display the verified English TCGplayer reference without pricing the Japanese copy as English.
     if (Number(card.id) === 329 && norm(card.name) === "squirtle" &&
