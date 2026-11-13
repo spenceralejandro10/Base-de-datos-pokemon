@@ -8,6 +8,18 @@ Colección Pokémon: https://spenceralejandro10.github.io/Base-de-datos-pokemon/
 
 El catálogo y las correcciones de idioma y existencias se leen de Supabase. Las imágenes manuales y sus respaldos se conservan. El acceso por clave y el modo de edición de imagen, cantidad e idioma siguen disponibles.
 
+## Imágenes y datos compartidos
+
+Las fotografías manuales y las imágenes automáticas confirmadas se guardan como archivos públicos en el almacenamiento de la colección. Cada copia conserva los mismos bytes y se verifica por SHA-256 antes de publicar su URL. No se eliminan las fotografías originales ni se modifica ningún registro del inventario.
+
+`shared-images-snapshot.js` es un respaldo público versionado de las referencias de imágenes. Se carga junto con la página y permite mostrar las fotografías desde una sesión nueva, incluso con el almacenamiento del navegador deshabilitado o si falla la lectura de la base de datos. La imagen manual más reciente de la base de datos tiene prioridad sobre ese respaldo.
+
+El workflow `Respaldar imágenes compartidas` actualiza exclusivamente ese respaldo cada día. La galería descarga las imágenes al acercarse a la zona visible, y los archivos conservados usan nombres basados en su contenido para permitir caché larga sin confundir fotografías nuevas con versiones anteriores.
+
+Los precios y enlaces introducidos manualmente permanecen en `pricing-core.js`, dentro del código publicado y su historial de versiones. La memoria local de un visitante no es la fuente de esos precios. Las imágenes manuales nuevas solo se consideran guardadas después de confirmar la escritura compartida; una escritura rechazada no se presenta como un guardado local satisfactorio.
+
+El modo administrador continúa desactivado. El respaldo y las copias públicas no habilitan herramientas de edición para visitantes.
+
 ## Cotizaciones
 
 - Se usa exclusivamente `marketPrice` de TCGplayer, distribuido por TCGCSV. No se usan ofertas, mínimos anunciados, medias de anuncios ni estimaciones para completar huecos.

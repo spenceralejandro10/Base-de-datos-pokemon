@@ -242,16 +242,24 @@
       return pack("error", "No se pudo consultar la base de datos de imágenes.");
     }
   }
-  function setManual(card, url) {
-    const text = String(url || "").trim();
+  async function setManual(card, url) {
+    const text=String(url || "").trim();
     if (text && !/^https:\/\//i.test(text)) throw new Error("La URL debe comenzar por https://");
-    if (text) localStorage.setItem("pokemon-image-" + card.id, text);
-    else localStorage.removeItem("pokemon-image-" + card.id);
+    const shared=window.SharedImages;
+    if (!shared) throw new Error("No se puede guardar la imagen compartida.");
+    // Confirm the shared save before keeping any optional browser copy.
+    if (text) await shared.updateImage(card,text);
+    else await shared.removeImage(card);
+    try {
+      if (text) localStorage.setItem("pokemon-image-"+card.id,text);
+      else localStorage.removeItem("pokemon-image-"+card.id);
+    } catch (_) {}
   }
   async function resolve(card) {
     const shared = window.SharedImages?.getShared(card);
     if (shared) return pack("shared", "Imagen guardada en la base de datos: visible desde cualquier equipo", [shared], "Supabase");
-    const override = localStorage.getItem("pokemon-image-" + card.id);
+    let override=null;
+    try {override=localStorage.getItem("pokemon-image-"+card.id);} catch (_) {}
     if (override && /^https:\/\//.test(override)) return pack("local", "Imagen anterior guardada solo en este equipo; sincronízala como propietario", [override], "Local");
     return resolveCatalog(card);
   }

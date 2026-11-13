@@ -9,7 +9,8 @@ const URL_BASE="https://cnivcnexsqobipvqxero.supabase.co";
 const KEY="sb_publishable_6UjwLuM-op0-OBKWlbusTw_qmLNZVfU";
 const TABLE="pokemon_image_overrides";
 const BUCKET="pokemon-gallery-overrides";
-let rows=new Map(),imagesById=new Map(),lastError="",lastLoaded=0;
+let rows=new Map(),imagesById=new Map(),publishedRows=new Map(),publishedById=new Map(),lastError="",lastLoaded=0;
+let inFlight=null;
 const watchers=new Set();
   function imageKey(card) {
     const clean = text => String(text ?? "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim().toLowerCase();
@@ -22,39 +23,54 @@ const watchers=new Set();
       try { callback(); } catch (_) {}
     }
   }
+  function validRows(data) {
+    if (!Array.isArray(data)) throw Error("Catálogo de imágenes no válido");
+    return data.filter(item=>typeof item.card_key==="string" &&
+      Number.isSafeInteger(Number(item.card_key.split("|")[0])) &&
+      typeof item.image_url==="string" && /^https:\/\//i.test(item.image_url));
+  }
+  function byId(items) {
+    const map=new Map();
+    for (const item of items) {
+      const id=Number(item.card_key.split("|")[0]);
+      if (!map.has(id)) map.set(id,item.image_url);
+    }
+    return map;
+  }
+  // Public, versioned fallback loaded with the site, independent of browser storage.
+  const published=window.SHARED_IMAGE_SNAPSHOT;
+  if(published?.schemaVersion===1){
+    const items=validRows(published.rows);
+    publishedRows=new Map(items.map(item=>[item.card_key,item.image_url]));
+    publishedById=byId(items);
+  }
   async function loadShared(force = false) {
-    if (!force && Date.now() - lastLoaded < 25000) return rows;
-    const response = await fetch(URL_BASE + "/rest/v1/" + TABLE + "?select=card_key,image_url,updated_at&order=updated_at.desc", {
-      headers: { apikey: KEY, Accept: "application/json" },
-      cache: "no-store",signal:AbortSignal.timeout(15000)
-    });
-    if (!response.ok) {
-      lastError = "No se puede consultar el catálogo compartido (HTTP " + response.status + ").";
-      updateWatchers();
-      return rows;
-    }
-    const json = await response.json();
-    const valid = json.filter(x => x.card_key && x.image_url);
-    rows = new Map(valid.map(x => [x.card_key, x.image_url]));
-    // También identificar la foto por ID inmutable: una corrección del Excel
-    // (colección, nombre o idioma) nunca debe hacer desaparecer la imagen manual.
-    imagesById = new Map();
-    for (const item of valid) {
-      const cardId = Number(String(item.card_key).split("|")[0]);
-      if (Number.isInteger(cardId) && !imagesById.has(cardId)) {
-        imagesById.set(cardId, item.image_url);
+    if (!force && Date.now()-lastLoaded<25000) return rows;
+    if (inFlight) return inFlight;
+    inFlight=(async()=>{
+      let changed=false;
+      try {
+        const response=await fetch(URL_BASE+"/rest/v1/"+TABLE+"?select=card_key,image_url,updated_at&order=updated_at.desc",{
+          headers:{apikey:KEY,Accept:"application/json"},cache:"no-store",signal:AbortSignal.timeout(15000)
+        });
+        if (!response.ok) throw Error("HTTP "+response.status);
+        const items=validRows(await response.json()),next=new Map(items.map(item=>[item.card_key,item.image_url]));
+        changed=next.size!==rows.size||[...next].some(([key,url])=>rows.get(key)!==url);
+        rows=next;imagesById=byId(items);lastLoaded=Date.now();lastError="";
+      } catch (_) {
+        lastError="No se pudo actualizar el catálogo compartido; se conserva el respaldo publicado.";
       }
-    }
-    lastLoaded = Date.now();
-    lastError = "";
-    updateWatchers();
-    return rows;
+      if (changed) updateWatchers();
+      return rows;
+    })().finally(()=>{inFlight=null;});
+    return inFlight;
   }
   function getShared(card) {
     const id=Number(card.id);
     // BTCG-0054 era un Alakazam duplicado; su foto anterior corresponde a BTCG-0037.
     return rows.get(imageKey(card)) || imagesById.get(id) ||
-      (id===37 ? imagesById.get(54) : null) || null;
+      publishedRows.get(imageKey(card)) || publishedById.get(id) ||
+      (id===37 ? imagesById.get(54) || publishedById.get(54) : null) || null;
   }
   // Catálogo central: lectura pública en Supabase; cards.js sigue como respaldo sin conexión.
   async function loadCatalog() {

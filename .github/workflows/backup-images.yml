@@ -1,0 +1,36 @@
+name: Respaldar imágenes compartidas
+on:
+  schedule:
+    - cron: '50 5 * * *'
+  workflow_dispatch:
+  push:
+    paths:
+      - '.github/workflows/backup-images.yml'
+      - 'scripts/snapshot-shared-images.mjs'
+      - 'shared-images.js'
+permissions:
+  contents: write
+concurrency:
+  group: pokemon-image-backup
+  cancel-in-progress: false
+jobs:
+  backup:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Respaldar referencias públicas de imágenes
+        run: node scripts/snapshot-shared-images.mjs
+      - name: Publicar respaldo sin modificar cartas ni precios
+        run: |
+          if ! git diff --quiet -- shared-images-snapshot.js; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add shared-images-snapshot.js
+            git commit -m "Respaldar imágenes públicas compartidas"
+            git pull --rebase origin main
+            git push origin HEAD:main
+          fi

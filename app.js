@@ -548,6 +548,21 @@ async function loadImage(url){
     image.src=url;
   });
 }
+const pendingArtwork=new WeakMap();
+const artworkObserver=typeof IntersectionObserver==="function"?new IntersectionObserver(entries=>{
+ for(const entry of entries){
+  if(!entry.isIntersecting)continue;
+  artworkObserver.unobserve(entry.target);
+  const args=pendingArtwork.get(entry.target);
+  if(args){pendingArtwork.delete(entry.target);void imageFor(...args);}
+ }
+},{rootMargin:"600px 0px"}):null;
+function requestArtwork(c,img,placeholder,status,token){
+ if(!artworkObserver){void imageFor(c,img,placeholder,status,token);return;}
+ const target=img.parentElement;
+ pendingArtwork.set(target,[c,img,placeholder,status,token]);
+ artworkObserver.observe(target);
+}
 async function imageFor(c,img,placeholder,status,token){
   try{
     const main=await window.CardImages.resolve(c);
@@ -647,7 +662,7 @@ function galleryCard(c,token) {
  const item=document.createElement("article");
  item.className="item"+(a.soldVisual?" is-marked-sold":"");
  const details=[c.set,c.languageQuantities?Object.keys(c.languageQuantities).join(" / "):c.language].filter(Boolean).join(" · ");
- item.innerHTML='<div class="art"><div class="placeholder"><span class="loader"></span><span>Cargando imagen…</span></div><img hidden loading="lazy" referrerpolicy="no-referrer"><span class="pill">'+esc(cardCode(c))+'</span></div>'+
+ item.innerHTML='<div class="art"><div class="placeholder"><span class="loader"></span><span>Cargando imagen…</span></div><img hidden loading="lazy" decoding="async" referrerpolicy="no-referrer"><span class="pill">'+esc(cardCode(c))+'</span></div>'+
  (a.soldVisual?'<div class="sold-image-stamp" aria-label="Carta vendida">VENDIDA</div>':'')+
  '<div class="details"><h3>'+esc(c.name)+'</h3><div class="num">'+esc(c.number)+'</div>'+
  (details?'<div class="meta">'+esc(details)+'</div>':'')+
@@ -659,7 +674,7 @@ function galleryCard(c,token) {
  actions.append(tcgLink(c),cartButton(c));
  const admin=editButton(c);if(admin)actions.append(admin);
 
- imageFor(c,item.querySelector(".art>img"),item.querySelector(".placeholder"),null,token);
+ requestArtwork(c,item.querySelector(".art>img"),item.querySelector(".placeholder"),null,token);
  return item;
 }
 
@@ -667,7 +682,7 @@ function tableCard(c,token) {
  const a=available(c);
  const tr=document.createElement("tr");
  if(a.soldVisual)tr.className="is-marked-sold";
- tr.innerHTML='<td class="thumbnail"><div class="mini-art"><img hidden loading="lazy" referrerpolicy="no-referrer"><span>—</span></div></td>'+
+ tr.innerHTML='<td class="thumbnail"><div class="mini-art"><img hidden loading="lazy" decoding="async" referrerpolicy="no-referrer"><span>—</span></div></td>'+
  [cardCode(c),c.name,c.number,c.set,c.languageQuantities?Object.entries(c.languageQuantities).map(([lang,qty])=>lang+": "+qty).join(" · "):c.language,a.quantity,languageStockLabel(c,a)]
  .map((x,i)=>'<td'+(i===2?' class="num-col"':"")+'>'+esc(x==null||x===""?"—":x)+'</td>').join("")+
  '<td class="table-market"></td><td class="table-action"></td>';
@@ -675,11 +690,12 @@ function tableCard(c,token) {
  tr.querySelector(".table-action").append(cartButton(c));
  const admin=editButton(c);if(admin)tr.querySelector(".table-action").append(admin);
 
- imageFor(c,tr.querySelector(".mini-art img"),tr.querySelector(".mini-art span"),null,token);
+ requestArtwork(c,tr.querySelector(".mini-art img"),tr.querySelector(".mini-art span"),null,token);
  return tr;
 }
 
 function render(){
+ if(artworkObserver)artworkObserver.disconnect();
  epoch++;const token=epoch;
  if(el("exchangeRate"))el("exchangeRate").textContent=market.rateText();
  if(el("marketStatus"))el("marketStatus").textContent=market.statusText();
