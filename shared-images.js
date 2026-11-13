@@ -58,7 +58,7 @@ const watchers=new Set();
   }
   // Catálogo central: lectura pública en Supabase; cards.js sigue como respaldo sin conexión.
   async function loadCatalog() {
-    const url = URL_BASE + "/rest/v1/pokemon_catalog?select=id,ordinal,name,card_number,set_name,release_year,language,quantity&order=id.asc";
+    const url = URL_BASE + "/rest/v1/pokemon_catalog?select=id,ordinal,name,card_number,set_name,release_year,language,quantity,language_quantities&order=id.asc";
     const response = await fetch(url, {
       headers: { apikey: KEY, Accept: "application/json" },
       cache: "no-store",signal:AbortSignal.timeout(15000)
@@ -66,16 +66,30 @@ const watchers=new Set();
     if (!response.ok) throw Error("No se pudo consultar la base de datos del catálogo.");
     const data = await response.json();
     if (!Array.isArray(data) || !data.length) throw Error("El catálogo central no tiene registros.");
-    const cards = data.map(row => ({
-      id: Number(row.id),
-      ordinal: String(row.ordinal ?? ""),
-      name: String(row.name ?? ""),
-      number: String(row.card_number ?? ""),
-      set: String(row.set_name ?? ""),
-      year: String(row.release_year ?? ""),
-      language: String(row.language ?? ""),
-      quantity: Number(row.quantity)
-    }));
+    const cards = data.map(row => {
+      // El desglose persistido es la fuente de verdad de las cartas multilingües.
+      // Al recargar la ficha, no volver a la cantidad del Excel antiguo.
+      const raw = row.language_quantities;
+      const entries = raw && typeof raw === "object" && !Array.isArray(raw)
+        ? Object.entries(raw).filter(([name,qty]) =>
+            name.trim() && Number.isSafeInteger(Number(qty)) && Number(qty) > 0)
+        : [];
+      const preference = name => name === "Inglés" ? 0 : name === "Español" ? 1 : 2;
+      entries.sort((a,b)=>preference(a[0])-preference(b[0]) || a[0].localeCompare(b[0],"es"));
+      const distribution = entries.length ? Object.fromEntries(entries) : null;
+      const total = entries.reduce((n,[,qty])=>n+Number(qty),0);
+      return {
+        id: Number(row.id),
+        ordinal: String(row.ordinal ?? ""),
+        name: String(row.name ?? ""),
+        number: String(row.card_number ?? ""),
+        set: String(row.set_name ?? ""),
+        year: String(row.release_year ?? ""),
+        language: distribution ? entries.map(([name])=>name).join(" / ") : String(row.language ?? ""),
+        quantity: distribution ? total : Number(row.quantity),
+        ...(distribution ? {languageQuantities: distribution} : {})
+      };
+    });
     if (cards.some(c => !Number.isInteger(c.id) || c.id < 1 || !c.name ||
       !Number.isInteger(c.quantity) || c.quantity < 0) ||
       new Set(cards.map(c => c.id)).size !== cards.length) {
