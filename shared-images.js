@@ -26,7 +26,7 @@ const watchers=new Set();
     if (!force && Date.now() - lastLoaded < 25000) return rows;
     const response = await fetch(URL_BASE + "/rest/v1/" + TABLE + "?select=card_key,image_url,updated_at&order=updated_at.desc", {
       headers: { apikey: KEY, Accept: "application/json" },
-      cache: "no-store"
+      cache: "no-store",signal:AbortSignal.timeout(15000)
     });
     if (!response.ok) {
       lastError = "No se puede consultar el catálogo compartido (HTTP " + response.status + ").";
@@ -61,7 +61,7 @@ const watchers=new Set();
     const url = URL_BASE + "/rest/v1/pokemon_catalog?select=id,ordinal,name,card_number,set_name,release_year,language,quantity&order=id.asc";
     const response = await fetch(url, {
       headers: { apikey: KEY, Accept: "application/json" },
-      cache: "no-store"
+      cache: "no-store",signal:AbortSignal.timeout(15000)
     });
     if (!response.ok) throw Error("No se pudo consultar la base de datos del catálogo.");
     const data = await response.json();

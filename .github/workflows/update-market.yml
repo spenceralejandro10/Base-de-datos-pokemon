@@ -1,23 +1,46 @@
-name: Recalcular precios TCGplayer
+name: Actualizar cotizaciones
 on:
+  schedule:
+    - cron: '15 5 * * *'
+    - cron: '35 20 * * *'
+  workflow_dispatch:
   push:
     paths:
       - '.github/workflows/update-market.yml'
-  workflow_dispatch:
+      - 'scripts/update-prices.mjs'
+      - 'pricing-core.js'
+      - 'cards.js'
+      - 'collectr-snapshot.json'
 permissions:
   contents: write
+concurrency:
+  group: pokemon-market-update
+  cancel-in-progress: false
 jobs:
   prices:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
-      - name: Actualizar instantánea y calcular variación con inventario vivo
-        run: python3 scripts/revalue-prices.py
-      - name: Publicar precios y reporte
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Verificar reglas de precios y conversión
+        run: node --test tests/*.test.mjs
+      - name: Consultar precios diarios y TRM vigente
+        id: update
+        continue-on-error: true
+        run: node scripts/update-prices.mjs
+      - name: Publicar datos sin modificar inventario ni fotografías
         run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add market-snapshot.js market-valuation.json index.html
-          git diff --cached --quiet || git commit -m "Actualizar precios TCGplayer y reporte de valoración"
-          git push
+          if ! git diff --quiet -- market-snapshot.json; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add market-snapshot.json
+            git commit -m "Actualizar cotizaciones diarias y TRM"
+            git pull --rebase origin main
+            git push origin HEAD:main
+          fi
+      - name: Señalar fuentes que no respondieron
+        if: steps.update.outcome == 'failure'
+        run: exit 1

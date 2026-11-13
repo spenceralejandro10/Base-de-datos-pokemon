@@ -25,7 +25,7 @@
     if (!force && Date.now() - lastLoaded < 20000) return overrides;
     const response = await fetch(URL_BASE + "/rest/v1/" + TABLE + "?select=card_id,set_name,language,validation_note", {
       headers: { apikey: KEY, Accept: "application/json" },
-      cache: "no-store"
+      cache: "no-store",signal:AbortSignal.timeout(15000)
     });
     if (!response.ok) {
       lastError = "Error de lectura de las correcciones (HTTP " + response.status + ")";

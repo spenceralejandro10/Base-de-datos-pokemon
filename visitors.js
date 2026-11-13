@@ -29,7 +29,7 @@
         method:"POST",
         headers:{apikey:key,"Content-Type":"application/json",Accept:"application/json"},
         body:JSON.stringify({p_browser_id:id}),
-        cache:"no-store"
+        cache:"no-store",signal:AbortSignal.timeout(15000)
       });
       if(!response.ok)throw Error("Could not register visit");
       const count=Number(await response.json());

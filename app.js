@@ -13,7 +13,7 @@ const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&
 const publicCodes=new Map();
 const cardCode=c=>publicCodes.get(Number(c.id))||
   "BTCG-"+String(c.id).padStart(4,"0");
-// Desactivado por solicitud del propietario; se restaura solo cuando lo solicite.
+// Estado de administración autorizado por el propietario.
 const ADMIN_ENABLED=true;
 let editingMode=true;
 let records=base.map(x=>({...x})),editing=null,epoch=0,busy=false,initialized=false;
@@ -52,7 +52,7 @@ if(cart.has(54)){
  cart.delete(54);
  try{localStorage.setItem(CART_KEY,JSON.stringify([...cart]))}catch(_){}
 }
-const saveCart=()=>{localStorage.setItem(CART_KEY,JSON.stringify([...cart]));updateCartCount()};
+const saveCart=()=>{try{localStorage.setItem(CART_KEY,JSON.stringify([...cart]))}catch(_){}updateCartCount()};
 function flash(text,error=false){info.textContent=text;info.className="editor-message"+(error?" error":"")}
 function available(c){
  const current=stock.get(c);
@@ -62,20 +62,22 @@ function findCard(id){return records.find(c=>Number(c.id)===Number(id))}
 const tcgQuery=c=>market.searchUrl(c);
 const moneyCOP=value=>"$"+Math.round(value).toLocaleString("es-CO")+" COP";
 function inventorySnapshot(){
- let total=0,units=0,refs=0,unpriced=0;
+ let total=0,totalMax=0,units=0,refs=0,unpriced=0,ranges=0;
  for(const card of records){
   const current=available(card);
   if(!current.available||current.quantity<=0)continue;
   refs++;
   units+=current.quantity;
   const quote=market.quote(card);
-  if(quote.status!=="ready"||!Number.isFinite(quote.copMin)){
+  if(!quote.usable||!Number.isFinite(quote.copMin)){
    unpriced++;
    continue;
   }
   total+=quote.copMin*current.quantity;
+  totalMax+=quote.copMax*current.quantity;
+  if(quote.min!==quote.max)ranges++;
  }
- return {total:Math.round(total),units,refs,unpriced};
+ return {total:Math.round(total),totalMax:Math.round(totalMax),units,refs,unpriced,ranges};
 }
 function updateInventoryValue(){
  const amountEl=el("inventoryTotal"),detailEl=el("inventoryMeta");
@@ -86,11 +88,13 @@ function updateInventoryValue(){
   return;
  }
  const summary=inventorySnapshot();
- amountEl.textContent=moneyCOP(summary.total);
+ amountEl.textContent=summary.unpriced===summary.refs?"Pendiente de cotización":moneyCOP(summary.total)+
+  (summary.totalMax!==summary.total?" – "+moneyCOP(summary.totalMax):"");
  detailEl.textContent=summary.refs.toLocaleString("es-CO")+" referencias · "+
   summary.units.toLocaleString("es-CO")+" unidades disponibles · "+
-  (summary.unpriced?summary.unpriced+" referencias sin precio; total parcial":"Precios de referencia (incluye estimaciones)");
- el("openInventoryOffer").disabled=summary.units<=0||summary.unpriced>0;
+  (summary.unpriced?summary.unpriced+" referencias sin precio vigente; total parcial":"Precios de referencia verificados")+
+  (summary.ranges?" · "+summary.ranges+" referencias con rango según acabado":"");
+ el("openInventoryOffer").disabled=summary.units<=0;
 }
 function updateStats(){
  el("total").textContent=records.length;
@@ -383,11 +387,17 @@ function newOfferCode(){
  crypto.getRandomValues(bytes);
  return "BOV-"+date+"-"+Array.from(bytes,b=>b.toString(16).padStart(2,"0")).join("").toUpperCase();
 }
+function referenceText(offer){
+ if(offer.unpriced===offer.refs)return "Sin cotización vigente";
+ const max=Number.isSafeInteger(offer.referenceTotalMax)?offer.referenceTotalMax:offer.referenceTotal;
+ return moneyCOP(offer.referenceTotal)+(max!==offer.referenceTotal?" – "+moneyCOP(max):"")+
+  (offer.unpriced?" · subtotal parcial; "+offer.unpriced+" referencias sin precio":"");
+}
 function openOfferDialog(){
  if(!initialized)return;
  const summary=inventorySnapshot();
- if(summary.units===0||summary.unpriced>0)return;
- el("offerReferenceTotal").textContent=moneyCOP(summary.total);
+ if(summary.units===0)return;
+ el("offerReferenceTotal").textContent=referenceText({referenceTotal:summary.total,referenceTotalMax:summary.totalMax,unpriced:summary.unpriced,refs:summary.refs});
  el("offerReferenceUnits").textContent=summary.refs+" referencias · "+summary.units+" unidades disponibles";
  offerAmountInput.value=inventoryOffer?inventoryOffer.amount:"";
  el("offerError").hidden=true;
@@ -408,14 +418,14 @@ offerAmountInput.addEventListener("input",()=>{
 offerForm.addEventListener("submit",event=>{
  event.preventDefault();
  const amount=Number(offerAmountInput.value),summary=inventorySnapshot();
- if(!Number.isSafeInteger(amount)||amount<=0||!offerAmountInput.value||summary.units<=0||summary.unpriced>0){
+ if(!Number.isSafeInteger(amount)||amount<=0||!offerAmountInput.value||summary.units<=0){
   el("offerError").textContent="Ingresa un valor válido para crear tu oferta.";
   el("offerError").hidden=false;
   return;
  }
  const proposal={
   code:newOfferCode(),amount,
-  referenceTotal:summary.total,refs:summary.refs,units:summary.units,
+  referenceTotal:summary.total,referenceTotalMax:summary.totalMax,unpriced:summary.unpriced,refs:summary.refs,units:summary.units,
   createdAt:new Date().toISOString()
  };
  try{
@@ -443,7 +453,7 @@ function listText(){
   lines.push("","OFERTA POR TODO EL INVENTARIO DISPONIBLE",
    "CÓDIGO DE OFERTA: "+inventoryOffer.code,
    "OFERTA TOTAL DEL COMPRADOR: "+moneyCOP(inventoryOffer.amount),
-   "Valor de referencia al crear la oferta: "+moneyCOP(inventoryOffer.referenceTotal),
+   "Valor de referencia al crear la oferta: "+referenceText(inventoryOffer),
    "Inventario ofertado: "+inventoryOffer.refs+" referencias · "+inventoryOffer.units+" unidades",
    "Fecha de creación: "+new Date(inventoryOffer.createdAt).toLocaleString("es-CO"),
    "Incluye todas las cartas disponibles al crear la oferta. Sujeto a revisión y confirmación de existencias.");
@@ -478,7 +488,7 @@ function drawCart(){
   box.innerHTML='<span class="cart-offer-tag">Oferta por toda la colección</span>'+
    '<span class="cart-offer-code">Código: '+esc(inventoryOffer.code)+'</span>'+
    '<strong class="cart-offer-price">'+esc(moneyCOP(inventoryOffer.amount))+'</strong>'+
-   '<small>Valor de referencia: '+esc(moneyCOP(inventoryOffer.referenceTotal))+' · '+inventoryOffer.refs+' referencias · '+inventoryOffer.units+' unidades</small>'+
+   '<small>Valor de referencia: '+esc(referenceText(inventoryOffer))+' · '+inventoryOffer.refs+' referencias · '+inventoryOffer.units+' unidades</small>'+
    '<p>Envía el código y el monto de tu propuesta para que podamos revisarla.</p>';
   const actions=document.createElement("div");actions.className="cart-offer-actions";
   const edit=document.createElement("button");edit.type="button";edit.textContent="Cambiar mi oferta";
@@ -598,7 +608,7 @@ function tcgLink(c) {
  const a=document.createElement("a");
  a.className="tcg-link";
  const quote=market.quote(c);
- const fromCollectr=quote.source==="collectr-search"||quote.source==="collectr"||quote.source==="estimate";
+ const fromCollectr=quote.source==="collectr-search"||quote.source==="collectr";
  a.href=quote.url||market.searchUrl(c);
  a.target="_blank";
  a.rel="noopener noreferrer";
@@ -689,6 +699,7 @@ function tableCard(c,token) {
 function render(){
  epoch++;const token=epoch;
  if(el("exchangeRate"))el("exchangeRate").textContent=market.rateText();
+ if(el("marketStatus"))el("marketStatus").textContent=market.statusText();
  const arr=filtering();
  el("shown").textContent=arr.length;
  results.replaceChildren();
@@ -707,7 +718,9 @@ function render(){
   results.append(frag);
  }
 }
-for(const item of [q,setFilter,langFilter,availability,view])item.addEventListener("input",render);
+let searchTimer;
+q.addEventListener("input",()=>{clearTimeout(searchTimer);searchTimer=setTimeout(render,150)});
+for(const item of [setFilter,langFilter,availability,view])item.addEventListener("input",render);
 el("resetFilters").addEventListener("click",()=>{
  q.value="";setFilter.value="";langFilter.value="";availability.value="all";view.value="grid";
  render();window.scrollTo({top:0,behavior:"smooth"});
@@ -797,7 +810,8 @@ refreshOptions();updateStats();render();
 function refreshPublishedCatalog(){
  return shared.loadCatalog().then(catalog=>{
   // Los IDs están anclados a las cartas, nunca se renumeran por su orden visual.
-  if(catalog.length>=base.length)base=catalog;
+  const published=new Map(catalog.map(card=>[Number(card.id),card]));
+  base=base.map(card=>({...card,...published.get(Number(card.id))}));
   return true;
  }).catch(()=>false);
 }
@@ -813,6 +827,8 @@ document.addEventListener("visibilitychange",()=>{
 setInterval(()=>{
  if(document.visibilityState==="visible")void stock.refresh(true);
 },15000);
-setInterval(()=>Promise.allSettled([shared.loadShared(true),meta.fetchOverrides(true),
- stock.refresh(true),refreshPublishedCatalog()]).then(applyMeta),90000);
+setInterval(()=>{
+ if(document.visibilityState==="visible")Promise.allSettled([shared.loadShared(true),meta.fetchOverrides(true),
+  stock.refresh(true),refreshPublishedCatalog()]).then(applyMeta);
+},90000);
 })();

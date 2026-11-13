@@ -1,85 +1,64 @@
 # Bóveda TCG
 
-Vitrina pública de cartas Pokémon con galería, filtros, referencias, disponibilidad y carrito de interés.
+Colección Pokémon: https://spenceralejandro10.github.io/Base-de-datos-pokemon/
 
-**Sitio web:** https://spenceralejandro10.github.io/Base-de-datos-pokemon/
+## Inventario e imágenes
 
-**Google Sheets original:** https://docs.google.com/spreadsheets/d/1qFEBZ1OcQw6NUoF29ZvD-jfc9-l7KOHN_T3bxnXVqaI/edit
+`cards.js` conserva la secuencia publicada y los ID internos. Las actualizaciones remotas se aplican a esos mismos ID, en su posición original; no agregan cartas retiradas. Los códigos BTCG se muestran consecutivamente en ese orden. Los filtros no reorganizan las cartas.
 
-## Modo administrador desactivado (28 de octubre de 2026)
+El catálogo y las correcciones de idioma y existencias se leen de Supabase. Las imágenes manuales y sus respaldos se conservan. El acceso por clave y el modo de edición de imagen, cantidad e idioma siguen disponibles.
 
-- **Modo cliente**: la vitrina sigue mostrando fotos, cartas, precios, cantidades, filtros y carrito de interés.
-- **Modo administrador**: **inactivo hasta nueva solicitud explícita del propietario**. El botón está oculto y deshabilitado en `index.html`, y `app.js` tiene `ADMIN_ENABLED=false` para bloquear la activación, incluso si se usa un enlace antiguo con `?admin=1`.
-- La protección no es solo visual: las tablas `public.pokemon_image_overrides`, `public.pokemon_card_overrides` y `public.pokemon_stock_overrides` conservan el permiso `SELECT` para `anon` y `authenticated`, pero no los permisos `INSERT`, `UPDATE` ni `DELETE`.
-- La política `storage.objects` llamada `Public switch can upload gallery images` tiene temporalmente `WITH CHECK (false)`. El acceso público de lectura a las fotos se conserva.
-- **Conservación**: no se eliminan las herramientas de edición, fotografías, filas, colecciones ni cantidades.
+## Cotizaciones
 
-### Cómo reactivar cuando lo solicite el propietario
+- Se usa exclusivamente `marketPrice` de TCGplayer, distribuido por TCGCSV. No se usan ofertas, mínimos anunciados, medias de anuncios ni estimaciones para completar huecos.
+- Se valida colección, nombre, número completo e idioma. El precio inglés usado para una carta española se identifica como referencia. Una carta japonesa no recibe un precio inglés por coincidencia de número.
+- Cuando una identidad presenta distintos acabados, se conserva el rango. Los subtotales suman los extremos del rango; no presentan el mínimo como un precio exacto de todos los acabados.
+- Los precios fijados expresamente por el propietario siguen identificados como tales. No se presentan como cotizaciones de mercado.
+- La conversión prioriza la TRM oficial de Superfinanciera en datos.gov.co y verifica su periodo de vigencia según la fecha de Bogotá, incluidos fines de semana y festivos. Si falla, ExchangeRate-API se identifica como cambio de mercado. Una tasa vencida no se suma al total.
+- La conversión se redondea por unidad al peso más cercano con aritmética de punto fijo. El total coincide con la suma de los precios unitarios mostrados por sus cantidades.
+- Se muestra la fecha del archivo de precios de la fuente; la fecha de consulta es independiente. Los datos de más de 48 horas se identifican como vencidos y se excluyen del total.
+- Las referencias sin precio verificable quedan pendientes; el total se identifica como parcial. Se permiten ofertas por toda la colección y se señala el subtotal parcial en la oferta y su exportación.
 
-1. Cambiar `ADMIN_ENABLED=true` en `app.js` y subir su versión de caché en `index.html`; `adminDisplay()` volverá a mostrar el botón.
-2. Restablecer los permisos públicos anteriores **solo si el propietario desea de nuevo una edición sin autenticación**:
-   `GRANT INSERT, UPDATE, DELETE ON public.pokemon_image_overrides, public.pokemon_card_overrides, public.pokemon_stock_overrides TO anon, authenticated;`
-3. Para reactivar también la subida pública de fotos, restaurar la política:
-   `ALTER POLICY "Public switch can upload gallery images" ON storage.objects WITH CHECK ((bucket_id = 'pokemon-gallery-overrides'::text) AND (name ~ '^cards/[0-9a-z-]+[.](jpg|png|webp)$'::text));`
-4. Comprobar accesos, catálogo, imágenes y edición al finalizar. Es preferible habilitar autenticación del propietario antes de reabrir escrituras públicas.
+Cada apertura consulta `market-snapshot.json` desde la rama `main`, sin reutilizar una respuesta HTTP anterior. Esto permite recibir las actualizaciones automáticas incluso si GitHub Pages todavía conserva una versión previa. Si GitHub no responde, se intenta el respaldo del mismo sitio y luego se conserva el último dato local, con su fecha original. También se consulta la TRM al entrar, volver a la pestaña o recuperar conexión. Mientras la pestaña está visible se revisa cada cinco minutos.
 
-## Ocho referencias marcadas visualmente como vendidas (29 de octubre de 2026)
+TCGCSV publica una vez al día, normalmente después de las 20:00 UTC. El workflow `Actualizar cotizaciones` ingiere la publicación a las 20:35 UTC (15:35 Colombia) y consulta la nueva TRM a las 05:15 UTC (00:15 Colombia). GitHub puede demorar las tareas programadas. Se consulta primero `last-updated.txt` y no se vuelven a descargar colecciones cuyo precio e identidad ya se sincronizaron para esa publicación.
 
-Las referencias **BTCG-0087 Venusaur ex 001/142**, **BTCG-0125 Wugtrio 224/091**, **BTCG-0147 Pidgeot ex 335/190**, **BTCG-0155 Wigglytuff ex 336/190**, **BTCG-0190 Jynx ex 191/165**, **BTCG-0235 Caterpie 172/165**, **BTCG-0247 Omanyte 180/165** y **BTCG-0315 Blastoise 2/102** aparecen como **Vendida**, con imagen en blanco y negro tanto en la galería como en la consulta de clientes. La vista de tabla muestra el mismo estado. No se eliminan registros ni fotos.
+El actualizador conserva resultados correctos si alguna colección falla y mantiene la fecha anterior de las fuentes fallidas. Los fallos aparecen en GitHub Actions. Solo escribe `market-snapshot.json`; no escribe inventario, existencias, fotografías ni HTML.
 
-El estado está definido por ID inmutable **y** nombre/número/colección/idioma exactos en `sold-cards.js`. Se bloquea añadir estas referencias a selecciones nuevas, pero no se toca `pokemon_catalog`, el Excel, ni `pokemon_stock_overrides`: las cantidades históricas siguen registradas (317 referencias y 642 unidades disponibles). El modo administrador continúa desactivado. Para indicar ventas nuevas o revertir el estado, el propietario debe solicitarlas expresamente; no hay interruptor público.
+## Collectr
 
-## Inventario después de las ventas (29 de octubre de 2026)
+El respaldo de Collectr está implementado con validación de identidad, fecha, moneda, condición y URL del producto. **Todavía no está conectado a una API de Collectr**: el archivo `collectr-snapshot.json` está vacío. Sin un dato autorizado verificable, se ofrece un enlace de consulta y no se inventa ningún valor.
 
-- Se descontaron **10 unidades**: las 8 referencias ya marcadas visualmente como vendidas (cada una pasó de 1 a 0) y una unidad de **Mewtwo ex 157/128** y **Magikarp 203/193** (cada una pasó de 4 a 3).
-- Se respetaron dos unidades añadidas directamente en Google Sheets anteriormente: Eiscue ex 222/197 y Energía Fuego básica 230/197.
-- El inventario sincronizado contiene **317 referencias y 642 unidades**. Las referencias con 0 existencias permanecen presentes y con sus fotografías.
-- En Google Sheets se añadió **Registro de ventas** para identificar las 10 unidades descontadas, junto a las pestañas originales.
-- La función de ventas pública y el modo administrador continúan desactivados. No se modifican las 112 fotografías.
+Después de obtener acceso autorizado, un exportador de la API puede mantener `collectr-snapshot.json` con este formato normalizado:
 
-## Panel visual de consulta de pedidos (sin edición)
+```json
+{
+  "status": "configured",
+  "cards": {
+    "100": {
+      "name": "Gengar ex",
+      "number": "090/128",
+      "set": "30th Celebration",
+      "language": "Inglés",
+      "usd": 0.70,
+      "currency": "USD",
+      "condition": "ungraded",
+      "updatedAt": "FECHA_ISO_REAL_DE_LA_COTIZACION",
+      "url": "https://app.getcollectr.com/explore/product/ID_VERIFICADO"
+    }
+  }
+}
+```
 
-- El botón **Consultar lista** abre un panel amplio y de solo lectura. El visitante puede pegar el mensaje de selección de cartas recibido de un cliente; esto no modifica ningún dato de Bóveda TCG.
-- Se identifica cada carta mediante nombre, número, expansión e idioma, y se contrasta su código público `BTCG`. Si el código y la identidad no coinciden, el sistema advierte y evita enseñar otra carta como si fuera la solicitada.
-- Se muestran fotos, unidades pedidas, unidades registradas, precio por unidad incluido en el mensaje y precio de referencia `TCGplayer Market Price` (datos TCGCSV, convertidos a COP cuando hay una tasa de cambio válida).
-- Cada fila enlaza directamente al producto verificado en TCGplayer; si no existe referencia exacta, dirige a la búsqueda correspondiente. Los precios pueden variar: se requiere consultar el sitio enlazado para validar el precio vigente.
-- La pantalla suma los importes del mensaje y los precios de mercado disponibles; señala cualquier referencia no encontrada o sin precio.
-- Los únicos botones de cada carta son **Ver en TCGplayer** y **Quitar de lista**. Quitar de lista descarta esa línea solo de la vista local y recalcula el total: no edita inventario, ni fotos ni cantidades. Si se vuelve a pulsar **Consultar cartas**, la lista pegada se recupera completa. La lista excluida se recuerda en el mismo navegador al recargar la página.
-- No hay botones de editar, vender, empacar ni descontar existencias, y el modo administrador continúa desactivado.
-- La lista consultada se guarda solo en el almacenamiento local del navegador (clave `boveda-visual-consulta-v1`) para poder continuar tras actualizar la página. **Nueva consulta** solo borra esa copia local.
-- Seguridad: el administrador permanece desactivado y se revocó la ejecución de `public.pokemon_register_sale` a `PUBLIC`, `anon` y `authenticated`. Las tablas públicas de fotos, metadatos y existencias continúan sin permisos de escritura para visitantes.
-- La consulta no toca `pokemon_catalog`, `pokemon_stock_overrides`, `pokemon_image_overrides`, `pokemon_card_overrides` ni el Excel original.
+Este es el formato interno del sitio; no pretende ser el contrato de la API de Collectr. Nunca se publican claves privadas. El workflow ingiere este respaldo al modificarse. No se acepta un precio de otra edición, idioma, moneda o una carta graduada.
 
-## Datos y persistencia
+## Mantenimiento
 
-- Las fotos se muestran automáticamente mediante TCGdex (incluidas 30th Celebration y 30th Classic Collection) y las imágenes propias tienen prioridad. Los enlaces manuales nunca se sobrescriben. Si un enlace deja de cargar, la galería busca una imagen oficial de respaldo. En modo administrador, **Completar fotos automáticamente** busca imágenes exactas en lote y solo guarda las verificadas, sin sustituir las manuales. Las imágenes de referencia en otro idioma no se guardan como fotografías exactas.
+```sh
+node --test tests/*.test.mjs
+node scripts/update-prices.mjs
+```
 
-- **317 referencias, 642 unidades disponibles** importadas del Excel. Los ID internos permanecen estables; se retiraron los ID 54 (Alakazam), 121 (Lapras ex) y 122 (Venusaur ex) al consolidar referencias duplicadas. Las nuevas cartas usan los ID 160–253; se conservan intactos los identificadores anteriores.
-- El inventario original se almacena en `public.pokemon_catalog` con acceso **de solo lectura** para visitantes. `cards.js` contiene una copia equivalente como respaldo de visualización.
-- Las ediciones de imagen, ficha y existencias se guardan públicamente en tablas independientes de Supabase: `pokemon_image_overrides`, `pokemon_card_overrides`, `pokemon_stock_overrides`. Se reflejan en otros equipos al actualizar.
-- Las fotografías manuales se relacionan con la identidad interna original de la carta para que no desaparezcan al ordenar el catálogo.
-- Las fotografías subidas se guardan en `pokemon-gallery-overrides` (archivos con UUID; no se sobrescriben directamente). Las imágenes manuales previamente enlazadas desde Google se copian byte por byte al mismo almacenamiento público; `manual-image-backup.json` conserva los enlaces originales. La copia se verifica antes de reemplazar cada enlace, sin cambiar ID ni inventario.
-- La galería se ordena por colecciones desde las más recientes hasta las más antiguas. Las etiquetas `BTCG` visibles se numeran consecutivamente en ese orden, mientras los ID internos se mantienen fijos.
-- El carrito es una lista por navegador, no realiza compras ni altera existencias. Se puede copiar o descargar como archivo TXT.
-- La web utiliza **TCGplayer Market Price** (`marketPrice`), basado en ventas realizadas, convertido a COP. No utiliza `spotlight.price`, Direct Low ni la oferta de un vendedor. No añade márgenes al cambio.
-- El precio de mercado se distingue del estado declarado por el propietario: cartas sin jugar, recién sacadas de sobre y protegidas en toploader. No se asignan etiquetas de jugada, usada o dañada a partir de anuncios ajenos. Market Price es una referencia agregada, no una calificación profesional de cada unidad ni una garantía de venta.
-- Se valida colección, número, nombre e idioma. Las cartas españolas conservan una referencia inglesa identificada. Si hay varios acabados, aparece un rango; si la identidad no está confirmada, no se inventa un precio.
-- `python scripts/update-prices.py` actualiza únicamente `market-snapshot.js` desde los datos diarios de TCGCSV. La fecha se muestra en cada carta. No se consulta TCGCSV desde el navegador por su restricción CORS. La conversión usa ExchangeRate-API y se redondea al peso más cercano.
-- Se mantiene la fuente y el precio de mercado originales por petición del propietario. La caché `boveda-market-v6-*` está separada de las versiones basadas en ofertas y de las imágenes manuales.
-- Las actualizaciones posteriores al Excel no se sincronizan solas: hay que actualizar `pokemon_catalog` y `cards.js` manteniendo los ID internos.
+No se necesitan paquetes npm ni dependencias de terceros para estas tareas. `pricing-core.js` comparte las mismas reglas entre navegador, actualizador y pruebas.
 
-## Archivos
-
-`index.html`: interfaz y herramientas de edición.
-`styles.css`: diseño responsive.
-`cards.js`: copia del inventario.
-`app.js`: galería, filtros, carrito, interruptor y edición.
-`shared-images.js`: imágenes compartidas y catálogo central.
-`catalog-overrides.js`: colección e idioma corregidos.
-`card-stock.js`: existencias.
-`card-images.js`: imágenes de colecciones.
-`market-prices.js`: coincidencias TCGplayer, conversión COP, actualización y enlace de consulta.
-`market-snapshot.js`: respaldo público de cotizaciones y cambio.
-`scripts/update-prices.py`: actualización del respaldo de precios.
-
-La web estática se sirve desde GitHub Pages, rama `main`, carpeta raíz.
+Se retiraron los dos actualizadores Python y el workflow duplicado que fijaba el dólar manualmente, el reporte de valoración sin uso y las antiguas instantáneas JavaScript. Las copias de seguridad de imágenes y la herramienta de conservación de fotografías se mantienen porque sirven para recuperación.

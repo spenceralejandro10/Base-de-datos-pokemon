@@ -7,7 +7,7 @@ const subscribers=new Set();
 function emit(){for(const fn of subscribers){try{fn()}catch(_){}}}
 async function refresh(force=false){
  if(!force&&Date.now()-loaded<25000)return overrides;
- const res=await fetch(BASE+"/rest/v1/pokemon_stock_overrides?select=card_id,quantity_available,is_listed",{headers:{apikey:KEY,Accept:"application/json"},cache:"no-store"});
+ const res=await fetch(BASE+"/rest/v1/pokemon_stock_overrides?select=card_id,quantity_available,is_listed",{headers:{apikey:KEY,Accept:"application/json"},cache:"no-store",signal:AbortSignal.timeout(15000)});
  if(!res.ok){message="No fue posible consultar las existencias";emit();return overrides;}
  const data=await res.json();
  const next=new Map(data.map(row=>[Number(row.card_id),row]));

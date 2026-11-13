@@ -1,196 +1,113 @@
-/* Precios TCGplayer vía TCGCSV. Solo lectura: nunca modifica el inventario. */
+/* Fresh, dated market snapshots. Never writes inventory or photographs. */
 (function () {
   "use strict";
-  const norm=s=>String(s||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().replace(/[^a-z0-9]+/g," ").trim();
-  const number=s=>String(s||"").toUpperCase().replace(/\s/g,"").split("/").map(v=>v.replace(/(^|[A-Z])0+(?=\d)/g,"$1")).join("/");
-  const groups={
-    "30th celebration":[3,24722],"30th celebration classic collection":[3,24837],
-    "journey together":[3,24073],"prismatic evolutions":[3,23821],
-    "fusion strike":[3,2906],"brilliant stars":[3,2948],"brilliant stars trainer gallery":[3,3020],
-    "stellar crown":[3,23537],"twilight masquerade":[3,23473],
-    "temporal forces":[3,23381],"paldean fates":[3,23353],
-    "paradox rift":[3,23286],"151":[3,23237],
-    "obsidian flames":[3,23228],"paldea evolved":[3,23120],
-    "scarlet violet promo":[3,22872],"scarlet violet":[3,22873],
-    "crown zenith":[3,17688],"lost origin":[3,3118],
-    "astral radiance":[3,3040],"astral radiance trainer gallery":[3,3068],"sword shield promo":[3,2545],
-    "celebrations classic collection":[3,2931],"evolving skies":[3,2848],
-    "pokemon card 151":[85,23599],"scarlet ex":[85,23605],
-    "violet ex":[85,23606],"crimson haze":[85,23602],
-    "shiny treasure ex":[85,23601],"future flash":[85,23611],
-    "ruler of the black flame":[85,23609],"special deck set ex svg":[85,23812]
-  };
-  const names={"energia fuego basica":"basic fire energy","arbol colosal":"grand tree",
-    "ondulagua ex":"walking wake ex","estudiante de paldea":"paldean student",
-    "cloe":"raifort","aroa":"lacey","e nigma":"iono","ferrocuello":"iron jugulis","furioseta":"brute bonnet",
-    "recinto del festival":"festival grounds","tambores del despertar":"awakening drum",
-    "colmilargo ex":"great tusk ex","cinturon colosal":"maximum belt",
-    "vasija terrestre":"earthen vessel","capturador contraataque":"counter catcher",
-    "ferropaladin ex":"iron valiant ex","calyrex jinete espectral vmax":"shadow rider calyrex vmax",
-    "doble energia turbo":"double turbo energy",
-    "calyrex jinete glacial vmax":"ice rider calyrex vmax"};
-  // Precios fijados expresamente por el propietario (USD); no se reemplazan por TCGCSV.
-  // Cada precio se ata al ID interno y a la identidad de la carta.
-  const fixedPrices=new Map([
-    [274,{name:"Boltund VMAX",number:"267/264",set:"Fusion Strike",usd:8}],
-    [294,{name:"Alcremie",number:"TG08/TG30",set:"Brilliant Stars Trainer Gallery",usd:5}],
-    [55,{name:"Estudiante de Paldea",number:"065/165",set:"Paldean Fates",usd:4}]
-  ]);
-  const ownerPrice=card=>{
-    const item=fixedPrices.get(Number(card.id));
-    // Los identificadores internos son estables; los nombres de colección pueden variar al sincronizar.
-    return item&&norm(item.name)===norm(card.name)&&number(item.number)===number(card.number)?item:null;
-  };
-  const seed=window.MARKET_SNAPSHOT||{groups:{}};
-  // Solo se acepta una instantánea de Collectr obtenida mediante una API autorizada.
-  // La vitrina pública no incluye ni expone claves de Collectr.
-  const collectr=window.COLLECTR_SNAPSHOT||{cards:{}};
-  function collectrSearchUrl(card){
-    const query=[card.name,card.number,card.set,card.language]
-      .map(s=>String(s||"").trim()).filter(Boolean).join(" ");
-    return "https://app.getcollectr.com/?query="+encodeURIComponent(query);
-  }
-  function collectrFallback(card){
-    const row=collectr.cards?.[String(card.id)];
-    if(row&&norm(row.name)===norm(card.name)&&
-      number(row.number)===number(card.number)&&norm(row.set)===norm(card.set)&&
-      norm(row.language)===norm(card.language)&&Number.isFinite(Number(row.usd))&&
-      Number(row.usd)>0&&Number.isFinite(Date.parse(row.updatedAt))){
-      const usd=Number(row.usd),rate=Number(fx?.cop);
-      const goodRate=rate>0&&Date.now()-Date.parse(fx?.updatedAt)<7*DAY;
-      const url=typeof row.url==="string"&&
-        /^https:\/\/app\.getcollectr\.com\/(?:explore\/product\/|sets\/)/.test(row.url)?
-        row.url:collectrSearchUrl(card);
-      return{status:"ready",source:"collectr",min:usd,max:usd,
-        copMin:goodRate?usd*rate:null,copMax:goodRate?usd*rate:null,
-        url,updatedAt:row.updatedAt,stale:Date.now()-Date.parse(row.updatedAt)>2*DAY,
-        reference:false,variants:[{usd,finish:"Sin gradar"}],fx};
+  const core = window.BovedaPricingCore;
+  const CACHE_KEY = "boveda-market-v7";
+  const REMOTE = "https://raw.githubusercontent.com/spenceralejandro10/Base-de-datos-pokemon/main/market-snapshot.json";
+  const listeners = new Set();
+  let snapshot = {schemaVersion:1,groups:{},collectr:{cards:{}}}, fx = null;
+  let inFlight = null, checkedAt = 0, loading = false, lastError = "";
+  const formatCOP = n => new Intl.NumberFormat("es-CO",{style:"currency",currency:"COP",maximumFractionDigits:0}).format(n) + " COP";
+  const formatUSD = n => "US$" + n.toFixed(2);
+  const date = s => new Date(s).toLocaleString("es-CO",{timeZone:"America/Bogota",dateStyle:"short",timeStyle:"short"});
+  function accept(data) {
+    if (data?.schemaVersion !== 1 || !Number.isFinite(Date.parse(data.generatedAt)) ||
+      !data.groups || Array.isArray(data.groups) || typeof data.groups !== "object") return false;
+    for (const [key,group] of Object.entries(data.groups)) {
+      if (!/^\d+-\d+$/.test(key) || !Array.isArray(group?.products) || !Number.isFinite(Date.parse(group.updatedAt))) return false;
+      if (group.products.some(p=>!Number.isSafeInteger(p?.id)||p.id<1||typeof p.name!=="string"||
+        typeof p.number!=="string"||!Array.isArray(p.prices)||p.prices.some(v=>!core.positive(v?.usd)||typeof v.finish!=="string"))) return false;
     }
-    // Sin coincidencia verificable: se publica un valor ORIENTATIVO, nunca un
-    // Market Price inventado. Al disponer de la cotización exacta, se sustituye.
-    // Provisionales basados en referencias externas recientes mientras se sincroniza TCGCSV.
-    const special={270:0.18,231:2.95,289:19.45,296:1.09,297:1.65};
-    const usd=special[Number(card.id)]||(
-      (()=>{const g=groupFor(card),data=g&&getGroup(g);
-        const values=(data?.products||[]).flatMap(p=>p.prices||[])
-          .map(v=>Number(v.usd)).filter(v=>Number.isFinite(v)&&v>=0.05&&v<=50)
-          .sort((a,b)=>a-b);
-        return values.length?Math.max(0.15,values[Math.floor(values.length*0.25)]):0.50;
-      })()
-    );
-    const rate=Number(fx?.cop)||Number(seed.fx?.cop);
-    return{status:"ready",source:"estimate",min:usd,max:usd,
-      copMin:rate>0?usd*rate:null,copMax:rate>0?usd*rate:null,
-      url:collectrSearchUrl(card),updatedAt:seed.fx?.updatedAt||"2026-11-11T12:00:00-05:00",
-      stale:false,reference:false,variants:[{usd,finish:"Estimación provisional"}],fx};
+    return true;
   }
-  const listeners=new Set(),DAY=86400000;
-  const formatCOP=n=>new Intl.NumberFormat("es-CO",{style:"currency",currency:"COP",maximumFractionDigits:0}).format(n)+" COP";
-  const formatUSD=n=>"US$"+Number(n).toFixed(2);
-  const date=s=>new Date(s).toLocaleDateString("es-CO",{timeZone:"America/Bogota"});
-  let fx=seed.fx||null;
-  function read(key){try{return JSON.parse(localStorage.getItem("boveda-market-v6-"+key))}catch(_){return null}}
-  function save(key,value){try{localStorage.setItem("boveda-market-v6-"+key,JSON.stringify(value))}catch(_){}}
-  function emit(){for(const cb of listeners){try{cb()}catch(_){}}}
-  async function json(url){
-    const response=await fetch(url,{signal:AbortSignal.timeout(15000)});
-    if(!response.ok)throw Error("Precio no disponible");
+  try {
+    const saved = JSON.parse(localStorage.getItem(CACHE_KEY) || "null");
+    if (accept(saved?.snapshot)) {snapshot=saved.snapshot;fx=saved.fx || snapshot.fx || null;}
+  } catch (_) {}
+  function save() {try {localStorage.setItem(CACHE_KEY,JSON.stringify({snapshot,fx}));} catch (_) {}}
+  function emit() {for (const fn of listeners) {try {fn();} catch (_) {}}}
+  async function json(url, timeout=14000) {
+    const response = await fetch(url,{cache:"no-store",signal:AbortSignal.timeout(timeout)});
+    if (!response.ok) throw Error("HTTP " + response.status);
     return response.json();
   }
-  function groupFor(card){
-    const key=norm(card.set);let group=groups[key];
-    if(norm(card.language)==="japones"){
-      if(key==="151")group=groups["pokemon card 151"];
-      if(group?.[0]!==85)return null;
-    }else if(group?.[0]===85)return null;
-    if(key==="astral radiance"&&/^TG/i.test(card.number))group=[3,3068];
-    return group;
+  async function refreshSnapshot() {
+    let data;
+    try {data = await json(REMOTE + "?v=" + Date.now());if (!accept(data)) throw Error("Invalid snapshot");}
+    catch (_) {data=await json("./market-snapshot.json?v=" + Date.now());if (!accept(data)) throw Error("Invalid snapshot");}
+    if (!snapshot.generatedAt || Date.parse(data.generatedAt) >= Date.parse(snapshot.generatedAt)) snapshot=data;
+    if (!core.validFX(fx) && core.validFX(snapshot.fx)) fx=snapshot.fx;
   }
-  function getGroup(group){return seed.groups[group.join("-")]||null}
-  const baseName=s=>norm(String(s).replace(/\s*[-–]\s*[A-Z]*\d+(?:\s*\/\s*[A-Z]*\d+)?/i,""));
-  function match(card,data){
-    const wanted=number(card.number),name=names[norm(card.name)]||norm(card.name);
-    const candidates=(data?.products||[]).filter(p=>{
-      const candidate=number(p.number),n=baseName(p.name);
-      const equal=candidate===wanted||(!wanted.includes("/")&&candidate.split("/")[0]===wanted);
-      return equal&&(n===name||n.startsWith(name+" "))&&!/\b(metal|jumbo|oversized|stamped|world championship)\b/.test(n);
+  async function refreshFX() {
+    const day = core.bogotaDay(), query = new URLSearchParams({
+      $where:"vigenciadesde <= '"+day+"T00:00:00.000' AND vigenciahasta >= '"+day+"T00:00:00.000'",
+      $order:"vigenciadesde DESC",$limit:"1"
     });
-    const exact=candidates.filter(p=>baseName(p.name)===name);
-    return exact.length?exact:candidates;
-  }
-  function quote(card){
-    const fixed=ownerPrice(card);
-    if(fixed){
-      const rate=Number(fx?.cop)||Number(seed.fx?.cop);
-      const cop=rate>0?fixed.usd*rate:null;
-      return{status:"ready",manual:true,min:fixed.usd,max:fixed.usd,
-        copMin:cop,copMax:cop,updatedAt:"2026-11-11T12:00:00-05:00",
-        stale:false,reference:false,variants:[{usd:fixed.usd,finish:"Precio fijado por el propietario"}],
-        url:searchUrl(card),fx};
+    try {
+      const rows=await json("https://www.datos.gov.co/resource/32sa-8pi3.json?"+query);
+      const row=rows?.[0], next={cop:Number(row?.valor),source:"TRM",updatedAt:row?.vigenciadesde,
+        validFrom:String(row?.vigenciadesde || "").slice(0,10),validTo:String(row?.vigenciahasta || "").slice(0,10)};
+      if (row?.unidad !== "COP" || !core.validFX(next)) throw Error("Invalid TRM");
+      fx=next;
+    } catch (_) {
+      if (core.validFX(fx) && fx.source === "TRM") return;
+      const data=await json("https://open.er-api.com/v6/latest/USD");
+      const next={cop:data.rates?.COP,source:"ExchangeRate-API",updatedAt:new Date(data.time_last_update_unix*1000).toISOString()};
+      if (data.result !== "success" || data.base_code !== "USD" || !core.validFX(next)) throw Error("Invalid FX");
+      fx=next;
     }
-    const group=groupFor(card);
-    if(!group)return collectrFallback(card);
-    const data=getGroup(group),matches=match(card,data);
-    if(matches.length!==1)return collectrFallback(card);
-    const product=matches[0],variants=product.prices||[],usd=variants.map(v=>v.usd).filter(v=>Number.isFinite(v)&&v>0);
-    if(!usd.length)return collectrFallback(card);
-    const rate=Number(fx?.cop),validRate=rate>0&&Date.now()-Date.parse(fx?.updatedAt)<7*DAY;
-    const min=Math.min(...usd),max=Math.max(...usd);
-    return{status:"ready",min,max,copMin:validRate?min*rate:null,copMax:validRate?max*rate:null,
-      url:"https://www.tcgplayer.com/product/"+product.id,updatedAt:data.updatedAt,
-      stale:Date.now()-Date.parse(data.updatedAt)>2*DAY,reference:norm(card.language)==="espanol",variants,fx};
   }
-  function searchUrl(card) {
-    const terms = [card.name, card.number, card.set].map(s => String(s || "").trim()).filter(Boolean);
-    return "https://www.tcgplayer.com/search/pokemon/product?productLineName=pokemon&q="
-      + encodeURIComponent(terms.join(" ")) + "&view=grid";
+  function init(force=false) {
+    if (inFlight) return inFlight;
+    if (!force && Date.now()-checkedAt < 60000) return Promise.resolve();
+    loading=true;lastError="";emit();
+    inFlight=Promise.allSettled([refreshSnapshot(),refreshFX()]).then(results => {
+      lastError=results.some(r=>r.status==="rejected") ? "No se pudo completar la actualización; revisa las fechas." : "";
+      if (!core.validFX(fx) && core.validFX(snapshot.fx)) fx=snapshot.fx;
+      checkedAt=Date.now();save();
+    }).finally(()=>{loading=false;inFlight=null;emit();});
+    return inFlight;
   }
-  function amount(q){
-    if(q.status!=="ready")return q.reason;
-    if(q.copMin===null)return"Conversión COP no disponible";
+  const quote = card => core.quote(card,snapshot,fx);
+  function amount(q) {
+    if (q.status === "unavailable") return q.reason;
+    if (q.copMin === null) return "Cambio COP pendiente";
     return formatCOP(q.copMin)+(q.min!==q.max?" – "+formatCOP(q.copMax):"");
   }
-  function element(card){
+  function element(card) {
     const q=quote(card),box=document.createElement("div");box.className="card-market-price";
-    const label=document.createElement("small");
-    label.textContent=q.manual?"Precio fijado por propietario":
-      q.source==="collectr"?"Collectr · Precio de referencia":
-      q.source==="estimate"?"Precio estimado · verificar edición":
-      q.source==="collectr-search"?"Alternativa: Collectr":"TCGplayer · Market Price";
-    if(q.status!=="ready"&&q.source==="collectr-search"){
-      const link=document.createElement("a");
-      link.textContent="Buscar precio en Collectr";
-      link.href=q.url;link.target="_blank";link.rel="noopener noreferrer";
-      link.title="Consultar nombre, número, colección e idioma en Collectr; el precio no se importa automáticamente.";
-      box.append(label,link);
+    const label=document.createElement("small"),value=document.createElement("strong");
+    label.textContent=q.manual?"Precio fijado por propietario":q.source==="collectr"?"Collectr · Sin gradar":
+      q.source==="tcgplayer"?"TCGplayer · Market Price":"Precio pendiente de verificar";
+    value.textContent=amount(q);box.append(label,value);
+    if (q.status === "unavailable") {
       return box;
     }
-    const value=document.createElement("strong");value.textContent=amount(q);box.append(label,value);
-    if(q.status==="ready"){
-      const detail=document.createElement("small");
-      detail.textContent=q.manual?formatUSD(q.min)+" · Precio indicado":
-        q.source==="collectr"?formatUSD(q.min)+" · Sin gradar":
-        q.source==="estimate"?formatUSD(q.min)+" · No es Market Price":
-        formatUSD(q.min)+(q.min!==q.max?" – "+formatUSD(q.max)+" · Según acabado":" · "+q.variants[0].finish);
-      const updated=document.createElement("small");
-      updated.textContent=q.manual?"Precio fijado: "+date(q.updatedAt):
-        ((q.stale?"Último dato: ":"Consulta: ")+date(q.updatedAt)+(q.reference?" · Referencia en inglés":""));
-      if(q.source==="collectr")updated.textContent+=" · Powered by Collectr";
-      if(q.source==="estimate")updated.textContent="Valor orientativo hasta verificar carta exacta";
-      box.append(detail,updated);
-      box.title=q.manual?"Precio en USD establecido por el propietario. Se convierte a COP según el cambio USD/COP del sitio.":q.source==="collectr"?"Referencia de Collectr obtenida mediante API autorizada; convertida a COP.":q.source==="estimate"?"Precio provisional basado en carta comparable o cuartil de la colección; NO es precio exacto confirmado. Revise número y colección.":q.variants.map(v=>v.finish+": "+formatUSD(v.usd)).join(" · ")+". Referencia de mercado basada en ventas, sin envío. No describe el estado físico de esta carta.";
-    }
+    const detail=document.createElement("small"),updated=document.createElement("small");
+    detail.textContent=formatUSD(q.min)+(q.min!==q.max?" – "+formatUSD(q.max)+" · según acabado":" · "+q.variants[0].finish);
+    updated.textContent=q.manual?"Precio indicado por el propietario":
+      (q.stale?"Dato vencido: ":"Dato de mercado: ")+date(q.updatedAt)+(q.reference?" · referencia en inglés":"");
+    if (q.source === "collectr") updated.textContent+=" · Powered by Collectr";
+    if (!q.usable) {const note=document.createElement("small");note.textContent="No incluido en el total hasta verificar la actualización.";box.append(note);}
+    box.append(detail,updated);
+    box.title=q.manual?"Precio en USD fijado expresamente por el propietario.":
+      q.variants.map(v=>v.finish+": "+formatUSD(v.usd)).join(" · ")+". Referencia de mercado sin envío; no certifica condición ni precio de venta.";
     return box;
   }
-  async function init(){
-    const stored=read("fx");if(stored?.cop>0&&(!fx||stored.updatedAt>fx.updatedAt))fx=stored;
-    if(fx&&Date.now()-Date.parse(fx.updatedAt)<DAY)return;
-    try{
-      const d=await json("https://open.er-api.com/v6/latest/USD");
-      if(d.result!=="success"||d.base_code!=="USD"||!(d.rates?.COP>0))return;
-      fx={cop:d.rates.COP,updatedAt:new Date(d.time_last_update_unix*1000).toISOString()};save("fx",fx);emit();
-    }catch(_){}
+  function rateText() {
+    if (!core.validFX(fx)) return "Cambio USD/COP no vigente; total COP pendiente";
+    return "1 USD = "+new Intl.NumberFormat("es-CO",{minimumFractionDigits:2,maximumFractionDigits:6}).format(fx.cop)+" COP · "+(fx.source==="TRM"?"TRM vigente "+fx.validFrom+
+      (fx.validTo!==fx.validFrom?" a "+fx.validTo:""):"Cambio de mercado del "+date(fx.updatedAt));
   }
-  function rateText(){return fx?.cop>0?"1 USD = "+formatCOP(fx.cop)+" · cambio del "+date(fx.updatedAt):"Consultando cambio USD/COP…"}
-  window.CardPrices={searchUrl,collectrSearchUrl,quote,element,amount,formatCOP,rateText,init,subscribe:fn=>listeners.add(fn)};
+  function statusText() {
+    if (loading) return "Actualizando cotizaciones…";
+    if (lastError) return lastError;
+    return checkedAt?"Última consulta: "+date(checkedAt)+" · precios de publicación diaria":"Consultando cotizaciones…";
+  }
+  window.CardPrices={searchUrl:core.searchUrl,collectrSearchUrl:core.collectrSearchUrl,quote,element,amount,formatCOP,
+    rateText,statusText,init,subscribe(fn){listeners.add(fn);return()=>listeners.delete(fn);}};
+  document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="visible")void init();});
+  window.addEventListener("pageshow",event=>{if(event.persisted)void init(true);});
+  window.addEventListener("online",()=>void init(true));
+  setInterval(()=>{if(document.visibilityState==="visible")void init();},300000);
 })();
