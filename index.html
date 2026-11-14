@@ -8,20 +8,10 @@
 <title>Bóveda TCG | Colección de cartas Pokémon</title>
 <meta name="description" content="Explora Bóveda TCG: colección Pokémon, disponibilidad y selección de cartas.">
 <link rel="stylesheet" href="./styles.css?v=64">
-<style>
-html:not(.vault-open) body > :not(#vaultAccess){display:none!important}
-#vaultAccess{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:22px;box-sizing:border-box;background:#0b1b30;color:#eef4ff;font-family:system-ui,-apple-system,Segoe UI,sans-serif}
-html.vault-open #vaultAccess{display:none}
-.vault-card{width:min(100%,370px);padding:36px 28px;border-radius:16px;background:#162b46;box-shadow:0 12px 50px #0006;text-align:center}
-.vault-card h1{font-size:25px;margin:0 0 12px}.vault-card p{color:#b9c9dc;font-size:14px;line-height:1.5}
-.vault-card label{display:block;text-align:left;margin-top:24px;margin-bottom:7px;font-size:14px}
-.vault-card input{box-sizing:border-box;display:block;width:100%;height:48px;padding:10px 13px;border:1px solid #76879d;border-radius:8px;background:#fff;color:#111;font:inherit;text-align:center;letter-spacing:.28em}
-.vault-card button{margin-top:14px;width:100%;height:46px;cursor:pointer;border:0;border-radius:8px;background:#397dd2;color:white;font:600 16px system-ui}
-.vault-error{min-height:20px;color:#ffc0c0!important}
-</style>
+
 </head>
 <body>
-<section id="vaultAccess" aria-label="Acceso privado a Bóveda TCG"><div class="vault-card"><h1>Página temporalmente fuera de servicio</h1><p>Introduce la clave para acceder.</p><form id="vaultForm" autocomplete="off"><label for="vaultPin">Clave de acceso</label><input id="vaultPin" type="password" inputmode="numeric" autocomplete="off" required maxlength="32" autofocus><button type="submit">Entrar</button><p class="vault-error" id="vaultError" role="alert" aria-live="polite"></p></form></div></section>
+
 <header class="top">
  <div class="brand">
   <div><p class="eyebrow">COLECCIÓN DE CARTAS POKÉMON</p><h1>Bóveda TCG</h1><p class="sub">Explora nuestra colección, revisa las cartas disponibles y guarda tus favoritas.</p></div>
@@ -175,44 +165,17 @@ html.vault-open #vaultAccess{display:none}
 </dialog>
 <footer class="footer">Bóveda TCG · Colección Pokémon · Sin pagos en línea.</footer>
 
-<script>
-(function(){
- "use strict";
- const names=["./cards.js?v=101-scizor-sprigatito","./shared-images-snapshot.js?v=102","./shared-images.js?v=102-shared-media","./catalog-overrides.js?v=32","./card-stock.js?v=33","./card-images.js?v=102-shared-media","./pricing-core.js?v=101-gardevoir-scizor-sprigatito","./market-prices.js?v=81-precios-limpios","./sold-cards.js?v=17","./app.js?v=102-shared-media","./order-panel.js?v=66-total","./visitors.js?v=2"];
- const key="boveda-locked-session-v1";
- const hash="8f4058ca5034f5c84788b7923a4527de6bad5b28af70bab38f89479b8f3dd29b";
- const encoder=new TextEncoder();
- async function check(value){
-  const digest=await crypto.subtle.digest("SHA-256",encoder.encode("boveda-tcg:clave:"+value));
-  return Array.from(new Uint8Array(digest),v=>v.toString(16).padStart(2,"0")).join("")===hash;
- }
- let opening=false,loadFailed=false;
- async function unlock(){
-  if(loadFailed){location.reload();return}
-  if(opening)return;
-  opening=true;
-  // Download in parallel, execute in the declared dependency order.
-  await Promise.all(names.map(src=>new Promise((resolve,reject)=>{
-   const tag=document.createElement("script");
-   tag.async=false;tag.src=src;tag.onload=resolve;tag.onerror=reject;document.body.appendChild(tag);
-  })));
-  document.documentElement.classList.add("vault-open");
- }
- const form=document.getElementById("vaultForm"),input=document.getElementById("vaultPin"),error=document.getElementById("vaultError");
- form.addEventListener("submit",async event=>{
-  event.preventDefault();error.textContent="";
-  if(loadFailed){location.reload();return}
-  if(await check(input.value)){
-   input.value="";
-   try{sessionStorage.setItem(key,"1")}catch(_){}
-   unlock().catch(()=>{loadFailed=true;opening=false;error.textContent="Error cargando el catálogo. Actualiza la página."});
-  }else{
-   error.textContent="Clave incorrecta.";
-   input.value="";input.focus();
-  }
- });
- try{if(sessionStorage.getItem(key)==="1"){unlock().catch(()=>{loadFailed=true;opening=false;error.textContent="Error cargando el catálogo. Actualiza la página."});}}catch(_){}
-})();
-</script>
+<script src="./cards.js?v=101-scizor-sprigatito"></script>
+<script src="./shared-images-snapshot.js?v=102"></script>
+<script src="./shared-images.js?v=102-shared-media"></script>
+<script src="./catalog-overrides.js?v=32"></script>
+<script src="./card-stock.js?v=33"></script>
+<script src="./card-images.js?v=102-shared-media"></script>
+<script src="./pricing-core.js?v=101-gardevoir-scizor-sprigatito"></script>
+<script src="./market-prices.js?v=81-precios-limpios"></script>
+<script src="./sold-cards.js?v=17"></script>
+<script src="./app.js?v=102-shared-media"></script>
+<script src="./order-panel.js?v=66-total"></script>
+<script src="./visitors.js?v=2"></script>
 </body>
 </html>
