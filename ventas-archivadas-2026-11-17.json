@@ -1,0 +1,3981 @@
+{
+  "archivedAt": "2026-11-17",
+  "saleRecordedAs": "vendido",
+  "reason": "Cartas en inglés y español retiradas de la publicación, sin eliminar el catálogo original",
+  "referencesWithSales": 233,
+  "fullySoldReferences": 229,
+  "partiallySoldReferences": 4,
+  "unitsSold": 462,
+  "japaneseReferencesRetained": 74,
+  "japaneseUnitsRetained": 171,
+  "records": [
+    {
+      "id": 1,
+      "codigoAnterior": "BTCG-0074",
+      "name": "Hydrapple ex",
+      "number": "167/142",
+      "set": "Stellar Crown",
+      "year": "2024",
+      "ordinal": "1",
+      "originalLanguage": "Inglés",
+      "originalQuantity": 1,
+      "soldByLanguage": {
+        "Inglés": 1
+      },
+      "quantitySold": 1,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 2,
+      "codigoAnterior": "BTCG-0142",
+      "name": "Garbodor",
+      "number": "204/182",
+      "set": "Paradox Rift",
+      "year": "2023",
+      "ordinal": "2",
+      "originalLanguage": "Inglés",
+      "originalQuantity": 1,
+      "soldByLanguage": {
+        "Inglés": 1
+      },
+      "quantitySold": 1,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 4,
+      "codigoAnterior": "BTCG-0068",
+      "name": "Vaporeon ex",
+      "number": "149/131",
+      "set": "Prismatic Evolutions",
+      "year": "2025",
+      "ordinal": "4",
+      "originalLanguage": "Español",
+      "originalQuantity": 1,
+      "soldByLanguage": {
+        "Español": 1
+      },
+      "quantitySold": 1,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 5,
+      "codigoAnterior": "BTCG-0054",
+      "name": "Volcanion ex",
+      "number": "182/159",
+      "set": "Journey Together",
+      "year": "2025",
+      "ordinal": "5",
+      "originalLanguage": "Inglés",
+      "originalQuantity": 1,
+      "soldByLanguage": {
+        "Inglés": 1
+      },
+      "quantitySold": 1,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 6,
+      "codigoAnterior": "BTCG-0075",
+      "name": "Bulbasaur",
+      "number": "143/142",
+      "set": "Stellar Crown",
+      "year": "2024",
+      "ordinal": "6",
+      "originalLanguage": "Inglés",
+      "originalQuantity": 1,
+      "soldByLanguage": {
+        "Inglés": 1
+      },
+      "quantitySold": 1,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 8,
+      "codigoAnterior": "BTCG-0055",
+      "name": "Articuno",
+      "number": "161/159",
+      "set": "Journey Together",
+      "year": "2025",
+      "ordinal": "8",
+      "originalLanguage": "Inglés",
+      "originalQuantity": 1,
+      "soldByLanguage": {
+        "Inglés": 1
+      },
+      "quantitySold": 1,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 14,
+      "codigoAnterior": "BTCG-0143",
+      "name": "Wimpod",
+      "number": "191/182",
+      "set": "Paradox Rift",
+      "year": "2023",
+      "ordinal": "14",
+      "originalLanguage": "Inglés",
+      "originalQuantity": 1,
+      "soldByLanguage": {
+        "Inglés": 1
+      },
+      "quantitySold": 1,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 16,
+      "codigoAnterior": "BTCG-0056",
+      "name": "Iono's Bellibolt ex",
+      "number": "172/159",
+      "set": "Journey Together",
+      "year": "2025",
+      "ordinal": "16",
+      "originalLanguage": "Inglés",
+      "originalQuantity": 1,
+      "soldByLanguage": {
+        "Inglés": 1
+      },
+      "quantitySold": 1,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 18,
+      "codigoAnterior": "BTCG-0123",
+      "name": "Koraidon",
+      "number": "014",
+      "set": "Scarlet & Violet Promo",
+      "year": "2023",
+      "ordinal": "18",
+      "originalLanguage": "Inglés",
+      "originalQuantity": 1,
+      "soldByLanguage": {
+        "Inglés": 1
+      },
+      "quantitySold": 1,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 22,
+      "codigoAnterior": "BTCG-0085",
+      "name": "Eevee",
+      "number": "188/167",
+      "set": "Twilight Masquerade",
+      "year": "2024",
+      "ordinal": "22",
+      "originalLanguage": "Inglés",
+      "originalQuantity": 1,
+      "soldByLanguage": {
+        "Inglés": 1
+      },
+      "quantitySold": 1,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 29,
+      "codigoAnterior": "BTCG-0112",
+      "name": "Cinderace ex",
+      "number": "163",
+      "set": "Scarlet & Violet Promo",
+      "year": "2024",
+      "ordinal": "29",
+      "originalLanguage": "Inglés / Español",
+      "originalQuantity": 3,
+      "soldByLanguage": {
+        "Inglés": 1,
+        "Español": 2
+      },
+      "quantitySold": 3,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 33,
+      "codigoAnterior": "BTCG-0076",
+      "name": "Lapras ex",
+      "number": "158/142",
+      "set": "Stellar Crown",
+      "year": "2024",
+      "ordinal": "33",
+      "originalLanguage": "Español",
+      "originalQuantity": 1,
+      "soldByLanguage": {
+        "Español": 1
+      },
+      "quantitySold": 1,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 35,
+      "codigoAnterior": "BTCG-0113",
+      "name": "e-Nigma",
+      "number": "124",
+      "set": "Scarlet & Violet Promo",
+      "year": "2024",
+      "ordinal": "35",
+      "originalLanguage": "Español",
+      "originalQuantity": 3,
+      "soldByLanguage": {
+        "Español": 3
+      },
+      "quantitySold": 3,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 38,
+      "codigoAnterior": "BTCG-0124",
+      "name": "Charizard ex",
+      "number": "056",
+      "set": "Scarlet & Violet Promo",
+      "year": "2023",
+      "ordinal": "38",
+      "originalLanguage": "Inglés",
+      "originalQuantity": 1,
+      "soldByLanguage": {
+        "Inglés": 1
+      },
+      "quantitySold": 1,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 39,
+      "codigoAnterior": "BTCG-0114",
+      "name": "Lapras ex",
+      "number": "164",
+      "set": "Scarlet & Violet Promo",
+      "year": "2024",
+      "ordinal": "39",
+      "originalLanguage": "Inglés / Español",
+      "originalQuantity": 3,
+      "soldByLanguage": {
+        "Inglés": 1,
+        "Español": 2
+      },
+      "quantitySold": 3,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 42,
+      "codigoAnterior": "BTCG-0097",
+      "name": "Clive",
+      "number": "227/091",
+      "set": "Paldean Fates",
+      "year": "2024",
+      "ordinal": "42",
+      "originalLanguage": "Inglés",
+      "originalQuantity": 1,
+      "soldByLanguage": {
+        "Inglés": 1
+      },
+      "quantitySold": 1,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 47,
+      "codigoAnterior": "BTCG-0125",
+      "name": "Mewtwo",
+      "number": "52",
+      "set": "Scarlet & Violet Promo",
+      "year": "2023",
+      "ordinal": "47",
+      "originalLanguage": "Inglés / Japonés",
+      "originalQuantity": 2,
+      "soldByLanguage": {
+        "Inglés": 1
+      },
+      "quantitySold": 1,
+      "japaneseQuantityRetained": 1,
+      "status": "vendido"
+    },
+    {
+      "id": 52,
+      "codigoAnterior": "BTCG-0126",
+      "name": "Mew ex",
+      "number": "53",
+      "set": "Scarlet & Violet Promo",
+      "year": "2023",
+      "ordinal": "52",
+      "originalLanguage": "Inglés",
+      "originalQuantity": 1,
+      "soldByLanguage": {
+        "Inglés": 1
+      },
+      "quantitySold": 1,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 53,
+      "codigoAnterior": "BTCG-0098",
+      "name": "Charizard ex",
+      "number": "054/091",
+      "set": "Paldean Fates",
+      "year": "2024",
+      "ordinal": "53",
+      "originalLanguage": "Español",
+      "originalQuantity": 3,
+      "soldByLanguage": {
+        "Español": 3
+      },
+      "quantitySold": 3,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 55,
+      "codigoAnterior": "BTCG-0099",
+      "name": "Estudiante de Paldea",
+      "number": "065/165",
+      "set": "Paldean Fates",
+      "year": "2024",
+      "ordinal": "54",
+      "originalLanguage": "Español",
+      "originalQuantity": 1,
+      "soldByLanguage": {
+        "Español": 1
+      },
+      "quantitySold": 1,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 59,
+      "codigoAnterior": "BTCG-0057",
+      "name": "Ruffian",
+      "number": "181/159",
+      "set": "Journey Together",
+      "year": "2025",
+      "ordinal": "58",
+      "originalLanguage": "Inglés",
+      "originalQuantity": 1,
+      "soldByLanguage": {
+        "Inglés": 1
+      },
+      "quantitySold": 1,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 60,
+      "codigoAnterior": "BTCG-0058",
+      "name": "Mamoswine ex",
+      "number": "174/159",
+      "set": "Journey Together",
+      "year": "2025",
+      "ordinal": "59",
+      "originalLanguage": "Inglés",
+      "originalQuantity": 1,
+      "soldByLanguage": {
+        "Inglés": 1
+      },
+      "quantitySold": 1,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 61,
+      "codigoAnterior": "BTCG-0077",
+      "name": "Árbol Colosal",
+      "number": "136/142",
+      "set": "Stellar Crown",
+      "year": "2024",
+      "ordinal": "60",
+      "originalLanguage": "Español",
+      "originalQuantity": 1,
+      "soldByLanguage": {
+        "Español": 1
+      },
+      "quantitySold": 1,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 62,
+      "codigoAnterior": "BTCG-0086",
+      "name": "Hisuian Growlithe",
+      "number": "181/167",
+      "set": "Twilight Masquerade",
+      "year": "2024",
+      "ordinal": "61",
+      "originalLanguage": "Inglés",
+      "originalQuantity": 1,
+      "soldByLanguage": {
+        "Inglés": 1
+      },
+      "quantitySold": 1,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 65,
+      "codigoAnterior": "BTCG-0144",
+      "name": "Mela",
+      "number": "254/182",
+      "set": "Paradox Rift",
+      "year": "2023",
+      "ordinal": "64",
+      "originalLanguage": "Inglés",
+      "originalQuantity": 1,
+      "soldByLanguage": {
+        "Inglés": 1
+      },
+      "quantitySold": 1,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 66,
+      "codigoAnterior": "BTCG-0059",
+      "name": "Salamence ex",
+      "number": "114/159",
+      "set": "Journey Together",
+      "year": "2025",
+      "ordinal": "65",
+      "originalLanguage": "Inglés",
+      "originalQuantity": 2,
+      "soldByLanguage": {
+        "Inglés": 2
+      },
+      "quantitySold": 2,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 68,
+      "codigoAnterior": "BTCG-0145",
+      "name": "Bombirdier ex",
+      "number": "234/182",
+      "set": "Paradox Rift",
+      "year": "2023",
+      "ordinal": "67",
+      "originalLanguage": "Español",
+      "originalQuantity": 1,
+      "soldByLanguage": {
+        "Español": 1
+      },
+      "quantitySold": 1,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 69,
+      "codigoAnterior": "BTCG-0078",
+      "name": "Dachsbun ex",
+      "number": "160/142",
+      "set": "Stellar Crown",
+      "year": "2024",
+      "ordinal": "68",
+      "originalLanguage": "Español",
+      "originalQuantity": 1,
+      "soldByLanguage": {
+        "Español": 1
+      },
+      "quantitySold": 1,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 72,
+      "codigoAnterior": "BTCG-0091",
+      "name": "Ondulagua ex",
+      "number": "189/162",
+      "set": "Temporal Forces",
+      "year": "2024",
+      "ordinal": "71",
+      "originalLanguage": "Español",
+      "originalQuantity": 1,
+      "soldByLanguage": {
+        "Español": 1
+      },
+      "quantitySold": 1,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 74,
+      "codigoAnterior": "BTCG-0092",
+      "name": "Iron Crown ex",
+      "number": "216/162",
+      "set": "Temporal Forces",
+      "year": "2024",
+      "ordinal": "73",
+      "originalLanguage": "Inglés",
+      "originalQuantity": 1,
+      "soldByLanguage": {
+        "Inglés": 1
+      },
+      "quantitySold": 1,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 75,
+      "codigoAnterior": "BTCG-0060",
+      "name": "Hop's Zacian ex",
+      "number": "176/159",
+      "set": "Journey Together",
+      "year": "2025",
+      "ordinal": "74",
+      "originalLanguage": "Inglés",
+      "originalQuantity": 1,
+      "soldByLanguage": {
+        "Inglés": 1
+      },
+      "quantitySold": 1,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 76,
+      "codigoAnterior": "BTCG-0061",
+      "name": "Reshiram ex",
+      "number": "030/159",
+      "set": "Journey Together",
+      "year": "2025",
+      "ordinal": "75",
+      "originalLanguage": "Inglés",
+      "originalQuantity": 1,
+      "soldByLanguage": {
+        "Inglés": 1
+      },
+      "quantitySold": 1,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 77,
+      "codigoAnterior": "BTCG-0100",
+      "name": "Luxray",
+      "number": "137/091",
+      "set": "Paldean Fates",
+      "year": "2024",
+      "ordinal": "76",
+      "originalLanguage": "Español",
+      "originalQuantity": 1,
+      "soldByLanguage": {
+        "Español": 1
+      },
+      "quantitySold": 1,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 78,
+      "codigoAnterior": "BTCG-0101",
+      "name": "Voltorb",
+      "number": "133/091",
+      "set": "Paldean Fates",
+      "year": "2024",
+      "ordinal": "77",
+      "originalLanguage": "Español",
+      "originalQuantity": 1,
+      "soldByLanguage": {
+        "Español": 1
+      },
+      "quantitySold": 1,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 82,
+      "codigoAnterior": "BTCG-0102",
+      "name": "Primeape",
+      "number": "170/091",
+      "set": "Paldean Fates",
+      "year": "2024",
+      "ordinal": "81",
+      "originalLanguage": "Español",
+      "originalQuantity": 1,
+      "soldByLanguage": {
+        "Español": 1
+      },
+      "quantitySold": 1,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 84,
+      "codigoAnterior": "BTCG-0079",
+      "name": "Galvantula ex",
+      "number": "051/142",
+      "set": "Stellar Crown",
+      "year": "2024",
+      "ordinal": "83",
+      "originalLanguage": "Inglés / Español",
+      "originalQuantity": 2,
+      "soldByLanguage": {
+        "Inglés": 1,
+        "Español": 1
+      },
+      "quantitySold": 2,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 87,
+      "codigoAnterior": "BTCG-0127",
+      "name": "Annihilape ex",
+      "number": "032",
+      "set": "Scarlet & Violet Promo",
+      "year": "2023",
+      "ordinal": "86",
+      "originalLanguage": "Inglés",
+      "originalQuantity": 1,
+      "soldByLanguage": {
+        "Inglés": 1
+      },
+      "quantitySold": 1,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 92,
+      "codigoAnterior": "BTCG-0069",
+      "name": "Lugia ex",
+      "number": "082/131",
+      "set": "Prismatic Evolutions",
+      "year": "2025",
+      "ordinal": "91",
+      "originalLanguage": "Español",
+      "originalQuantity": 1,
+      "soldByLanguage": {
+        "Español": 1
+      },
+      "quantitySold": 1,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 96,
+      "codigoAnterior": "BTCG-0103",
+      "name": "Palafin",
+      "number": "225/091",
+      "set": "Paldean Fates",
+      "year": "2024",
+      "ordinal": "95",
+      "originalLanguage": "Español",
+      "originalQuantity": 1,
+      "soldByLanguage": {
+        "Español": 1
+      },
+      "quantitySold": 1,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 97,
+      "codigoAnterior": "BTCG-0001",
+      "name": "Sylveon ex",
+      "number": "071/128",
+      "set": "30th Celebration",
+      "year": "2026",
+      "ordinal": "96",
+      "originalLanguage": "Inglés / Español",
+      "originalQuantity": 10,
+      "soldByLanguage": {
+        "Inglés": 9,
+        "Español": 1
+      },
+      "quantitySold": 10,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 98,
+      "codigoAnterior": "BTCG-0002",
+      "name": "Pikachu ex",
+      "number": "053/128",
+      "set": "30th Celebration",
+      "year": "2026",
+      "ordinal": "97",
+      "originalLanguage": "Inglés / Español",
+      "originalQuantity": 7,
+      "soldByLanguage": {
+        "Inglés": 6,
+        "Español": 1
+      },
+      "quantitySold": 7,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 99,
+      "codigoAnterior": "BTCG-0003",
+      "name": "Umbreon ex",
+      "number": "092/128",
+      "set": "30th Celebration",
+      "year": "2026",
+      "ordinal": "98",
+      "originalLanguage": "Inglés",
+      "originalQuantity": 13,
+      "soldByLanguage": {
+        "Inglés": 13
+      },
+      "quantitySold": 13,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 100,
+      "codigoAnterior": "BTCG-0004",
+      "name": "Gengar ex",
+      "number": "090/128",
+      "set": "30th Celebration",
+      "year": "2026",
+      "ordinal": "99",
+      "originalLanguage": "Inglés",
+      "originalQuantity": 7,
+      "soldByLanguage": {
+        "Inglés": 7
+      },
+      "quantitySold": 7,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 101,
+      "codigoAnterior": "BTCG-0005",
+      "name": "Fuecoco ex",
+      "number": "015/128",
+      "set": "30th Celebration",
+      "year": "2026",
+      "ordinal": "100",
+      "originalLanguage": "Inglés",
+      "originalQuantity": 7,
+      "soldByLanguage": {
+        "Inglés": 7
+      },
+      "quantitySold": 7,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 102,
+      "codigoAnterior": "BTCG-0006",
+      "name": "Salamence ex",
+      "number": "109/128",
+      "set": "30th Celebration",
+      "year": "2026",
+      "ordinal": "101",
+      "originalLanguage": "Inglés",
+      "originalQuantity": 12,
+      "soldByLanguage": {
+        "Inglés": 12
+      },
+      "quantitySold": 12,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 103,
+      "codigoAnterior": "BTCG-0007",
+      "name": "Mew ex",
+      "number": "066/128",
+      "set": "30th Celebration",
+      "year": "2026",
+      "ordinal": "102",
+      "originalLanguage": "Inglés",
+      "originalQuantity": 9,
+      "soldByLanguage": {
+        "Inglés": 9
+      },
+      "quantitySold": 9,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 104,
+      "codigoAnterior": "BTCG-0008",
+      "name": "Jirachi ex",
+      "number": "102/128",
+      "set": "30th Celebration",
+      "year": "2026",
+      "ordinal": "103",
+      "originalLanguage": "Inglés",
+      "originalQuantity": 8,
+      "soldByLanguage": {
+        "Inglés": 8
+      },
+      "quantitySold": 8,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 105,
+      "codigoAnterior": "BTCG-0009",
+      "name": "Espeon ex",
+      "number": "070/128",
+      "set": "30th Celebration",
+      "year": "2026",
+      "ordinal": "104",
+      "originalLanguage": "Inglés",
+      "originalQuantity": 9,
+      "soldByLanguage": {
+        "Inglés": 9
+      },
+      "quantitySold": 9,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 106,
+      "codigoAnterior": "BTCG-0010",
+      "name": "Scraggy",
+      "number": "140/128",
+      "set": "30th Celebration",
+      "year": "2026",
+      "ordinal": "105",
+      "originalLanguage": "Inglés",
+      "originalQuantity": 6,
+      "soldByLanguage": {
+        "Inglés": 6
+      },
+      "quantitySold": 6,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 107,
+      "codigoAnterior": "BTCG-0011",
+      "name": "Chandelure",
+      "number": "137/128",
+      "set": "30th Celebration",
+      "year": "2026",
+      "ordinal": "106",
+      "originalLanguage": "Inglés",
+      "originalQuantity": 6,
+      "soldByLanguage": {
+        "Inglés": 6
+      },
+      "quantitySold": 6,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 108,
+      "codigoAnterior": "BTCG-0012",
+      "name": "Kommo-o",
+      "number": "143/128",
+      "set": "30th Celebration",
+      "year": "2026",
+      "ordinal": "107",
+      "originalLanguage": "Inglés",
+      "originalQuantity": 4,
+      "soldByLanguage": {
+        "Inglés": 4
+      },
+      "quantitySold": 4,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 109,
+      "codigoAnterior": "BTCG-0013",
+      "name": "Gholdengo",
+      "number": "142/128",
+      "set": "30th Celebration",
+      "year": "2026",
+      "ordinal": "108",
+      "originalLanguage": "Inglés",
+      "originalQuantity": 3,
+      "soldByLanguage": {
+        "Inglés": 3
+      },
+      "quantitySold": 3,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 110,
+      "codigoAnterior": "BTCG-0014",
+      "name": "Greninja ex",
+      "number": "021/128",
+      "set": "30th Celebration",
+      "year": "2026",
+      "ordinal": "109",
+      "originalLanguage": "Inglés",
+      "originalQuantity": 10,
+      "soldByLanguage": {
+        "Inglés": 10
+      },
+      "quantitySold": 10,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 111,
+      "codigoAnterior": "BTCG-0015",
+      "name": "Drifloon",
+      "number": "136/128",
+      "set": "30th Celebration",
+      "year": "2026",
+      "ordinal": "110",
+      "originalLanguage": "Inglés",
+      "originalQuantity": 3,
+      "soldByLanguage": {
+        "Inglés": 3
+      },
+      "quantitySold": 3,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 112,
+      "codigoAnterior": "BTCG-0016",
+      "name": "Pikachu ex",
+      "number": "054/128",
+      "set": "30th Celebration",
+      "year": "2026",
+      "ordinal": "111",
+      "originalLanguage": "Inglés",
+      "originalQuantity": 8,
+      "soldByLanguage": {
+        "Inglés": 8
+      },
+      "quantitySold": 8,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 113,
+      "codigoAnterior": "BTCG-0017",
+      "name": "Mewtwo ex",
+      "number": "064/128",
+      "set": "30th Celebration",
+      "year": "2026",
+      "ordinal": "112",
+      "originalLanguage": "Inglés",
+      "originalQuantity": 9,
+      "soldByLanguage": {
+        "Inglés": 9
+      },
+      "quantitySold": 9,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 116,
+      "codigoAnterior": "BTCG-0146",
+      "name": "Ferrocuello",
+      "number": "216/182",
+      "set": "Paradox Rift",
+      "year": "2023",
+      "ordinal": "115",
+      "originalLanguage": "Español",
+      "originalQuantity": 1,
+      "soldByLanguage": {
+        "Español": 1
+      },
+      "quantitySold": 1,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 117,
+      "codigoAnterior": "BTCG-0147",
+      "name": "Ferrothorn",
+      "number": "209/182",
+      "set": "Paradox Rift",
+      "year": "2023",
+      "ordinal": "116",
+      "originalLanguage": "Inglés",
+      "originalQuantity": 1,
+      "soldByLanguage": {
+        "Inglés": 1
+      },
+      "quantitySold": 1,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 119,
+      "codigoAnterior": "BTCG-0070",
+      "name": "Cloe",
+      "number": "142/131",
+      "set": "Prismatic Evolutions",
+      "year": "2025",
+      "ordinal": "118",
+      "originalLanguage": "Español",
+      "originalQuantity": 1,
+      "soldByLanguage": {
+        "Español": 1
+      },
+      "quantitySold": 1,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 120,
+      "codigoAnterior": "BTCG-0062",
+      "name": "Maractus",
+      "number": "160/159",
+      "set": "Journey Together",
+      "year": "2025",
+      "ordinal": "119",
+      "originalLanguage": "Inglés",
+      "originalQuantity": 1,
+      "soldByLanguage": {
+        "Inglés": 1
+      },
+      "quantitySold": 1,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 123,
+      "codigoAnterior": "BTCG-0128",
+      "name": "Arcanine",
+      "number": "011",
+      "set": "Scarlet & Violet Promo",
+      "year": "2023",
+      "ordinal": "120",
+      "originalLanguage": "Inglés",
+      "originalQuantity": 1,
+      "soldByLanguage": {
+        "Inglés": 1
+      },
+      "quantitySold": 1,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 129,
+      "codigoAnterior": "BTCG-0148",
+      "name": "Furioseta",
+      "number": "207/182",
+      "set": "Paradox Rift",
+      "year": "2023",
+      "ordinal": "126",
+      "originalLanguage": "Español",
+      "originalQuantity": 1,
+      "soldByLanguage": {
+        "Español": 1
+      },
+      "quantitySold": 1,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 160,
+      "codigoAnterior": "BTCG-0018",
+      "name": "Lycanroc",
+      "number": "138/128",
+      "set": "30th Celebration",
+      "year": "2026",
+      "ordinal": "157",
+      "originalLanguage": "Inglés",
+      "originalQuantity": 2,
+      "soldByLanguage": {
+        "Inglés": 2
+      },
+      "quantitySold": 2,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 161,
+      "codigoAnterior": "BTCG-0035",
+      "name": "Delcatty",
+      "number": "5/109",
+      "set": "30th Celebration - Classic Collection",
+      "year": "2026",
+      "ordinal": "158",
+      "originalLanguage": "Inglés",
+      "originalQuantity": 1,
+      "soldByLanguage": {
+        "Inglés": 1
+      },
+      "quantitySold": 1,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 162,
+      "codigoAnterior": "BTCG-0036",
+      "name": "Zacian V",
+      "number": "138/202",
+      "set": "30th Celebration - Classic Collection",
+      "year": "2026",
+      "ordinal": "159",
+      "originalLanguage": "Inglés",
+      "originalQuantity": 1,
+      "soldByLanguage": {
+        "Inglés": 1
+      },
+      "quantitySold": 1,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 163,
+      "codigoAnterior": "BTCG-0037",
+      "name": "Solgaleo-GX",
+      "number": "89/149",
+      "set": "30th Celebration - Classic Collection",
+      "year": "2026",
+      "ordinal": "160",
+      "originalLanguage": "Inglés",
+      "originalQuantity": 1,
+      "soldByLanguage": {
+        "Inglés": 1
+      },
+      "quantitySold": 1,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 164,
+      "codigoAnterior": "BTCG-0038",
+      "name": "Crobat G",
+      "number": "47/127",
+      "set": "30th Celebration - Classic Collection",
+      "year": "2026",
+      "ordinal": "161",
+      "originalLanguage": "Inglés",
+      "originalQuantity": 1,
+      "soldByLanguage": {
+        "Inglés": 1
+      },
+      "quantitySold": 1,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 165,
+      "codigoAnterior": "BTCG-0039",
+      "name": "Misty",
+      "number": "18/132",
+      "set": "30th Celebration - Classic Collection",
+      "year": "2026",
+      "ordinal": "162",
+      "originalLanguage": "Inglés",
+      "originalQuantity": 2,
+      "soldByLanguage": {
+        "Inglés": 2
+      },
+      "quantitySold": 2,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 166,
+      "codigoAnterior": "BTCG-0040",
+      "name": "Sneasel",
+      "number": "25/111",
+      "set": "30th Celebration - Classic Collection",
+      "year": "2026",
+      "ordinal": "163",
+      "originalLanguage": "Inglés",
+      "originalQuantity": 3,
+      "soldByLanguage": {
+        "Inglés": 3
+      },
+      "quantitySold": 3,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 167,
+      "codigoAnterior": "BTCG-0019",
+      "name": "Articuno",
+      "number": "132/128",
+      "set": "30th Celebration",
+      "year": "2026",
+      "ordinal": "164",
+      "originalLanguage": "Inglés",
+      "originalQuantity": 4,
+      "soldByLanguage": {
+        "Inglés": 4
+      },
+      "quantitySold": 4,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 168,
+      "codigoAnterior": "BTCG-0020",
+      "name": "Hisuian Zorua",
+      "number": "145/128",
+      "set": "30th Celebration",
+      "year": "2026",
+      "ordinal": "165",
+      "originalLanguage": "Inglés",
+      "originalQuantity": 3,
+      "soldByLanguage": {
+        "Inglés": 3
+      },
+      "quantitySold": 3,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 169,
+      "codigoAnterior": "BTCG-0021",
+      "name": "Lapras",
+      "number": "131/128",
+      "set": "30th Celebration",
+      "year": "2026",
+      "ordinal": "166",
+      "originalLanguage": "Inglés",
+      "originalQuantity": 6,
+      "soldByLanguage": {
+        "Inglés": 6
+      },
+      "quantitySold": 6,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 170,
+      "codigoAnterior": "BTCG-0022",
+      "name": "Morpeko",
+      "number": "135/128",
+      "set": "30th Celebration",
+      "year": "2026",
+      "ordinal": "167",
+      "originalLanguage": "Inglés",
+      "originalQuantity": 3,
+      "soldByLanguage": {
+        "Inglés": 3
+      },
+      "quantitySold": 3,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 171,
+      "codigoAnterior": "BTCG-0023",
+      "name": "Alolan Exeggutor",
+      "number": "129/128",
+      "set": "30th Celebration",
+      "year": "2026",
+      "ordinal": "168",
+      "originalLanguage": "Inglés",
+      "originalQuantity": 3,
+      "soldByLanguage": {
+        "Inglés": 3
+      },
+      "quantitySold": 3,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 172,
+      "codigoAnterior": "BTCG-0041",
+      "name": "Uxie",
+      "number": "43/146",
+      "set": "30th Celebration - Classic Collection",
+      "year": "2026",
+      "ordinal": "169",
+      "originalLanguage": "Inglés",
+      "originalQuantity": 3,
+      "soldByLanguage": {
+        "Inglés": 3
+      },
+      "quantitySold": 3,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 173,
+      "codigoAnterior": "BTCG-0024",
+      "name": "Zapdos",
+      "number": "133/128",
+      "set": "30th Celebration",
+      "year": "2026",
+      "ordinal": "170",
+      "originalLanguage": "Inglés",
+      "originalQuantity": 8,
+      "soldByLanguage": {
+        "Inglés": 8
+      },
+      "quantitySold": 8,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 174,
+      "codigoAnterior": "BTCG-0025",
+      "name": "Moltres",
+      "number": "130/128",
+      "set": "30th Celebration",
+      "year": "2026",
+      "ordinal": "171",
+      "originalLanguage": "Inglés",
+      "originalQuantity": 8,
+      "soldByLanguage": {
+        "Inglés": 8
+      },
+      "quantitySold": 8,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 175,
+      "codigoAnterior": "BTCG-0026",
+      "name": "Galarian Meowth",
+      "number": "141/128",
+      "set": "30th Celebration",
+      "year": "2026",
+      "ordinal": "172",
+      "originalLanguage": "Inglés",
+      "originalQuantity": 3,
+      "soldByLanguage": {
+        "Inglés": 3
+      },
+      "quantitySold": 3,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 176,
+      "codigoAnterior": "BTCG-0042",
+      "name": "Genesect-EX",
+      "number": "11/101",
+      "set": "30th Celebration - Classic Collection",
+      "year": "2026",
+      "ordinal": "173",
+      "originalLanguage": "Inglés",
+      "originalQuantity": 3,
+      "soldByLanguage": {
+        "Inglés": 3
+      },
+      "quantitySold": 3,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 177,
+      "codigoAnterior": "BTCG-0027",
+      "name": "Alolan Meowth",
+      "number": "139/128",
+      "set": "30th Celebration",
+      "year": "2026",
+      "ordinal": "174",
+      "originalLanguage": "Inglés",
+      "originalQuantity": 2,
+      "soldByLanguage": {
+        "Inglés": 2
+      },
+      "quantitySold": 2,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 178,
+      "codigoAnterior": "BTCG-0028",
+      "name": "Maushold",
+      "number": "146/128",
+      "set": "30th Celebration",
+      "year": "2026",
+      "ordinal": "175",
+      "originalLanguage": "Inglés / Español",
+      "originalQuantity": 3,
+      "soldByLanguage": {
+        "Inglés": 2,
+        "Español": 1
+      },
+      "quantitySold": 3,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 179,
+      "codigoAnterior": "BTCG-0029",
+      "name": "Toxtricity",
+      "number": "134/128",
+      "set": "30th Celebration",
+      "year": "2026",
+      "ordinal": "176",
+      "originalLanguage": "Inglés",
+      "originalQuantity": 5,
+      "soldByLanguage": {
+        "Inglés": 5
+      },
+      "quantitySold": 5,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 180,
+      "codigoAnterior": "BTCG-0030",
+      "name": "Meowth",
+      "number": "144/128",
+      "set": "30th Celebration",
+      "year": "2026",
+      "ordinal": "177",
+      "originalLanguage": "Inglés",
+      "originalQuantity": 2,
+      "soldByLanguage": {
+        "Inglés": 2
+      },
+      "quantitySold": 2,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 181,
+      "codigoAnterior": "BTCG-0043",
+      "name": "Metagross δ",
+      "number": "11/113",
+      "set": "30th Celebration - Classic Collection",
+      "year": "2026",
+      "ordinal": "178",
+      "originalLanguage": "Inglés",
+      "originalQuantity": 3,
+      "soldByLanguage": {
+        "Inglés": 3
+      },
+      "quantitySold": 3,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 184,
+      "codigoAnterior": "BTCG-0031",
+      "name": "Pikachu ex",
+      "number": "150/128",
+      "set": "30th Celebration",
+      "year": "2026",
+      "ordinal": "181",
+      "originalLanguage": "Inglés",
+      "originalQuantity": 2,
+      "soldByLanguage": {
+        "Inglés": 2
+      },
+      "quantitySold": 2,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 189,
+      "codigoAnterior": "BTCG-0044",
+      "name": "Pikachu",
+      "number": "58/102",
+      "set": "30th Celebration - Classic Collection",
+      "year": "2026",
+      "ordinal": "186",
+      "originalLanguage": "Inglés",
+      "originalQuantity": 1,
+      "soldByLanguage": {
+        "Inglés": 1
+      },
+      "quantitySold": 1,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 190,
+      "codigoAnterior": "BTCG-0032",
+      "name": "Mewtwo ex",
+      "number": "157/128",
+      "set": "30th Celebration",
+      "year": "2026",
+      "ordinal": "187",
+      "originalLanguage": "Inglés",
+      "originalQuantity": 3,
+      "soldByLanguage": {
+        "Inglés": 3
+      },
+      "quantitySold": 3,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 194,
+      "codigoAnterior": "BTCG-0045",
+      "name": "Greninja BREAK",
+      "number": "41/122",
+      "set": "30th Celebration - Classic Collection",
+      "year": "2026",
+      "ordinal": "191",
+      "originalLanguage": "Inglés",
+      "originalQuantity": 3,
+      "soldByLanguage": {
+        "Inglés": 3
+      },
+      "quantitySold": 3,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 197,
+      "codigoAnterior": "BTCG-0033",
+      "name": "Greninja ex",
+      "number": "148/128",
+      "set": "30th Celebration",
+      "year": "2026",
+      "ordinal": "194",
+      "originalLanguage": "Inglés",
+      "originalQuantity": 1,
+      "soldByLanguage": {
+        "Inglés": 1
+      },
+      "quantitySold": 1,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 198,
+      "codigoAnterior": "BTCG-0046",
+      "name": "Pikachu & Zekrom-GX",
+      "number": "33/181",
+      "set": "30th Celebration - Classic Collection",
+      "year": "2026",
+      "ordinal": "195",
+      "originalLanguage": "Inglés",
+      "originalQuantity": 1,
+      "soldByLanguage": {
+        "Inglés": 1
+      },
+      "quantitySold": 1,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 199,
+      "codigoAnterior": "BTCG-0047",
+      "name": "Arceus VSTAR",
+      "number": "123/172",
+      "set": "30th Celebration - Classic Collection",
+      "year": "2026",
+      "ordinal": "196",
+      "originalLanguage": "Inglés",
+      "originalQuantity": 4,
+      "soldByLanguage": {
+        "Inglés": 4
+      },
+      "quantitySold": 4,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 200,
+      "codigoAnterior": "BTCG-0048",
+      "name": "Erika's Jigglypuff",
+      "number": "69/132",
+      "set": "30th Celebration - Classic Collection",
+      "year": "2026",
+      "ordinal": "197",
+      "originalLanguage": "Inglés",
+      "originalQuantity": 2,
+      "soldByLanguage": {
+        "Inglés": 2
+      },
+      "quantitySold": 2,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 201,
+      "codigoAnterior": "BTCG-0049",
+      "name": "Raikou",
+      "number": "050/185",
+      "set": "30th Celebration - Classic Collection",
+      "year": "2026",
+      "ordinal": "198",
+      "originalLanguage": "Inglés",
+      "originalQuantity": 1,
+      "soldByLanguage": {
+        "Inglés": 1
+      },
+      "quantitySold": 1,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 202,
+      "codigoAnterior": "BTCG-0050",
+      "name": "Palkia LV.X",
+      "number": "106/106",
+      "set": "30th Celebration - Classic Collection",
+      "year": "2026",
+      "ordinal": "199",
+      "originalLanguage": "Inglés",
+      "originalQuantity": 1,
+      "soldByLanguage": {
+        "Inglés": 1
+      },
+      "quantitySold": 1,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 203,
+      "codigoAnterior": "BTCG-0051",
+      "name": "Scizor ex",
+      "number": "108/115",
+      "set": "30th Celebration - Classic Collection",
+      "year": "2026",
+      "ordinal": "200",
+      "originalLanguage": "Inglés",
+      "originalQuantity": 1,
+      "soldByLanguage": {
+        "Inglés": 1
+      },
+      "quantitySold": 1,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 204,
+      "codigoAnterior": "BTCG-0034",
+      "name": "Fuecoco ex",
+      "number": "147/128",
+      "set": "30th Celebration",
+      "year": "2026",
+      "ordinal": "201",
+      "originalLanguage": "Inglés",
+      "originalQuantity": 3,
+      "soldByLanguage": {
+        "Inglés": 3
+      },
+      "quantitySold": 3,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 205,
+      "codigoAnterior": "BTCG-0052",
+      "name": "M Gardevoir-EX",
+      "number": "106/160",
+      "set": "30th Celebration - Classic Collection",
+      "year": "2026",
+      "ordinal": "202",
+      "originalLanguage": "Inglés",
+      "originalQuantity": 2,
+      "soldByLanguage": {
+        "Inglés": 2
+      },
+      "quantitySold": 2,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 206,
+      "codigoAnterior": "BTCG-0053",
+      "name": "Dark Tyranitar",
+      "number": "19/109",
+      "set": "30th Celebration - Classic Collection",
+      "year": "2026",
+      "ordinal": "203",
+      "originalLanguage": "Inglés",
+      "originalQuantity": 3,
+      "soldByLanguage": {
+        "Inglés": 3
+      },
+      "quantitySold": 3,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 207,
+      "codigoAnterior": "BTCG-0104",
+      "name": "Forretress ex",
+      "number": "212/091",
+      "set": "Paldean Fates",
+      "year": "2024",
+      "ordinal": "204",
+      "originalLanguage": "Español",
+      "originalQuantity": 1,
+      "soldByLanguage": {
+        "Español": 1
+      },
+      "quantitySold": 1,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 212,
+      "codigoAnterior": "BTCG-0071",
+      "name": "Recinto del Festival",
+      "number": "108/131",
+      "set": "Prismatic Evolutions",
+      "year": "2025",
+      "ordinal": "209",
+      "originalLanguage": "Español",
+      "originalQuantity": 1,
+      "soldByLanguage": {
+        "Español": 1
+      },
+      "quantitySold": 1,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 214,
+      "codigoAnterior": "BTCG-0115",
+      "name": "Sprigatito",
+      "number": "076",
+      "set": "Scarlet & Violet Promo",
+      "year": "2024",
+      "ordinal": "211",
+      "originalLanguage": "Español",
+      "originalQuantity": 1,
+      "soldByLanguage": {
+        "Español": 1
+      },
+      "quantitySold": 1,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 215,
+      "codigoAnterior": "BTCG-0116",
+      "name": "Quaxly",
+      "number": "082",
+      "set": "Scarlet & Violet Promo",
+      "year": "2024",
+      "ordinal": "212",
+      "originalLanguage": "Español",
+      "originalQuantity": 2,
+      "soldByLanguage": {
+        "Español": 2
+      },
+      "quantitySold": 2,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 216,
+      "codigoAnterior": "BTCG-0117",
+      "name": "Floragato",
+      "number": "077",
+      "set": "Scarlet & Violet Promo",
+      "year": "2024",
+      "ordinal": "213",
+      "originalLanguage": "Español",
+      "originalQuantity": 1,
+      "soldByLanguage": {
+        "Español": 1
+      },
+      "quantitySold": 1,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 226,
+      "codigoAnterior": "BTCG-0118",
+      "name": "Crocalor",
+      "number": "080",
+      "set": "Scarlet & Violet Promo",
+      "year": "2024",
+      "ordinal": "223",
+      "originalLanguage": "Español",
+      "originalQuantity": 4,
+      "soldByLanguage": {
+        "Español": 4
+      },
+      "quantitySold": 4,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 227,
+      "codigoAnterior": "BTCG-0119",
+      "name": "Fuecoco",
+      "number": "079",
+      "set": "Scarlet & Violet Promo",
+      "year": "2024",
+      "ordinal": "224",
+      "originalLanguage": "Español",
+      "originalQuantity": 3,
+      "soldByLanguage": {
+        "Español": 3
+      },
+      "quantitySold": 3,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 229,
+      "codigoAnterior": "BTCG-0120",
+      "name": "Terapagos ex",
+      "number": "165",
+      "set": "Scarlet & Violet Promo",
+      "year": "2024",
+      "ordinal": "226",
+      "originalLanguage": "Inglés / Español",
+      "originalQuantity": 3,
+      "soldByLanguage": {
+        "Inglés": 1,
+        "Español": 2
+      },
+      "quantitySold": 3,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 244,
+      "codigoAnterior": "BTCG-0063",
+      "name": "Iono's Bellibolt ex",
+      "number": "053/159",
+      "set": "Journey Together",
+      "year": "2025",
+      "ordinal": "241",
+      "originalLanguage": "Inglés",
+      "originalQuantity": 2,
+      "soldByLanguage": {
+        "Inglés": 2
+      },
+      "quantitySold": 2,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 246,
+      "codigoAnterior": "BTCG-0105",
+      "name": "Forretress ex",
+      "number": "002/091",
+      "set": "Paldean Fates",
+      "year": "2024",
+      "ordinal": "243",
+      "originalLanguage": "Español",
+      "originalQuantity": 1,
+      "soldByLanguage": {
+        "Español": 1
+      },
+      "quantitySold": 1,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 247,
+      "codigoAnterior": "BTCG-0080",
+      "name": "Greninja ex",
+      "number": "041/142",
+      "set": "Stellar Crown",
+      "year": "2024",
+      "ordinal": "244",
+      "originalLanguage": "Español",
+      "originalQuantity": 2,
+      "soldByLanguage": {
+        "Español": 2
+      },
+      "quantitySold": 2,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 252,
+      "codigoAnterior": "BTCG-0150",
+      "name": "Aegislash",
+      "number": "210/182",
+      "set": "Paradox Rift",
+      "year": "2023",
+      "ordinal": "249",
+      "originalLanguage": "Español",
+      "originalQuantity": 1,
+      "soldByLanguage": {
+        "Español": 1
+      },
+      "quantitySold": 1,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 259,
+      "codigoAnterior": "BTCG-0093",
+      "name": "Tambores del Despertar",
+      "number": "141/162",
+      "set": "Temporal Forces",
+      "year": "2024",
+      "ordinal": "256",
+      "originalLanguage": "Español",
+      "originalQuantity": 1,
+      "soldByLanguage": {
+        "Español": 1
+      },
+      "quantitySold": 1,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 260,
+      "codigoAnterior": "BTCG-0106",
+      "name": "Colmilargo ex",
+      "number": "053/091",
+      "set": "Paldean Fates",
+      "year": "2024",
+      "ordinal": "257",
+      "originalLanguage": "Español",
+      "originalQuantity": 2,
+      "soldByLanguage": {
+        "Español": 2
+      },
+      "quantitySold": 2,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 263,
+      "codigoAnterior": "BTCG-0151",
+      "name": "Roaring Moon ex",
+      "number": "124/182",
+      "set": "Paradox Rift",
+      "year": "2023",
+      "ordinal": "260",
+      "originalLanguage": "Inglés",
+      "originalQuantity": 1,
+      "soldByLanguage": {
+        "Inglés": 1
+      },
+      "quantitySold": 1,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 264,
+      "codigoAnterior": "BTCG-0064",
+      "name": "Dudunsparce ex",
+      "number": "121/159",
+      "set": "Journey Together",
+      "year": "2025",
+      "ordinal": "261",
+      "originalLanguage": "Inglés",
+      "originalQuantity": 2,
+      "soldByLanguage": {
+        "Inglés": 2
+      },
+      "quantitySold": 2,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 265,
+      "codigoAnterior": "BTCG-0108",
+      "name": "Espathra ex",
+      "number": "006/091",
+      "set": "Paldean Fates",
+      "year": "2024",
+      "ordinal": "262",
+      "originalLanguage": "Español",
+      "originalQuantity": 1,
+      "soldByLanguage": {
+        "Español": 1
+      },
+      "quantitySold": 1,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 266,
+      "codigoAnterior": "BTCG-0152",
+      "name": "Golisopod ex",
+      "number": "050/182",
+      "set": "Paradox Rift",
+      "year": "2023",
+      "ordinal": "263",
+      "originalLanguage": "Español",
+      "originalQuantity": 1,
+      "soldByLanguage": {
+        "Español": 1
+      },
+      "quantitySold": 1,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 267,
+      "codigoAnterior": "BTCG-0109",
+      "name": "Noivern ex",
+      "number": "069/091",
+      "set": "Paldean Fates",
+      "year": "2024",
+      "ordinal": "264",
+      "originalLanguage": "Español",
+      "originalQuantity": 1,
+      "soldByLanguage": {
+        "Español": 1
+      },
+      "quantitySold": 1,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 268,
+      "codigoAnterior": "BTCG-0121",
+      "name": "Skeledirge ex",
+      "number": "081",
+      "set": "Scarlet & Violet Promo",
+      "year": "2024",
+      "ordinal": "265",
+      "originalLanguage": "Español / Japonés",
+      "originalQuantity": 3,
+      "soldByLanguage": {
+        "Español": 2
+      },
+      "quantitySold": 2,
+      "japaneseQuantityRetained": 1,
+      "status": "vendido"
+    },
+    {
+      "id": 280,
+      "codigoAnterior": "BTCG-0072",
+      "name": "Cinturón Colosal",
+      "number": "117/131",
+      "set": "Prismatic Evolutions",
+      "year": "2025",
+      "ordinal": "277",
+      "originalLanguage": "Español",
+      "originalQuantity": 1,
+      "soldByLanguage": {
+        "Español": 1
+      },
+      "quantitySold": 1,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 281,
+      "codigoAnterior": "BTCG-0110",
+      "name": "Hawlucha",
+      "number": "175/091",
+      "set": "Paldean Fates",
+      "year": "2024",
+      "ordinal": "278",
+      "originalLanguage": "Español",
+      "originalQuantity": 1,
+      "soldByLanguage": {
+        "Español": 1
+      },
+      "quantitySold": 1,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 283,
+      "codigoAnterior": "BTCG-0122",
+      "name": "Quaxwell",
+      "number": "083",
+      "set": "Scarlet & Violet Promo",
+      "year": "2024",
+      "ordinal": "280",
+      "originalLanguage": "Español",
+      "originalQuantity": 2,
+      "soldByLanguage": {
+        "Español": 2
+      },
+      "quantitySold": 2,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 286,
+      "codigoAnterior": "BTCG-0073",
+      "name": "Vasija Terrestre",
+      "number": "106/131",
+      "set": "Prismatic Evolutions",
+      "year": "2025",
+      "ordinal": "283",
+      "originalLanguage": "Español",
+      "originalQuantity": 1,
+      "soldByLanguage": {
+        "Español": 1
+      },
+      "quantitySold": 1,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 287,
+      "codigoAnterior": "BTCG-0065",
+      "name": "Amoonguss ex",
+      "number": "011/159",
+      "set": "Journey Together",
+      "year": "2025",
+      "ordinal": "284",
+      "originalLanguage": "Inglés",
+      "originalQuantity": 1,
+      "soldByLanguage": {
+        "Inglés": 1
+      },
+      "quantitySold": 1,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 291,
+      "codigoAnterior": "BTCG-0153",
+      "name": "Capturador Contraataque",
+      "number": "264/182",
+      "set": "Paradox Rift",
+      "year": "2023",
+      "ordinal": "288",
+      "originalLanguage": "Español",
+      "originalQuantity": 1,
+      "soldByLanguage": {
+        "Español": 1
+      },
+      "quantitySold": 1,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 292,
+      "codigoAnterior": "BTCG-0154",
+      "name": "Armarouge ex",
+      "number": "218/182",
+      "set": "Paradox Rift",
+      "year": "2023",
+      "ordinal": "289",
+      "originalLanguage": "Español",
+      "originalQuantity": 1,
+      "soldByLanguage": {
+        "Español": 1
+      },
+      "quantitySold": 1,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 301,
+      "codigoAnterior": "BTCG-0081",
+      "name": "Aroa",
+      "number": "166/142",
+      "set": "Stellar Crown",
+      "year": "2024",
+      "ordinal": "298",
+      "originalLanguage": "Español",
+      "originalQuantity": 1,
+      "soldByLanguage": {
+        "Español": 1
+      },
+      "quantitySold": 1,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 303,
+      "codigoAnterior": "BTCG-0087",
+      "name": "Hassel",
+      "number": "205/167",
+      "set": "Twilight Masquerade",
+      "year": "2024",
+      "ordinal": "300",
+      "originalLanguage": "Inglés",
+      "originalQuantity": 1,
+      "soldByLanguage": {
+        "Inglés": 1
+      },
+      "quantitySold": 1,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 304,
+      "codigoAnterior": "BTCG-0088",
+      "name": "Luxray ex",
+      "number": "068/167",
+      "set": "Twilight Masquerade",
+      "year": "2024",
+      "ordinal": "301",
+      "originalLanguage": "Inglés",
+      "originalQuantity": 1,
+      "soldByLanguage": {
+        "Inglés": 1
+      },
+      "quantitySold": 1,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 305,
+      "codigoAnterior": "BTCG-0066",
+      "name": "Mamoswine ex",
+      "number": "079/159",
+      "set": "Journey Together",
+      "year": "2025",
+      "ordinal": "302",
+      "originalLanguage": "Inglés",
+      "originalQuantity": 1,
+      "soldByLanguage": {
+        "Inglés": 1
+      },
+      "quantitySold": 1,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 307,
+      "codigoAnterior": "BTCG-0156",
+      "name": "Bombirdier ex",
+      "number": "156/182",
+      "set": "Paradox Rift",
+      "year": "2023",
+      "ordinal": "304",
+      "originalLanguage": "Inglés",
+      "originalQuantity": 1,
+      "soldByLanguage": {
+        "Inglés": 1
+      },
+      "quantitySold": 1,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 308,
+      "codigoAnterior": "BTCG-0094",
+      "name": "Raging Bolt ex",
+      "number": "123/162",
+      "set": "Temporal Forces",
+      "year": "2024",
+      "ordinal": "305",
+      "originalLanguage": "Inglés",
+      "originalQuantity": 1,
+      "soldByLanguage": {
+        "Inglés": 1
+      },
+      "quantitySold": 1,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 309,
+      "codigoAnterior": "BTCG-0067",
+      "name": "N's Zoroark ex",
+      "number": "098/159",
+      "set": "Journey Together",
+      "year": "2025",
+      "ordinal": "306",
+      "originalLanguage": "Inglés",
+      "originalQuantity": 2,
+      "soldByLanguage": {
+        "Inglés": 2
+      },
+      "quantitySold": 2,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 311,
+      "codigoAnterior": "BTCG-0082",
+      "name": "Melmetal ex",
+      "number": "105/142",
+      "set": "Stellar Crown",
+      "year": "2024",
+      "ordinal": "308",
+      "originalLanguage": "Inglés",
+      "originalQuantity": 1,
+      "soldByLanguage": {
+        "Inglés": 1
+      },
+      "quantitySold": 1,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 312,
+      "codigoAnterior": "BTCG-0095",
+      "name": "Iron Leaves ex",
+      "number": "025/162",
+      "set": "Temporal Forces",
+      "year": "2024",
+      "ordinal": "309",
+      "originalLanguage": "Inglés",
+      "originalQuantity": 1,
+      "soldByLanguage": {
+        "Inglés": 1
+      },
+      "quantitySold": 1,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 313,
+      "codigoAnterior": "BTCG-0089",
+      "name": "Magcargo ex",
+      "number": "029/167",
+      "set": "Twilight Masquerade",
+      "year": "2024",
+      "ordinal": "310",
+      "originalLanguage": "Inglés",
+      "originalQuantity": 1,
+      "soldByLanguage": {
+        "Inglés": 1
+      },
+      "quantitySold": 1,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 315,
+      "codigoAnterior": "BTCG-0083",
+      "name": "Medicham ex",
+      "number": "080/142",
+      "set": "Stellar Crown",
+      "year": "2024",
+      "ordinal": "312",
+      "originalLanguage": "Español",
+      "originalQuantity": 1,
+      "soldByLanguage": {
+        "Español": 1
+      },
+      "quantitySold": 1,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 317,
+      "codigoAnterior": "BTCG-0084",
+      "name": "Garganacl ex",
+      "number": "089/142",
+      "set": "Stellar Crown",
+      "year": "2024",
+      "ordinal": "314",
+      "originalLanguage": "Español",
+      "originalQuantity": 1,
+      "soldByLanguage": {
+        "Español": 1
+      },
+      "quantitySold": 1,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 319,
+      "codigoAnterior": "BTCG-0096",
+      "name": "Gouging Fire ex",
+      "number": "038/162",
+      "set": "Temporal Forces",
+      "year": "2024",
+      "ordinal": "316",
+      "originalLanguage": "Inglés",
+      "originalQuantity": 1,
+      "soldByLanguage": {
+        "Inglés": 1
+      },
+      "quantitySold": 1,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 320,
+      "codigoAnterior": "BTCG-0090",
+      "name": "Cornerstone Mask Ogerpon ex",
+      "number": "112/167",
+      "set": "Twilight Masquerade",
+      "year": "2024",
+      "ordinal": "317",
+      "originalLanguage": "Inglés",
+      "originalQuantity": 1,
+      "soldByLanguage": {
+        "Inglés": 1
+      },
+      "quantitySold": 1,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 321,
+      "codigoAnterior": "BTCG-0157",
+      "name": "Darkrai & Cresselia LEGEND (Bottom)",
+      "number": "100/102",
+      "set": "30th Celebration - Classic Collection",
+      "year": "2026",
+      "ordinal": "321",
+      "originalLanguage": "Inglés",
+      "originalQuantity": 3,
+      "soldByLanguage": {
+        "Inglés": 3
+      },
+      "quantitySold": 3,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 323,
+      "codigoAnterior": "BTCG-0159",
+      "name": "Lechonk",
+      "number": "209/197",
+      "set": "Obsidian Flames",
+      "year": "2023",
+      "ordinal": "323",
+      "originalLanguage": "Inglés / Japonés",
+      "originalQuantity": 4,
+      "soldByLanguage": {
+        "Inglés": 3
+      },
+      "quantitySold": 3,
+      "japaneseQuantityRetained": 1,
+      "status": "vendido"
+    },
+    {
+      "id": 329,
+      "codigoAnterior": "BTCG-0165",
+      "name": "Squirtle",
+      "number": "170/165",
+      "set": "Pokémon Card 151",
+      "year": "2023",
+      "ordinal": "329",
+      "originalLanguage": "Inglés / Japonés",
+      "originalQuantity": 3,
+      "soldByLanguage": {
+        "Inglés": 2
+      },
+      "quantitySold": 2,
+      "japaneseQuantityRetained": 1,
+      "status": "vendido"
+    },
+    {
+      "id": 331,
+      "codigoAnterior": "BTCG-0167",
+      "name": "Charizard ex",
+      "number": "054/091",
+      "set": "Paldean Fates",
+      "year": "2024",
+      "ordinal": "331",
+      "originalLanguage": "Español",
+      "originalQuantity": 1,
+      "soldByLanguage": {
+        "Español": 1
+      },
+      "quantitySold": 1,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 332,
+      "codigoAnterior": "BTCG-0168",
+      "name": "Hisuian Zoroark VSTAR",
+      "number": "147/196",
+      "set": "Lost Origin",
+      "year": "2022",
+      "ordinal": "332",
+      "originalLanguage": "Español",
+      "originalQuantity": 1,
+      "soldByLanguage": {
+        "Español": 1
+      },
+      "quantitySold": 1,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 333,
+      "codigoAnterior": "BTCG-0169",
+      "name": "Eiscue ex",
+      "number": "222/197",
+      "set": "Obsidian Flames",
+      "year": "2023",
+      "ordinal": "333",
+      "originalLanguage": "Español",
+      "originalQuantity": 1,
+      "soldByLanguage": {
+        "Español": 1
+      },
+      "quantitySold": 1,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 334,
+      "codigoAnterior": "BTCG-0170",
+      "name": "Golurk V",
+      "number": "070/203",
+      "set": "Evolving Skies",
+      "year": "2021",
+      "ordinal": "334",
+      "originalLanguage": "Español",
+      "originalQuantity": 1,
+      "soldByLanguage": {
+        "Español": 1
+      },
+      "quantitySold": 1,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 335,
+      "codigoAnterior": "BTCG-0171",
+      "name": "Giratina VSTAR",
+      "number": "131/196",
+      "set": "Lost Origin",
+      "year": "2022",
+      "ordinal": "335",
+      "originalLanguage": "Español",
+      "originalQuantity": 1,
+      "soldByLanguage": {
+        "Español": 1
+      },
+      "quantitySold": 1,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 336,
+      "codigoAnterior": "BTCG-0172",
+      "name": "Quaquaval ex",
+      "number": "260/193",
+      "set": "Paldea Evolved",
+      "year": "2023",
+      "ordinal": "336",
+      "originalLanguage": "Español",
+      "originalQuantity": 1,
+      "soldByLanguage": {
+        "Español": 1
+      },
+      "quantitySold": 1,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 337,
+      "codigoAnterior": "BTCG-0173",
+      "name": "Greninja ex",
+      "number": "041/142",
+      "set": "Stellar Crown",
+      "year": "2024",
+      "ordinal": "337",
+      "originalLanguage": "Español",
+      "originalQuantity": 1,
+      "soldByLanguage": {
+        "Español": 1
+      },
+      "quantitySold": 1,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 338,
+      "codigoAnterior": "BTCG-0174",
+      "name": "Toedscruel ex",
+      "number": "022/197",
+      "set": "Obsidian Flames",
+      "year": "2023",
+      "ordinal": "338",
+      "originalLanguage": "Español",
+      "originalQuantity": 1,
+      "soldByLanguage": {
+        "Español": 1
+      },
+      "quantitySold": 1,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 339,
+      "codigoAnterior": "BTCG-0175",
+      "name": "Gardevoir ex",
+      "number": "029/091",
+      "set": "Paldean Fates",
+      "year": "2024",
+      "ordinal": "339",
+      "originalLanguage": "Español",
+      "originalQuantity": 1,
+      "soldByLanguage": {
+        "Español": 1
+      },
+      "quantitySold": 1,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 340,
+      "codigoAnterior": "BTCG-0176",
+      "name": "Gardevoir",
+      "number": "TG05/TG30",
+      "set": "Astral Radiance Trainer Gallery",
+      "year": "2022",
+      "ordinal": "340",
+      "originalLanguage": "Español",
+      "originalQuantity": 1,
+      "soldByLanguage": {
+        "Español": 1
+      },
+      "quantitySold": 1,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 341,
+      "codigoAnterior": "BTCG-0177",
+      "name": "Simisear V",
+      "number": "027/172",
+      "set": "Brilliant Stars",
+      "year": "2022",
+      "ordinal": "341",
+      "originalLanguage": "Español",
+      "originalQuantity": 1,
+      "soldByLanguage": {
+        "Español": 1
+      },
+      "quantitySold": 1,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 342,
+      "codigoAnterior": "BTCG-0178",
+      "name": "Oranguru V",
+      "number": "133/189",
+      "set": "Astral Radiance",
+      "year": "2022",
+      "ordinal": "342",
+      "originalLanguage": "Español",
+      "originalQuantity": 1,
+      "soldByLanguage": {
+        "Español": 1
+      },
+      "quantitySold": 1,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 343,
+      "codigoAnterior": "BTCG-0179",
+      "name": "Double Turbo Energy",
+      "number": "216/189",
+      "set": "Astral Radiance",
+      "year": "2022",
+      "ordinal": "343",
+      "originalLanguage": "Español",
+      "originalQuantity": 1,
+      "soldByLanguage": {
+        "Español": 1
+      },
+      "quantitySold": 1,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 357,
+      "codigoAnterior": "BTCG-0193",
+      "name": "Pawmot ex",
+      "number": "073/197",
+      "set": "Obsidian Flames",
+      "year": "2023",
+      "ordinal": "357",
+      "originalLanguage": "Español",
+      "originalQuantity": 1,
+      "soldByLanguage": {
+        "Español": 1
+      },
+      "quantitySold": 1,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 384,
+      "codigoAnterior": "BTCG-0217",
+      "name": "Blastoise ex",
+      "number": "009/165",
+      "set": "Pokémon Card 151",
+      "year": "2023",
+      "ordinal": "384",
+      "originalLanguage": "Inglés",
+      "originalQuantity": 6,
+      "soldByLanguage": {
+        "Inglés": 6
+      },
+      "quantitySold": 6,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 385,
+      "codigoAnterior": "BTCG-0218",
+      "name": "Venusaur ex",
+      "number": "003/165",
+      "set": "Pokémon Card 151",
+      "year": "2023",
+      "ordinal": "385",
+      "originalLanguage": "Inglés",
+      "originalQuantity": 8,
+      "soldByLanguage": {
+        "Inglés": 8
+      },
+      "quantitySold": 8,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 386,
+      "codigoAnterior": "BTCG-0219",
+      "name": "Tapu Koko ex",
+      "number": "051/159",
+      "set": "Journey Together",
+      "year": "2025",
+      "ordinal": "386",
+      "originalLanguage": "Inglés",
+      "originalQuantity": 1,
+      "soldByLanguage": {
+        "Inglés": 1
+      },
+      "quantitySold": 1,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 387,
+      "codigoAnterior": "BTCG-0220",
+      "name": "Sprigatito ex",
+      "number": "087",
+      "set": "Scarlet & Violet Promo",
+      "year": "2024",
+      "ordinal": "387",
+      "originalLanguage": "Español",
+      "originalQuantity": 1,
+      "soldByLanguage": {
+        "Español": 1
+      },
+      "quantitySold": 1,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 388,
+      "codigoAnterior": "BTCG-0221",
+      "name": "Charizard ex",
+      "number": "006/165",
+      "set": "Pokémon Card 151",
+      "year": "2023",
+      "ordinal": "388",
+      "originalLanguage": "Inglés",
+      "originalQuantity": 1,
+      "soldByLanguage": {
+        "Inglés": 1
+      },
+      "quantitySold": 1,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 389,
+      "codigoAnterior": "BTCG-0222",
+      "name": "Basic Psychic Energy",
+      "number": "207/165",
+      "set": "Pokémon Card 151",
+      "year": "2023",
+      "ordinal": "389",
+      "originalLanguage": "Inglés",
+      "originalQuantity": 1,
+      "soldByLanguage": {
+        "Inglés": 1
+      },
+      "quantitySold": 1,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 390,
+      "codigoAnterior": "BTCG-0223",
+      "name": "Vespiquen ex",
+      "number": "212/197",
+      "set": "Obsidian Flames",
+      "year": "2023",
+      "ordinal": "390",
+      "originalLanguage": "Inglés",
+      "originalQuantity": 1,
+      "soldByLanguage": {
+        "Inglés": 1
+      },
+      "quantitySold": 1,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 391,
+      "codigoAnterior": "BTCG-0224",
+      "name": "Eiscue ex",
+      "number": "210/197",
+      "set": "Obsidian Flames",
+      "year": "2023",
+      "ordinal": "391",
+      "originalLanguage": "Inglés",
+      "originalQuantity": 1,
+      "soldByLanguage": {
+        "Inglés": 1
+      },
+      "quantitySold": 1,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 392,
+      "codigoAnterior": "BTCG-0225",
+      "name": "Ninetales ex",
+      "number": "186/165",
+      "set": "Pokémon Card 151",
+      "year": "2023",
+      "ordinal": "392",
+      "originalLanguage": "Inglés",
+      "originalQuantity": 1,
+      "soldByLanguage": {
+        "Inglés": 1
+      },
+      "quantitySold": 1,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 393,
+      "codigoAnterior": "BTCG-0226",
+      "name": "Alakazam ex",
+      "number": "065/165",
+      "set": "Pokémon Card 151",
+      "year": "2023",
+      "ordinal": "393",
+      "originalLanguage": "Inglés",
+      "originalQuantity": 2,
+      "soldByLanguage": {
+        "Inglés": 2
+      },
+      "quantitySold": 2,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 394,
+      "codigoAnterior": "BTCG-0227",
+      "name": "Charmander",
+      "number": "044",
+      "set": "Scarlet & Violet Promo",
+      "year": "2023",
+      "ordinal": "394",
+      "originalLanguage": "Inglés",
+      "originalQuantity": 1,
+      "soldByLanguage": {
+        "Inglés": 1
+      },
+      "quantitySold": 1,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 395,
+      "codigoAnterior": "BTCG-0228",
+      "name": "Charizard VSTAR",
+      "number": "SWSH262",
+      "set": "Sword & Shield Promo",
+      "year": "2022",
+      "ordinal": "395",
+      "originalLanguage": "Inglés",
+      "originalQuantity": 1,
+      "soldByLanguage": {
+        "Inglés": 1
+      },
+      "quantitySold": 1,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 396,
+      "codigoAnterior": "BTCG-0229",
+      "name": "Venusaur ex",
+      "number": "198/165",
+      "set": "Pokémon Card 151",
+      "year": "2023",
+      "ordinal": "396",
+      "originalLanguage": "Inglés",
+      "originalQuantity": 1,
+      "soldByLanguage": {
+        "Inglés": 1
+      },
+      "quantitySold": 1,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 397,
+      "codigoAnterior": "BTCG-0230",
+      "name": "Charizard ex",
+      "number": "223/197",
+      "set": "Obsidian Flames",
+      "year": "2023",
+      "ordinal": "397",
+      "originalLanguage": "Inglés",
+      "originalQuantity": 1,
+      "soldByLanguage": {
+        "Inglés": 1
+      },
+      "quantitySold": 1,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 398,
+      "codigoAnterior": "BTCG-0231",
+      "name": "Charizard VMAX",
+      "number": "SWSH261",
+      "set": "Sword & Shield Promo",
+      "year": "2022",
+      "ordinal": "398",
+      "originalLanguage": "Inglés",
+      "originalQuantity": 1,
+      "soldByLanguage": {
+        "Inglés": 1
+      },
+      "quantitySold": 1,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 401,
+      "codigoAnterior": "BTCG-0233",
+      "name": "Scream Tail ex",
+      "number": "094/167",
+      "set": "Twilight Masquerade",
+      "year": "2024",
+      "ordinal": "401",
+      "originalLanguage": "Inglés",
+      "originalQuantity": 1,
+      "soldByLanguage": {
+        "Inglés": 1
+      },
+      "quantitySold": 1,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 407,
+      "codigoAnterior": "BTCG-0237",
+      "name": "Eiscue ex",
+      "number": "042/197",
+      "set": "Obsidian Flames",
+      "year": "2023",
+      "ordinal": "407",
+      "originalLanguage": "Inglés",
+      "originalQuantity": 3,
+      "soldByLanguage": {
+        "Inglés": 3
+      },
+      "quantitySold": 3,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 408,
+      "codigoAnterior": "BTCG-0238",
+      "name": "Zapdos ex",
+      "number": "145/165",
+      "set": "Pokémon Card 151",
+      "year": "2023",
+      "ordinal": "408",
+      "originalLanguage": "Inglés",
+      "originalQuantity": 2,
+      "soldByLanguage": {
+        "Inglés": 2
+      },
+      "quantitySold": 2,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 409,
+      "codigoAnterior": "BTCG-0239",
+      "name": "Arbok ex",
+      "number": "024/165",
+      "set": "Pokémon Card 151",
+      "year": "2023",
+      "ordinal": "409",
+      "originalLanguage": "Inglés",
+      "originalQuantity": 2,
+      "soldByLanguage": {
+        "Inglés": 2
+      },
+      "quantitySold": 2,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 410,
+      "codigoAnterior": "BTCG-0240",
+      "name": "Chien-Pao ex",
+      "number": "061/193",
+      "set": "Paldea Evolved",
+      "year": "2023",
+      "ordinal": "410",
+      "originalLanguage": "Inglés",
+      "originalQuantity": 3,
+      "soldByLanguage": {
+        "Inglés": 3
+      },
+      "quantitySold": 3,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 411,
+      "codigoAnterior": "BTCG-0241",
+      "name": "Pikachu ex",
+      "number": "063/193",
+      "set": "Paldea Evolved",
+      "year": "2023",
+      "ordinal": "411",
+      "originalLanguage": "Inglés",
+      "originalQuantity": 2,
+      "soldByLanguage": {
+        "Inglés": 2
+      },
+      "quantitySold": 2,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 412,
+      "codigoAnterior": "BTCG-0242",
+      "name": "Golem ex",
+      "number": "076/165",
+      "set": "Pokémon Card 151",
+      "year": "2023",
+      "ordinal": "412",
+      "originalLanguage": "Inglés",
+      "originalQuantity": 2,
+      "soldByLanguage": {
+        "Inglés": 2
+      },
+      "quantitySold": 2,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 413,
+      "codigoAnterior": "BTCG-0243",
+      "name": "Kangaskhan ex",
+      "number": "115/165",
+      "set": "Pokémon Card 151",
+      "year": "2023",
+      "ordinal": "413",
+      "originalLanguage": "Inglés",
+      "originalQuantity": 2,
+      "soldByLanguage": {
+        "Inglés": 2
+      },
+      "quantitySold": 2,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 414,
+      "codigoAnterior": "BTCG-0244",
+      "name": "Ninetales ex",
+      "number": "038/165",
+      "set": "Pokémon Card 151",
+      "year": "2023",
+      "ordinal": "414",
+      "originalLanguage": "Inglés",
+      "originalQuantity": 1,
+      "soldByLanguage": {
+        "Inglés": 1
+      },
+      "quantitySold": 1,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 415,
+      "codigoAnterior": "BTCG-0245",
+      "name": "Revavroom ex",
+      "number": "224/197",
+      "set": "Obsidian Flames",
+      "year": "2023",
+      "ordinal": "415",
+      "originalLanguage": "Inglés",
+      "originalQuantity": 1,
+      "soldByLanguage": {
+        "Inglés": 1
+      },
+      "quantitySold": 1,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 416,
+      "codigoAnterior": "BTCG-0246",
+      "name": "Professor's Research",
+      "number": "240/198",
+      "set": "Scarlet & Violet",
+      "year": "2023",
+      "ordinal": "416",
+      "originalLanguage": "Inglés",
+      "originalQuantity": 1,
+      "soldByLanguage": {
+        "Inglés": 1
+      },
+      "quantitySold": 1,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 417,
+      "codigoAnterior": "BTCG-0247",
+      "name": "Toedscruel ex",
+      "number": "022/197",
+      "set": "Obsidian Flames",
+      "year": "2023",
+      "ordinal": "417",
+      "originalLanguage": "Inglés",
+      "originalQuantity": 1,
+      "soldByLanguage": {
+        "Inglés": 1
+      },
+      "quantitySold": 1,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 418,
+      "codigoAnterior": "BTCG-0248",
+      "name": "Absol ex",
+      "number": "135/197",
+      "set": "Obsidian Flames",
+      "year": "2023",
+      "ordinal": "418",
+      "originalLanguage": "Inglés",
+      "originalQuantity": 1,
+      "soldByLanguage": {
+        "Inglés": 1
+      },
+      "quantitySold": 1,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 419,
+      "codigoAnterior": "BTCG-0249",
+      "name": "Basic Fire Energy",
+      "number": "230/197",
+      "set": "Obsidian Flames",
+      "year": "2023",
+      "ordinal": "419",
+      "originalLanguage": "Inglés",
+      "originalQuantity": 1,
+      "soldByLanguage": {
+        "Inglés": 1
+      },
+      "quantitySold": 1,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 420,
+      "codigoAnterior": "BTCG-0250",
+      "name": "Klawf ex",
+      "number": "120/197",
+      "set": "Obsidian Flames",
+      "year": "2023",
+      "ordinal": "420",
+      "originalLanguage": "Inglés",
+      "originalQuantity": 1,
+      "soldByLanguage": {
+        "Inglés": 1
+      },
+      "quantitySold": 1,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 421,
+      "codigoAnterior": "BTCG-0251",
+      "name": "Bill's Transfer",
+      "number": "194/165",
+      "set": "Pokémon Card 151",
+      "year": "2023",
+      "ordinal": "421",
+      "originalLanguage": "Inglés",
+      "originalQuantity": 1,
+      "soldByLanguage": {
+        "Inglés": 1
+      },
+      "quantitySold": 1,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 422,
+      "codigoAnterior": "BTCG-0252",
+      "name": "Mew ex",
+      "number": "205/165",
+      "set": "Pokémon Card 151",
+      "year": "2023",
+      "ordinal": "422",
+      "originalLanguage": "Inglés",
+      "originalQuantity": 1,
+      "soldByLanguage": {
+        "Inglés": 1
+      },
+      "quantitySold": 1,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 423,
+      "codigoAnterior": "BTCG-0253",
+      "name": "Glimmora ex",
+      "number": "123/197",
+      "set": "Obsidian Flames",
+      "year": "2023",
+      "ordinal": "423",
+      "originalLanguage": "Inglés",
+      "originalQuantity": 1,
+      "soldByLanguage": {
+        "Inglés": 1
+      },
+      "quantitySold": 1,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 424,
+      "codigoAnterior": "BTCG-0254",
+      "name": "Eevee ex",
+      "number": "174",
+      "set": "Scarlet & Violet Promo",
+      "year": "2025",
+      "ordinal": "424",
+      "originalLanguage": "Inglés",
+      "originalQuantity": 1,
+      "soldByLanguage": {
+        "Inglés": 1
+      },
+      "quantitySold": 1,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 425,
+      "codigoAnterior": "BTCG-0255",
+      "name": "Aerodactyl VSTAR",
+      "number": "093/196",
+      "set": "Lost Origin",
+      "year": "2022",
+      "ordinal": "425",
+      "originalLanguage": "Inglés",
+      "originalQuantity": 1,
+      "soldByLanguage": {
+        "Inglés": 1
+      },
+      "quantitySold": 1,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 426,
+      "codigoAnterior": "BTCG-0256",
+      "name": "Varoom",
+      "number": "206/197",
+      "set": "Obsidian Flames",
+      "year": "2023",
+      "ordinal": "426",
+      "originalLanguage": "Inglés",
+      "originalQuantity": 1,
+      "soldByLanguage": {
+        "Inglés": 1
+      },
+      "quantitySold": 1,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 427,
+      "codigoAnterior": "BTCG-0257",
+      "name": "Boltund VMAX",
+      "number": "267/264",
+      "set": "Fusion Strike",
+      "year": "2021",
+      "ordinal": "427",
+      "originalLanguage": "Inglés",
+      "originalQuantity": 1,
+      "soldByLanguage": {
+        "Inglés": 1
+      },
+      "quantitySold": 1,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 428,
+      "codigoAnterior": "BTCG-0258",
+      "name": "Wigglytuff ex",
+      "number": "040/165",
+      "set": "Pokémon Card 151",
+      "year": "2023",
+      "ordinal": "428",
+      "originalLanguage": "Inglés",
+      "originalQuantity": 1,
+      "soldByLanguage": {
+        "Inglés": 1
+      },
+      "quantitySold": 1,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 429,
+      "codigoAnterior": "BTCG-0259",
+      "name": "Houndoom ex",
+      "number": "134/197",
+      "set": "Obsidian Flames",
+      "year": "2023",
+      "ordinal": "429",
+      "originalLanguage": "Inglés",
+      "originalQuantity": 1,
+      "soldByLanguage": {
+        "Inglés": 1
+      },
+      "quantitySold": 1,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 431,
+      "codigoAnterior": "BTCG-0260",
+      "name": "Wigglytuff ex",
+      "number": "040/165",
+      "set": "Pokémon Card 151",
+      "year": "2023",
+      "ordinal": "431",
+      "originalLanguage": "Inglés",
+      "originalQuantity": 1,
+      "soldByLanguage": {
+        "Inglés": 1
+      },
+      "quantitySold": 1,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 432,
+      "codigoAnterior": "BTCG-0261",
+      "name": "Tyranitar ex",
+      "number": "066/197",
+      "set": "Obsidian Flames",
+      "year": "2023",
+      "ordinal": "432",
+      "originalLanguage": "Inglés",
+      "originalQuantity": 1,
+      "soldByLanguage": {
+        "Inglés": 1
+      },
+      "quantitySold": 1,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 433,
+      "codigoAnterior": "BTCG-0262",
+      "name": "Chi-Yu ex",
+      "number": "234/193",
+      "set": "Paldea Evolved",
+      "year": "2023",
+      "ordinal": "433",
+      "originalLanguage": "Español",
+      "originalQuantity": 1,
+      "soldByLanguage": {
+        "Español": 1
+      },
+      "quantitySold": 1,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 434,
+      "codigoAnterior": "BTCG-0263",
+      "name": "Alcremie",
+      "number": "TG08/TG30",
+      "set": "Brilliant Stars Trainer Gallery",
+      "year": "2022",
+      "ordinal": "434",
+      "originalLanguage": "Español",
+      "originalQuantity": 1,
+      "soldByLanguage": {
+        "Español": 1
+      },
+      "quantitySold": 1,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 435,
+      "codigoAnterior": "BTCG-0264",
+      "name": "Luxray V",
+      "number": "050/189",
+      "set": "Astral Radiance",
+      "year": "2022",
+      "ordinal": "435",
+      "originalLanguage": "Español",
+      "originalQuantity": 1,
+      "soldByLanguage": {
+        "Español": 1
+      },
+      "quantitySold": 1,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 436,
+      "codigoAnterior": "BTCG-0265",
+      "name": "Magnezone VSTAR",
+      "number": "057/196",
+      "set": "Lost Origin",
+      "year": "2022",
+      "ordinal": "436",
+      "originalLanguage": "Español",
+      "originalQuantity": 1,
+      "soldByLanguage": {
+        "Español": 1
+      },
+      "quantitySold": 1,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 437,
+      "codigoAnterior": "BTCG-0266",
+      "name": "Arven",
+      "number": "249/198",
+      "set": "Scarlet & Violet",
+      "year": "2023",
+      "ordinal": "437",
+      "originalLanguage": "Inglés",
+      "originalQuantity": 1,
+      "soldByLanguage": {
+        "Inglés": 1
+      },
+      "quantitySold": 1,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 438,
+      "codigoAnterior": "BTCG-0267",
+      "name": "Ice Rider Calyrex VMAX",
+      "number": "TG29/TG30",
+      "set": "Astral Radiance Trainer Gallery",
+      "year": "2022",
+      "ordinal": "438",
+      "originalLanguage": "Español",
+      "originalQuantity": 1,
+      "soldByLanguage": {
+        "Español": 1
+      },
+      "quantitySold": 1,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 439,
+      "codigoAnterior": "BTCG-0268",
+      "name": "Aegislash ex",
+      "number": "135/182",
+      "set": "Paradox Rift",
+      "year": "2023",
+      "ordinal": "439",
+      "originalLanguage": "Español",
+      "originalQuantity": 1,
+      "soldByLanguage": {
+        "Español": 1
+      },
+      "quantitySold": 1,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 440,
+      "codigoAnterior": "BTCG-0269",
+      "name": "Eevee",
+      "number": "TG11/TG30",
+      "set": "Brilliant Stars Trainer Gallery",
+      "year": "2022",
+      "ordinal": "440",
+      "originalLanguage": "Español",
+      "originalQuantity": 1,
+      "soldByLanguage": {
+        "Español": 1
+      },
+      "quantitySold": 1,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 441,
+      "codigoAnterior": "BTCG-0270",
+      "name": "Basic Fire Energy",
+      "number": "230/197",
+      "set": "Obsidian Flames",
+      "year": "2023",
+      "ordinal": "441",
+      "originalLanguage": "Español",
+      "originalQuantity": 1,
+      "soldByLanguage": {
+        "Español": 1
+      },
+      "quantitySold": 1,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 442,
+      "codigoAnterior": "BTCG-0271",
+      "name": "Shadow Rider Calyrex VMAX",
+      "number": "TG18/TG30",
+      "set": "Astral Radiance Trainer Gallery",
+      "year": "2022",
+      "ordinal": "442",
+      "originalLanguage": "Español",
+      "originalQuantity": 1,
+      "soldByLanguage": {
+        "Español": 1
+      },
+      "quantitySold": 1,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 443,
+      "codigoAnterior": "BTCG-0272",
+      "name": "Shaymin VSTAR",
+      "number": "014/172",
+      "set": "Brilliant Stars",
+      "year": "2022",
+      "ordinal": "443",
+      "originalLanguage": "Español",
+      "originalQuantity": 1,
+      "soldByLanguage": {
+        "Español": 1
+      },
+      "quantitySold": 1,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 444,
+      "codigoAnterior": "BTCG-0273",
+      "name": "Raikou V",
+      "number": "048/172",
+      "set": "Brilliant Stars",
+      "year": "2022",
+      "ordinal": "444",
+      "originalLanguage": "Español",
+      "originalQuantity": 1,
+      "soldByLanguage": {
+        "Español": 1
+      },
+      "quantitySold": 1,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 445,
+      "codigoAnterior": "BTCG-0274",
+      "name": "Whimsicott V",
+      "number": "064/172",
+      "set": "Brilliant Stars",
+      "year": "2022",
+      "ordinal": "445",
+      "originalLanguage": "Español",
+      "originalQuantity": 1,
+      "soldByLanguage": {
+        "Español": 1
+      },
+      "quantitySold": 1,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 446,
+      "codigoAnterior": "BTCG-0275",
+      "name": "Simisear V",
+      "number": "027/172",
+      "set": "Brilliant Stars",
+      "year": "2022",
+      "ordinal": "446",
+      "originalLanguage": "Español",
+      "originalQuantity": 1,
+      "soldByLanguage": {
+        "Español": 1
+      },
+      "quantitySold": 1,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 447,
+      "codigoAnterior": "BTCG-0276",
+      "name": "Darkrai V",
+      "number": "098/189",
+      "set": "Astral Radiance",
+      "year": "2022",
+      "ordinal": "447",
+      "originalLanguage": "Español",
+      "originalQuantity": 1,
+      "soldByLanguage": {
+        "Español": 1
+      },
+      "quantitySold": 1,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 448,
+      "codigoAnterior": "BTCG-0277",
+      "name": "Noivern ex",
+      "number": "153/193",
+      "set": "Paldea Evolved",
+      "year": "2023",
+      "ordinal": "448",
+      "originalLanguage": "Español",
+      "originalQuantity": 1,
+      "soldByLanguage": {
+        "Español": 1
+      },
+      "quantitySold": 1,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 449,
+      "codigoAnterior": "BTCG-0278",
+      "name": "Maushold ex",
+      "number": "155/182",
+      "set": "Paradox Rift",
+      "year": "2023",
+      "ordinal": "449",
+      "originalLanguage": "Español",
+      "originalQuantity": 1,
+      "soldByLanguage": {
+        "Español": 1
+      },
+      "quantitySold": 1,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 450,
+      "codigoAnterior": "BTCG-0279",
+      "name": "Garganacl",
+      "number": "202/182",
+      "set": "Paradox Rift",
+      "year": "2023",
+      "ordinal": "450",
+      "originalLanguage": "Inglés",
+      "originalQuantity": 1,
+      "soldByLanguage": {
+        "Inglés": 1
+      },
+      "quantitySold": 1,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 451,
+      "codigoAnterior": "BTCG-0280",
+      "name": "Ferropaladín ex",
+      "number": "089/182",
+      "set": "Paradox Rift",
+      "year": "2023",
+      "ordinal": "451",
+      "originalLanguage": "Español",
+      "originalQuantity": 2,
+      "soldByLanguage": {
+        "Español": 2
+      },
+      "quantitySold": 2,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 452,
+      "codigoAnterior": "BTCG-0281",
+      "name": "Absol ex",
+      "number": "135/197",
+      "set": "Obsidian Flames",
+      "year": "2023",
+      "ordinal": "452",
+      "originalLanguage": "Español",
+      "originalQuantity": 1,
+      "soldByLanguage": {
+        "Español": 1
+      },
+      "quantitySold": 1,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 453,
+      "codigoAnterior": "BTCG-0282",
+      "name": "Eiscue ex",
+      "number": "042/197",
+      "set": "Obsidian Flames",
+      "year": "2023",
+      "ordinal": "453",
+      "originalLanguage": "Español",
+      "originalQuantity": 1,
+      "soldByLanguage": {
+        "Español": 1
+      },
+      "quantitySold": 1,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 454,
+      "codigoAnterior": "BTCG-0283",
+      "name": "Lapras ex",
+      "number": "032/142",
+      "set": "Stellar Crown",
+      "year": "2024",
+      "ordinal": "454",
+      "originalLanguage": "Inglés",
+      "originalQuantity": 1,
+      "soldByLanguage": {
+        "Inglés": 1
+      },
+      "quantitySold": 1,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 455,
+      "codigoAnterior": "BTCG-0284",
+      "name": "Glimmora ex",
+      "number": "213/197",
+      "set": "Obsidian Flames",
+      "year": "2023",
+      "ordinal": "455",
+      "originalLanguage": "Inglés",
+      "originalQuantity": 1,
+      "soldByLanguage": {
+        "Inglés": 1
+      },
+      "quantitySold": 1,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 456,
+      "codigoAnterior": "BTCG-0285",
+      "name": "Hoopa ex",
+      "number": "098/182",
+      "set": "Paradox Rift",
+      "year": "2023",
+      "ordinal": "456",
+      "originalLanguage": "Español",
+      "originalQuantity": 1,
+      "soldByLanguage": {
+        "Español": 1
+      },
+      "quantitySold": 1,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 457,
+      "codigoAnterior": "BTCG-0286",
+      "name": "Mimikyu ex",
+      "number": "069/159",
+      "set": "Journey Together",
+      "year": "2025",
+      "ordinal": "457",
+      "originalLanguage": "Inglés",
+      "originalQuantity": 1,
+      "soldByLanguage": {
+        "Inglés": 1
+      },
+      "quantitySold": 1,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 458,
+      "codigoAnterior": "BTCG-0287",
+      "name": "Terapagos ex",
+      "number": "128/142",
+      "set": "Stellar Crown",
+      "year": "2024",
+      "ordinal": "458",
+      "originalLanguage": "Español",
+      "originalQuantity": 1,
+      "soldByLanguage": {
+        "Español": 1
+      },
+      "quantitySold": 1,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 459,
+      "codigoAnterior": "BTCG-0288",
+      "name": "Dachsbun ex",
+      "number": "067/142",
+      "set": "Stellar Crown",
+      "year": "2024",
+      "ordinal": "459",
+      "originalLanguage": "Inglés",
+      "originalQuantity": 1,
+      "soldByLanguage": {
+        "Inglés": 1
+      },
+      "quantitySold": 1,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 460,
+      "codigoAnterior": "BTCG-0289",
+      "name": "Aegislash ex",
+      "number": "135/182",
+      "set": "Paradox Rift",
+      "year": "2023",
+      "ordinal": "460",
+      "originalLanguage": "Inglés",
+      "originalQuantity": 1,
+      "soldByLanguage": {
+        "Inglés": 1
+      },
+      "quantitySold": 1,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 461,
+      "codigoAnterior": "BTCG-0290",
+      "name": "Decidueye ex",
+      "number": "015/197",
+      "set": "Obsidian Flames",
+      "year": "2023",
+      "ordinal": "461",
+      "originalLanguage": "Inglés",
+      "originalQuantity": 1,
+      "soldByLanguage": {
+        "Inglés": 1
+      },
+      "quantitySold": 1,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 462,
+      "codigoAnterior": "BTCG-0291",
+      "name": "Larvitar",
+      "number": "203/197",
+      "set": "Obsidian Flames",
+      "year": "2023",
+      "ordinal": "462",
+      "originalLanguage": "Inglés",
+      "originalQuantity": 1,
+      "soldByLanguage": {
+        "Inglés": 1
+      },
+      "quantitySold": 1,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 463,
+      "codigoAnterior": "BTCG-0292",
+      "name": "Eiscue ex",
+      "number": "222/197",
+      "set": "Obsidian Flames",
+      "year": "2023",
+      "ordinal": "463",
+      "originalLanguage": "Inglés",
+      "originalQuantity": 1,
+      "soldByLanguage": {
+        "Inglés": 1
+      },
+      "quantitySold": 1,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 464,
+      "codigoAnterior": "BTCG-0293",
+      "name": "Cornerstone Mask Ogerpon ex",
+      "number": "199/167",
+      "set": "Twilight Masquerade",
+      "year": "2024",
+      "ordinal": "464",
+      "originalLanguage": "Inglés",
+      "originalQuantity": 1,
+      "soldByLanguage": {
+        "Inglés": 1
+      },
+      "quantitySold": 1,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 465,
+      "codigoAnterior": "BTCG-0294",
+      "name": "Ralts",
+      "number": "211/198",
+      "set": "Scarlet & Violet",
+      "year": "2023",
+      "ordinal": "465",
+      "originalLanguage": "Inglés",
+      "originalQuantity": 1,
+      "soldByLanguage": {
+        "Inglés": 1
+      },
+      "quantitySold": 1,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 466,
+      "codigoAnterior": "BTCG-0295",
+      "name": "Palafin",
+      "number": "124/091",
+      "set": "Paldean Fates",
+      "year": "2024",
+      "ordinal": "466",
+      "originalLanguage": "Español",
+      "originalQuantity": 1,
+      "soldByLanguage": {
+        "Español": 1
+      },
+      "quantitySold": 1,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 470,
+      "codigoAnterior": "BTCG-0299",
+      "name": "Maushold ex",
+      "number": "155/182",
+      "set": "Paradox Rift",
+      "year": "2023",
+      "ordinal": "470",
+      "originalLanguage": "Español",
+      "originalQuantity": 1,
+      "soldByLanguage": {
+        "Español": 1
+      },
+      "quantitySold": 1,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    },
+    {
+      "id": 471,
+      "codigoAnterior": "BTCG-0300",
+      "name": "Larvitar",
+      "number": "203/197",
+      "set": "Obsidian Flames",
+      "year": "2023",
+      "ordinal": "471",
+      "originalLanguage": "Inglés",
+      "originalQuantity": 1,
+      "soldByLanguage": {
+        "Inglés": 1
+      },
+      "quantitySold": 1,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido"
+    }
+  ]
+}
