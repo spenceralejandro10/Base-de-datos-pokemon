@@ -71,7 +71,7 @@ const saveCart=()=>{try{localStorage.setItem(CART_KEY,JSON.stringify([...cart]))
 function flash(text,error=false){info.textContent=text;info.className="editor-message"+(error?" error":"")}
 function available(c){
  const current=stock.get(c);
- if(window.BovedaSold?.isSold(c))return {...current,available:false,soldVisual:true};
+ if(window.BovedaSold?.isSold(c))return {...current,available:false,soldVisual:true,soldLabel:window.BovedaSold.status(c)||"Vendida"};
  if(c.japaneseSubset){
   const quantity=Math.min(Math.max(0,Number(current.quantity)||0),Number(c.quantity)||0);
   return {...current,quantity,available:current.available&&quantity>0};
@@ -655,13 +655,13 @@ function cartButton(c){
  const a=available(c);
  const button=document.createElement("button");button.type="button";
  button.className="add-cart";
- button.textContent=a.soldVisual?"Vendida":a.available?(cart.get(c.id)?"Agregar otra · "+cart.get(c.id):"Agregar a mi selección"):(a.override&&a.quantity===0?"Vendida":"No disponible");
+ button.textContent=a.soldVisual?a.soldLabel:a.available?(cart.get(c.id)?"Agregar otra · "+cart.get(c.id):"Agregar a mi selección"):(a.override&&a.quantity===0?"Vendida":"No disponible");
  button.disabled=!a.available||(cart.get(c.id)||0)>=a.quantity;
  button.addEventListener("click",()=>{addToCart(c);render()});
  return button;
 }
 function languageStockLabel(c,a){
- if(!c.languageQuantities)return a.soldVisual?"Vendida":a.available?"Disponible · "+a.quantity+" ud.":a.override&&a.quantity===0?"Vendida":"No disponible";
+ if(!c.languageQuantities)return a.soldVisual?a.soldLabel:a.available?"Disponible · "+a.quantity+" ud.":a.override&&a.quantity===0?"Vendida":"No disponible";
  const entries=Object.entries(c.languageQuantities).filter(([,q])=>Number(q)>0);
  const baseTotal=entries.reduce((sum,[,q])=>sum+Number(q),0);
  if(a.quantity!==baseTotal)return (a.available?"Disponible · "+a.quantity+" ud.":"No disponible")+" · Revisar desglose por idioma";
@@ -686,7 +686,7 @@ function galleryCard(c,token) {
  (a.soldVisual?'<div class="sold-image-stamp" aria-label="Carta vendida">VENDIDA</div>':'')+
  '<div class="details"><h3>'+esc(c.name)+'</h3><div class="num">'+esc(c.number)+'</div>'+
  (details?'<div class="meta">'+esc(details)+'</div>':'')+
- '<div class="stock-status '+(a.available?"is-available":"is-soldout")+'">'+esc(a.available?'Disponible · '+a.quantity+' ud.':a.soldVisual?'Vendida':'No disponible')+'</div>'+
+ '<div class="stock-status '+(a.available?"is-available":"is-soldout")+'">'+esc(a.available?'Disponible · '+a.quantity+' ud.':a.soldVisual?a.soldLabel:'No disponible')+'</div>'+
  languageQuantityBadges(c)+
  '<div class="links"></div></div>';
  const actions=item.querySelector(".links");
