@@ -16,9 +16,24 @@ const cardCode=c=>publicCodes.get(Number(c.id))||
 // Estado de administración autorizado por el propietario.
 const ADMIN_ENABLED=false;
 let editingMode=false;
-let records=base.map(x=>({...x})),editing=null,epoch=0,busy=false,initialized=false;
-const CART_KEY="boveda-tcg-cart-v1";
-const WHOLE_OFFER_KEY="boveda-tcg-whole-inventory-offer-v1";
+// Solo se publica el inventario japonés; los registros originales permanecen intactos.
+const languageKey=value=>String(value??"").normalize("NFD").replace(/[\\u0300-\\u036f]/g,"").trim().toLowerCase();
+function japaneseOnly(cards){
+ return cards.flatMap(card=>{
+  const quantities=card.languageQuantities;
+  const japaneseUnits=quantities&&typeof quantities==="object"?
+    Object.entries(quantities).reduce((sum,[lang,count])=>
+      sum+(["japones","japanese"].includes(languageKey(lang))?Number(count)||0:0),0):0;
+  if(japaneseUnits>0){
+   return [{...card,language:"Japonés",quantity:japaneseUnits,
+     languageQuantities:{"Japonés":japaneseUnits},japaneseSubset:true}];
+  }
+  return ["japones","japanese"].includes(languageKey(card.language))?[{...card}]:[];
+ });
+}
+let records=japaneseOnly(base),editing=null,epoch=0,busy=false,initialized=false;
+const CART_KEY="boveda-tcg-cart-jp-v1";
+const WHOLE_OFFER_KEY="boveda-tcg-whole-inventory-offer-jp-v1";
 let inventoryOffer=null;
 try{
  const stored=JSON.parse(localStorage.getItem(WHOLE_OFFER_KEY)||"null");
@@ -56,7 +71,12 @@ const saveCart=()=>{try{localStorage.setItem(CART_KEY,JSON.stringify([...cart]))
 function flash(text,error=false){info.textContent=text;info.className="editor-message"+(error?" error":"")}
 function available(c){
  const current=stock.get(c);
- return window.BovedaSold?.isSold(c)?{...current,available:false,soldVisual:true}:current;
+ if(window.BovedaSold?.isSold(c))return {...current,available:false,soldVisual:true};
+ if(c.japaneseSubset){
+  const quantity=Math.min(Math.max(0,Number(current.quantity)||0),Number(c.quantity)||0);
+  return {...current,quantity,available:current.available&&quantity>0};
+ }
+ return current;
 }
 function findCard(id){return records.find(c=>Number(c.id)===Number(id))}
 const tcgQuery=c=>market.searchUrl(c);
@@ -133,7 +153,7 @@ function rebuildPublicCodes(){
    publicCodes.set(Number(card.id),"BTCG-"+String(index+1).padStart(4,"0")));
 }
 function applyMeta(){
- records=meta.apply(base);
+ records=japaneseOnly(meta.apply(base));
  rebuildPublicCodes();
  updateStats();
  refreshOptions();
