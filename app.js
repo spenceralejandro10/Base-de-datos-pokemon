@@ -17,7 +17,7 @@ const cardCode=c=>publicCodes.get(Number(c.id))||
 const ADMIN_ENABLED=false;
 let editingMode=false;
 // Solo se publica el inventario japonés; los registros originales permanecen intactos.
-const languageKey=value=>String(value??"").normalize("NFD").replace(/[\\u0300-\\u036f]/g,"").trim().toLowerCase();
+const languageKey=value=>String(value??"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").trim().toLowerCase();
 function japaneseOnly(cards){
  return cards.flatMap(card=>{
   const quantities=card.languageQuantities;
