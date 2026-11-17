@@ -141,8 +141,8 @@
       set:"Paradox Rift",tcgId:523706,usd:0.66,
       updatedAt:"2026-11-12T20:06:19.000Z",group:"3-23286"},
     329: {name:"Squirtle",number:"170/165",
-      set:"Pokémon Card 151",tcgId:502549,usd:76.35,
-      updatedAt:"2026-11-12T20:06:19.000Z",group:"3-23237"}
+      set:"Pokémon Card 151",tcgId:566515,usd:20.76,
+      updatedAt:"2026-11-17T00:00:00.000Z",group:"85-23599"}
   });
   const norm = s => String(s ?? "").normalize("NFD").replace(/[\u0300-\u036f]/g, "")
     .toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
@@ -241,7 +241,7 @@
       const updatedAt = fresh ? groupData.updatedAt : linked.updatedAt;
       return make({source:"tcgplayer",linked:true,min:usd,max:usd,stale:false,
         variants:[{usd,finish:"Holofoil"}],updatedAt,
-        reference:norm(card.language) !== "ingles",url:"https://www.tcgplayer.com/product/" + linked.tcgId});
+        reference:linked.group.startsWith("3-") && norm(card.language) !== "ingles",url:"https://www.tcgplayer.com/product/" + linked.tcgId});
     }
     const group = groupFor(card), data = snapshot?.groups?.[group], matches = match(card,data);
     let tcg = null;
