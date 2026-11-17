@@ -173,7 +173,7 @@ function cardItem(row,index){
  stockbox.append(el("strong","order-list-qty","Solicita "+row.quantity));
  if(stockInfo){
   const amount=stockInfo.quantity;
-  const text=visuallySold?"Vendida (visual)":"Registradas: "+amount;
+  const text=visuallySold?(window.BovedaSold?.status(card)||"Vendida"):"Registradas: "+amount;
   const indicator=el("span","order-stock-badge"+(visuallySold?" order-stock-sold":amount<row.quantity?" order-stock-low":""),text);
   stockbox.append(indicator);
   if(visuallySold)stockbox.append(el("small","order-stock-caution","Registro histórico: "+amount+" ud."));
