@@ -42,22 +42,22 @@
   const linkedTCGPrices = Object.freeze({
     261: {name:"Gardevoir ex",number:"217/091",
       set:"Paldean Fates",tcgId:535530,usd:8.01,
-      updatedAt:"2026-11-12T00:00:00.000Z",group:null},
+      updatedAt:"2026-11-12T00:00:00.000Z",group:"3-23353"},
     371: {name:"Scizor",number:"116/108",
       set:"Ruler of the Black Flame",tcgId:567070,usd:4.87,
       updatedAt:"2026-11-13T20:02:40.000Z",group:"85-23609"},
     387: {name:"Sprigatito ex",number:"087",
       set:"Scarlet & Violet Promo",tcgId:542468,usd:1.23,
-      updatedAt:"2026-11-12T00:00:00.000Z",group:null},
+      updatedAt:"2026-11-12T00:00:00.000Z",group:"3-22872"},
     472: {name:"Blastoise ex",number:"016/049",
       set:"Venusaur & Charizard & Blastoise Special Deck Set ex",
-      tcgId:589021,usd:2.73,updatedAt:"2026-11-11T00:00:00.000Z",group:null},
+      tcgId:589021,usd:2.73,updatedAt:"2026-11-11T00:00:00.000Z",group:"85-23812"},
     473: {name:"Charizard ex",number:"009/049",
       set:"Venusaur & Charizard & Blastoise Special Deck Set ex",
-      tcgId:589027,usd:4.86,updatedAt:"2026-11-11T00:00:00.000Z",group:null},
+      tcgId:589027,usd:4.86,updatedAt:"2026-11-11T00:00:00.000Z",group:"85-23812"},
     474: {name:"Venusaur ex",number:"003/049",
       set:"Venusaur & Charizard & Blastoise Special Deck Set ex",
-      tcgId:589065,usd:1.66,updatedAt:"2026-11-12T00:00:00.000Z",group:null},
+      tcgId:589065,usd:1.66,updatedAt:"2026-11-12T00:00:00.000Z",group:"85-23812"},
     455: {name:"Glimmora ex",number:"213/197",
       set:"Obsidian Flames",tcgId:509962,usd:0.81,
       updatedAt:"2026-11-13T20:03:03.000Z",group:"3-23228"},
@@ -172,7 +172,14 @@
     const cop = Number((cents * micros + 50000000n) / 100000000n);
     return Number.isSafeInteger(cop) ? cop : null;
   }
+  function linkedFor(card) {
+    const linked=linkedTCGPrices[Number(card.id)];
+    return linked && norm(linked.name)===norm(card.name) &&
+      number(linked.number)===number(card.number) && norm(linked.set)===norm(card.set)?linked:null;
+  }
   function groupFor(card) {
+    const linked=linkedFor(card);
+    if(linked?.group)return linked.group;
     const key = norm(card.set), lang = norm(card.language);
     let group = groups[key];
     const mix=card.languageQuantities && Object.entries(card.languageQuantities);
@@ -225,11 +232,10 @@
     if (owner) return make({source:"owner",manual:true,min:owner.usd,max:owner.usd,
       stale:false,reference:false,url:searchUrl(card),updatedAt:null,
       variants:[{usd:owner.usd,finish:"Precio fijado por propietario"}]});
-    const linked = linkedTCGPrices[Number(card.id)];
-    if (linked && norm(linked.name) === norm(card.name) &&
-      number(linked.number) === number(card.number) && norm(linked.set) === norm(card.set)) {
+    const linked = linkedFor(card);
+    if (linked) {
       // Si la publicación diaria trae la ficha exacta, preferir su precio más reciente.
-      // Si no aparece en TCGCSV, preservar el precio manual, nunca volver a «Sin precio verificado».
+      // Conservar la referencia anterior con su fecha, excluyéndola del total si venció.
       const groupData = snapshot?.groups?.[linked.group];
       const refreshedProduct = groupData?.products?.find(p =>
         p.id === linked.tcgId && number(p.number) === number(linked.number));
@@ -239,9 +245,9 @@
         Date.parse(groupData.updatedAt) >= Date.parse(linked.updatedAt);
       const usd = fresh ? selected.usd : linked.usd;
       const updatedAt = fresh ? groupData.updatedAt : linked.updatedAt;
-      return make({source:"tcgplayer",linked:true,min:usd,max:usd,stale:false,
-        variants:[{usd,finish:"Holofoil"}],updatedAt,
-        reference:linked.group.startsWith("3-") && norm(card.language) !== "ingles",url:"https://www.tcgplayer.com/product/" + linked.tcgId});
+      return make({source:"tcgplayer",linked:true,min:usd,max:usd,stale:!recent(updatedAt,now),
+        variants:[{usd,finish:fresh?selected.finish:"Holofoil"}],updatedAt,
+        reference:!!linked.group?.startsWith("3-") && norm(card.language) !== "ingles",url:"https://www.tcgplayer.com/product/" + linked.tcgId});
     }
     const group = groupFor(card), data = snapshot?.groups?.[group], matches = match(card,data);
     let tcg = null;
@@ -289,5 +295,5 @@
     return {total:Number(total),units,refs,unpriced,unpricedUnits,complete:unpriced===0};
   }
   root.BovedaPricingCore = Object.freeze({DAY,groups,norm,number,positive,bogotaDay,recent,validFX,
-    toCOP,groupFor,match,searchUrl,collectrSearchUrl,quote,inventoryTotal});
+    toCOP,linkedFor,groupFor,match,searchUrl,collectrSearchUrl,quote,inventoryTotal});
 })(globalThis);

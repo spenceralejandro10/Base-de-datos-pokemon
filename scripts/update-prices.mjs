@@ -71,7 +71,7 @@ async function exchange(previous) {
 }
 async function groupData(key,sourceUpdatedAt,previous,cards) {
   // Reuse a successful daily ingest, unless the catalog's pricing identities changed.
-  const identities=cards.map(c=>[c.id,c.name,c.number,c.set,c.language,c.finish||""]);
+  const identities=cards.map(c=>[c.id,c.name,c.number,c.set,c.language,c.finish||"",core.linkedFor(c)?.tcgId||null]);
   const signature=createHash("sha256").update(JSON.stringify(identities)).digest("hex");
   if(previous?.sourceUpdatedAt===sourceUpdatedAt&&previous.signature===signature)return previous;
   const prefix="https://tcgcsv.com/tcgplayer/"+key.replace("-","/")+"/";
@@ -94,6 +94,10 @@ async function groupData(key,sourceUpdatedAt,previous,cards) {
     return number&&Number.isSafeInteger(product.productId)?[{id:product.productId,name:product.name,number,prices:byId.get(product.productId)||[]}]:[];
   });
   const wanted=new Set(cards.flatMap(card=>core.match(card,{products:all})).map(p=>p.id));
+  for(const card of cards){
+    const linked=core.linkedFor(card);
+    if(linked?.tcgId)wanted.add(linked.tcgId);
+  }
   const modified=Date.parse(prices.modified);
   const updatedAt=Number.isFinite(modified)&&modified<=NOW+300000?new Date(modified).toISOString():sourceUpdatedAt;
   return {updatedAt,sourceUpdatedAt,signature,products:all.filter(p=>wanted.has(p.id))};
@@ -141,6 +145,9 @@ async function main() {
   result.coverage={references:cards.length,bySource,unverified:missing};
   const temporary=target+".tmp";
   await writeFile(temporary,JSON.stringify(result)+"\n");await rename(temporary,target);
+  const embedded=path.join(ROOT,"market-snapshot.js");
+  await writeFile(embedded+".tmp","window.BOVEDA_MARKET_SNAPSHOT = "+JSON.stringify(result)+";\n");
+  await rename(embedded+".tmp",embedded);
   console.log(JSON.stringify({collections:active.size,refreshed,references:cards.length,bySource,unverified:missing.length,fx:result.fx,warnings},null,2));
   // Publish partial successes, but make a failed ingestion visible in Actions.
   if(warnings.some(s=>s.startsWith("Group ")||s.startsWith("Source timestamp")))process.exitCode=2;

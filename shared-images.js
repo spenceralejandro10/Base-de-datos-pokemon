@@ -9,6 +9,8 @@ const URL_BASE="https://cnivcnexsqobipvqxero.supabase.co";
 const KEY="sb_publishable_6UjwLuM-op0-OBKWlbusTw_qmLNZVfU";
 const TABLE="pokemon_image_overrides";
 const BUCKET="pokemon-gallery-overrides";
+const publishedIds=[...new Set((window.CARDS||[]).map(card=>Number(card.id)).filter(Number.isSafeInteger))];
+const imageScope=publishedIds.length?"&or="+encodeURIComponent("("+publishedIds.map(id=>"card_key.like."+id+"|*").join(",")+")"):"";
 let rows=new Map(),imagesById=new Map(),publishedRows=new Map(),publishedById=new Map(),lastError="",lastLoaded=0;
 let inFlight=null;
 const watchers=new Set();
@@ -50,7 +52,7 @@ const watchers=new Set();
     inFlight=(async()=>{
       let changed=false;
       try {
-        const response=await fetch(URL_BASE+"/rest/v1/"+TABLE+"?select=card_key,image_url,updated_at&order=updated_at.desc",{
+        const response=await fetch(URL_BASE+"/rest/v1/"+TABLE+"?select=card_key,image_url,updated_at&order=updated_at.desc"+imageScope,{
           headers:{apikey:KEY,Accept:"application/json"},cache:"no-store",signal:AbortSignal.timeout(15000)
         });
         if (!response.ok) throw Error("HTTP "+response.status);
@@ -74,7 +76,8 @@ const watchers=new Set();
   }
   // Catálogo central: lectura pública en Supabase; cards.js sigue como respaldo sin conexión.
   async function loadCatalog() {
-    const url = URL_BASE + "/rest/v1/pokemon_catalog?select=id,ordinal,name,card_number,set_name,release_year,language,quantity,language_quantities&order=id.asc";
+    const url = URL_BASE + "/rest/v1/pokemon_catalog?select=id,ordinal,name,card_number,set_name,release_year,language,quantity,language_quantities&order=id.asc"+
+      (publishedIds.length?"&id=in.("+publishedIds.join(",")+")":"");
     const response = await fetch(url, {
       headers: { apikey: KEY, Accept: "application/json" },
       cache: "no-store",signal:AbortSignal.timeout(15000)

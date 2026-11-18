@@ -6,7 +6,9 @@ Colección Pokémon: https://spenceralejandro10.github.io/Base-de-datos-pokemon/
 
 `cards.js` conserva la secuencia publicada y los ID internos. Las actualizaciones remotas se aplican a esos mismos ID, en su posición original; no agregan cartas retiradas. Los códigos BTCG se muestran consecutivamente en ese orden. Los filtros no reorganizan las cartas.
 
-El catálogo y las correcciones de idioma y existencias se leen de Supabase. Las imágenes manuales y sus respaldos se conservan. El acceso por clave y el modo de edición de imagen, cantidad e idioma siguen disponibles.
+El catálogo activo contiene únicamente las unidades japonesas pendientes de venta. Las referencias vendidas, incluida Dragonair 182/165, están retiradas de `cards.js`; su historial se conserva en `ventas-archivadas-2026-11-17.json`. En las referencias con varios idiomas solo se conserva la cantidad japonesa restante. Las consultas remotas se limitan a los ID activos y no pueden reincorporar referencias vendidas.
+
+El catálogo y las correcciones de idioma y existencias se leen de Supabase. Las imágenes manuales y sus respaldos se conservan. El modo administrador permanece desactivado.
 
 ## Imágenes y datos compartidos
 
@@ -21,6 +23,8 @@ Los precios y enlaces introducidos manualmente permanecen en `pricing-core.js`, 
 El modo administrador continúa desactivado. El respaldo y las copias públicas no habilitan herramientas de edición para visitantes.
 
 ## Cotizaciones
+
+`market-snapshot.js` contiene el mismo respaldo que `market-snapshot.json` y permite mostrar cartas, precios y total inmediatamente, sin esperar a Supabase ni a la red. Se prefiere el respaldo publicado si es más reciente que la caché del navegador. El actualizador genera ambos archivos. Las colecciones de las referencias enlazadas también se sincronizan, incluidas las tres cartas japonesas del Special Deck Set ex.
 
 - Se usa exclusivamente `marketPrice` de TCGplayer, distribuido por TCGCSV. No se usan ofertas, mínimos anunciados, medias de anuncios ni estimaciones para completar huecos.
 - Se valida colección, nombre, número completo e idioma. El precio inglés usado para una carta española se identifica como referencia. Una carta japonesa no recibe un precio inglés por coincidencia de número.

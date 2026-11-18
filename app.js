@@ -31,7 +31,11 @@ function japaneseOnly(cards){
   return ["japones","japanese"].includes(languageKey(card.language))?[{...card}]:[];
  });
 }
-let records=japaneseOnly(base),editing=null,epoch=0,busy=false,initialized=false;
+function activeCatalog(cards){
+ return japaneseOnly(cards).filter(card=>!window.BovedaSold?.isSold(card)&&stock.get(card).quantity>0);
+}
+let records=activeCatalog(base),editing=null,epoch=0,busy=false,initialized=true;
+let catalogSignature="";
 const CART_KEY="boveda-tcg-cart-jp-v1";
 const WHOLE_OFFER_KEY="boveda-tcg-whole-inventory-offer-jp-v1";
 let inventoryOffer=null;
@@ -153,7 +157,11 @@ function rebuildPublicCodes(){
    publicCodes.set(Number(card.id),"BTCG-"+String(index+1).padStart(4,"0")));
 }
 function applyMeta(){
- records=japaneseOnly(meta.apply(base));
+ const next=activeCatalog(meta.apply(base));
+ const signature=JSON.stringify(next);
+ if(signature===catalogSignature)return;
+ catalogSignature=signature;
+ records=next;
  rebuildPublicCodes();
  updateStats();
  refreshOptions();
@@ -682,7 +690,7 @@ function galleryCard(c,token) {
  const item=document.createElement("article");
  item.className="item"+(a.soldVisual?" is-marked-sold":"");
  const details=[c.set,c.languageQuantities?Object.keys(c.languageQuantities).join(" / "):c.language].filter(Boolean).join(" · ");
- item.innerHTML='<div class="art"><div class="placeholder"><span class="loader"></span><span>Cargando imagen…</span></div><img hidden loading="lazy" decoding="async" referrerpolicy="no-referrer"><span class="pill">'+esc(cardCode(c))+'</span></div>'+
+ item.innerHTML='<div class="art"><div class="placeholder"><span class="loader"></span><span>Cargando imagen…</span></div><img alt="'+esc(c.name+" · "+c.number)+'" hidden loading="lazy" decoding="async" width="244" height="340" referrerpolicy="no-referrer"><span class="pill">'+esc(cardCode(c))+'</span></div>'+
  (a.soldVisual?'<div class="sold-image-stamp" aria-label="Carta vendida">VENDIDA</div>':'')+
  '<div class="details"><h3>'+esc(c.name)+'</h3><div class="num">'+esc(c.number)+'</div>'+
  (details?'<div class="meta">'+esc(details)+'</div>':'')+
@@ -821,11 +829,10 @@ async function restoreLocalPhotos(){
 }
 recoveryButton.addEventListener("click",()=>void restoreLocalPhotos());
 
-stock.listen(()=>{if(initialized){updateStats();cleanCart();render()}});
+stock.listen(()=>{if(initialized){applyMeta();updateStats();cleanCart();render()}});
 market.subscribe(()=>{updateInventoryValue();render();if(cartDialog.open)drawCart()});
+applyMeta();
 void market.init();
-rebuildPublicCodes();
-refreshOptions();updateStats();render();
 function refreshPublishedCatalog(){
  return shared.loadCatalog().then(catalog=>{
   // Los IDs están anclados a las cartas, nunca se renumeran por su orden visual.
@@ -845,9 +852,9 @@ document.addEventListener("visibilitychange",()=>{
 });
 setInterval(()=>{
  if(document.visibilityState==="visible")void stock.refresh(true);
-},15000);
+},60000);
 setInterval(()=>{
  if(document.visibilityState==="visible")Promise.allSettled([shared.loadShared(true),meta.fetchOverrides(true),
   stock.refresh(true),refreshPublishedCatalog()]).then(applyMeta);
-},90000);
+},300000);
 })();

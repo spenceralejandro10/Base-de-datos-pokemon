@@ -9,9 +9,9 @@ const card={id:100,name:'Gengar ex',number:'090/128',set:'30th Celebration',lang
 const fx={cop:3301.91,source:'TRM',updatedAt:stamp,validFrom:day,validTo:day};
 const data={schemaVersion:1,generatedAt:stamp,groups:{'3-24722':{updatedAt:stamp,products:[{id:716485,name:'Gengar ex',number:'090/128',prices:[{usd:1.08,finish:'Holofoil'}]}]}},fx,collectr:{cards:{}}};
 const source=await readFile(new URL('../market-prices.js',import.meta.url),'utf8');
-function app(fetcher,saved=null) {
+function app(fetcher,saved=null,embedded=null) {
  const calls=[],values=new Map(saved?[['boveda-market-v7',JSON.stringify({snapshot:saved,fx:saved.fx})]]:[]),events=new Map();
- const context={BovedaPricingCore:core,Intl,URLSearchParams,AbortSignal,console,Date,
+ const context={BovedaPricingCore:core,BOVEDA_MARKET_SNAPSHOT:embedded,Intl,URLSearchParams,AbortSignal,console,Date,
   document:{visibilityState:'visible',addEventListener(name,fn){events.set(name,fn);}},
   localStorage:{getItem:key=>values.get(key),setItem:(key,value)=>values.set(key,value)},
   setInterval(){return 0;},addEventListener(name,fn){events.set(name,fn);},
@@ -21,6 +21,18 @@ function app(fetcher,saved=null) {
 }
 function response(body){return{ok:true,status:200,json:async()=>structuredClone(body)};}
 const trm=[{valor:'3301.91',unidad:'COP',vigenciadesde:day+'T00:00:00.000',vigenciahasta:day+'T00:00:00.000'}];
+test('a clean visit has published prices before network requests finish',async()=>{
+ const instance=app(()=>{throw Error('offline');},null,data);
+ assert.equal(instance.calls.length,0);
+ assert.equal(instance.prices.quote(card).copMin,3566);
+ await instance.prices.init();
+ assert.equal(instance.prices.quote(card).copMin,3566);
+});
+test('an older browser cache cannot replace the newer published snapshot',()=>{
+ const old=structuredClone(data);old.generatedAt='2020-01-01T00:00:00Z';
+ old.groups['3-24722'].products[0].prices[0].usd=99;
+ assert.equal(app(()=>{},old,data).prices.quote(card).copMin,3566);
+});
 test('every new visit revalidates even a current saved snapshot; in-flight calls are shared',async()=>{
  const instance=app(url=>response(url.includes('datos.gov.co')?trm:data),data);
  const first=instance.prices.init(),second=instance.prices.init();assert.equal(first,second);await first;

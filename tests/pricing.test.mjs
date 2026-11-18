@@ -18,6 +18,18 @@ test('missing products never receive an invented estimate or a free price',()=>{
  const q=core.quote({...card,number:'999/128'},snapshot(),fx,now);
  assert.equal(q.status,'unavailable');assert.equal(q.min,null);assert.equal(q.copMin,null);assert.equal(q.usable,false);
 });
+test('linked deck prices have a refreshable collection and expired fallbacks stay dated',()=>{
+ const deck={id:472,name:'Blastoise ex',number:'016/049',set:'Venusaur & Charizard & Blastoise Special Deck Set ex',language:'Japonés'};
+ assert.equal(core.groupFor(deck),'85-23812');
+ const empty=core.quote(deck,{groups:{}},fx,now+7*core.DAY);
+ assert.equal(empty.status,'stale');assert.equal(empty.usable,false);
+ assert.equal(empty.url,'https://www.tcgplayer.com/product/589021');
+ const refreshed=core.quote(deck,{groups:{'85-23812':{updatedAt:'2026-11-13T15:00:00Z',products:[
+  {id:589021,name:'Blastoise ex',number:'016/049',prices:[{usd:3.25,finish:'Normal'}]}
+ ]}}},fx,now);
+ assert.equal(refreshed.status,'ready');assert.equal(refreshed.min,3.25);
+ assert.equal(refreshed.variants[0].finish,'Normal');assert.equal(refreshed.reference,false);
+});
 test('name and full collection number both have to match',()=>{
  assert.equal(core.quote({...card,name:'Umbreon ex'},snapshot(),fx,now).status,'unavailable');
  assert.equal(core.quote({...card,number:'090/131'},snapshot(),fx,now).status,'unavailable');

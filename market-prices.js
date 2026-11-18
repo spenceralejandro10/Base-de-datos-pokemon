@@ -20,9 +20,16 @@
     }
     return true;
   }
+  // The published snapshot renders prices immediately, including without network access.
+  if(accept(window.BOVEDA_MARKET_SNAPSHOT)){
+    snapshot=window.BOVEDA_MARKET_SNAPSHOT;fx=snapshot.fx||null;
+  }
   try {
     const saved = JSON.parse(localStorage.getItem(CACHE_KEY) || "null");
-    if (accept(saved?.snapshot)) {snapshot=saved.snapshot;fx=saved.fx || snapshot.fx || null;}
+    if (accept(saved?.snapshot) && (!snapshot.generatedAt ||
+      Date.parse(saved.snapshot.generatedAt)>Date.parse(snapshot.generatedAt))) {
+      snapshot=saved.snapshot;fx=saved.fx || snapshot.fx || null;
+    }
   } catch (_) {}
   function save() {try {localStorage.setItem(CACHE_KEY,JSON.stringify({snapshot,fx}));} catch (_) {}}
   function emit() {for (const fn of listeners) {try {fn();} catch (_) {}}}
@@ -85,7 +92,7 @@
     }
     const detail=document.createElement("small"),updated=document.createElement("small");
     detail.textContent=formatUSD(q.min)+" · "+q.variants[0].finish;
-    updated.textContent=q.linked?"":q.manual?"Precio indicado por el propietario":
+    updated.textContent=q.manual?"Precio indicado por el propietario":
       (q.stale?"Dato vencido: ":"Dato de mercado: ")+date(q.updatedAt)+(q.reference?" · referencia en inglés":"");
     if (q.source === "collectr") updated.textContent+=" · Powered by Collectr";
     if (!q.usable) {const note=document.createElement("small");note.textContent="No incluido en el total hasta verificar la actualización.";box.append(note);}

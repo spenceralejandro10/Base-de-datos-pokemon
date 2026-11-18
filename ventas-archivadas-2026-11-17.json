@@ -1,13 +1,13 @@
 {
   "archivedAt": "2026-11-17",
   "saleRecordedAs": "vendido",
-  "reason": "Cartas en inglés y español retiradas de la publicación, sin eliminar el catálogo original",
-  "referencesWithSales": 233,
-  "fullySoldReferences": 229,
+  "reason": "Ventas retiradas del catálogo activo; respaldo de las referencias y de sus cantidades vendidas.",
+  "referencesWithSales": 234,
+  "fullySoldReferences": 230,
   "partiallySoldReferences": 4,
-  "unitsSold": 462,
-  "japaneseReferencesRetained": 74,
-  "japaneseUnitsRetained": 171,
+  "unitsSold": 463,
+  "japaneseReferencesRetained": 73,
+  "japaneseUnitsRetained": 170,
   "records": [
     {
       "id": 1,
@@ -3976,6 +3976,25 @@
       "quantitySold": 1,
       "japaneseQuantityRetained": 0,
       "status": "vendido"
+    },
+    {
+      "id": 383,
+      "ordinal": "383",
+      "name": "Dragonair",
+      "number": "182/165",
+      "set": "Pokémon Card 151",
+      "year": "2023",
+      "language": "Japonés",
+      "quantity": 1,
+      "originalLanguage": "Japonés",
+      "originalQuantity": 1,
+      "soldByLanguage": {
+        "Japonés": 1
+      },
+      "quantitySold": 1,
+      "japaneseQuantityRetained": 0,
+      "status": "vendido",
+      "deliveryStatus": "pendiente de entrega"
     }
   ]
 }

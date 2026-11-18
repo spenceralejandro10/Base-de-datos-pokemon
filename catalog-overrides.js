@@ -33,10 +33,14 @@
       return overrides;
     }
     const data = await response.json();
-    overrides = new Map(data.map(row => [Number(row.card_id), row]));
+    if(!Array.isArray(data))throw Error("Correcciones no válidas");
+    const next=new Map(data.map(row => [Number(row.card_id), row]));
+    const changed=next.size!==overrides.size||[...next].some(([id,row])=>
+      JSON.stringify(overrides.get(id))!==JSON.stringify(row));
+    overrides = next;
     lastLoaded = Date.now();
     lastError = "";
-    emit();
+    if(changed)emit();
     return overrides;
   }
   function apply(records) {
