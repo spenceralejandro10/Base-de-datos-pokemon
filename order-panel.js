@@ -109,38 +109,52 @@ function displayTotals(){
  $("orderResultsDescription").textContent=rows.length+" referencias del cliente · "+t.count+
   " unidades · "+(rows.length-t.found)+" sin coincidencia.";
 }
-function appendArtwork(card,container){
- if(!card){container.append(el("span","order-no-art","Sin coincidencia"));return}
+function appendArtwork(card,row,container){
+ if(!card&&![row.name,row.number,row.set,row.language].every(Boolean)){
+  container.append(el("span","order-no-art","Sin coincidencia"));return;
+ }
+ const artworkCard=card||row;
  const pic=el("img","order-image");
- pic.alt=card.name+" "+card.number;
- pic.loading="lazy";pic.referrerPolicy="no-referrer";pic.hidden=true;
+ pic.alt=artworkCard.name+" "+artworkCard.number;
+ if(!card)pic.title="Imagen de catálogo · Sin coincidencia en el inventario";
+ pic.decoding="async";pic.referrerPolicy="no-referrer";pic.hidden=true;
  const placeholder=el("span","order-no-art","Buscando imagen…");
  container.append(pic,placeholder);
  async function show(match){
   const candidates=match?.images||[];
   if(!candidates.length)return false;
   return await new Promise(resolve=>{
-   let n=0;
+   let n=0,timeout;
    const next=()=>{
-    if(!pic.isConnected)return resolve(false);
-    if(n>=candidates.length){pic.onerror=null;pic.onload=null;return resolve(false)}
-    const candidate=candidates[n++];
-    pic.onload=()=>{pic.hidden=false;placeholder.hidden=true;resolve(true)};
+    clearTimeout(timeout);
+    if(!pic.isConnected||n>=candidates.length){
+     pic.onerror=null;pic.onload=null;
+     pic.removeAttribute("src");
+     resolve(false);
+     return;
+    }
+    pic.onload=()=>{
+     clearTimeout(timeout);
+     pic.onerror=null;pic.onload=null;
+     pic.hidden=false;placeholder.hidden=true;
+     resolve(true);
+    };
     pic.onerror=next;
-    pic.src=candidate;
+    timeout=setTimeout(next,10000);
+    pic.src=candidates[n++];
    };
    next();
   });
  }
  (async()=>{
   try{
-   const main=await pictures.resolve(card);
+   const main=await (card?pictures.resolve(card):pictures.resolveCatalog(row));
    if(await show(main))return;
    if(main?.status==="shared"||main?.status==="local"){
     if(await show(await pictures.resolveCatalog(card)))return;
    }
-   placeholder.textContent="Imagen no disponible";
-  }catch(_){placeholder.textContent="Imagen no disponible"}
+  }catch(_){}
+  placeholder.textContent=card?"Imagen no disponible":"Sin coincidencia";
  })();
 }
 function line(tag,caption,value,more){
@@ -156,7 +170,7 @@ function cardItem(row,index){
  const wrap=el("article","order-list-row"+(card?"":" order-list-row-warning")+
   (visuallySold?" is-marked-sold":""));
  const art=el("div","order-list-art");
- appendArtwork(card,art);
+ appendArtwork(card,row,art);
  if(visuallySold)art.append(el("span","order-sold-stamp","VENDIDA"));
  wrap.append(art);
  const content=el("div","order-list-identity");
