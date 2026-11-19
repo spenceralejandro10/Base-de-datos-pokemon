@@ -86,9 +86,7 @@ function findCard(id){return records.find(c=>Number(c.id)===Number(id))}
 const tcgQuery=c=>market.searchUrl(c);
 const moneyCOP=value=>"$"+Math.round(value).toLocaleString("es-CO")+" COP";
 function inventorySnapshot(){
- const summary=window.BovedaPricingCore.inventoryTotal(records,available,card=>market.quote(card));
- // Descuento del 30% aplicado al total del inventario, sin modificar los precios por carta.
- return {...summary,total:Math.round(summary.total*0.70)};
+ return window.BovedaPricingCore.inventoryTotal(records,available,card=>market.quote(card));
 }
 function updateInventoryValue(){
  const amountEl=el("inventoryTotal"),detailEl=el("inventoryMeta");
@@ -99,11 +97,11 @@ function updateInventoryValue(){
   return;
  }
  const summary=inventorySnapshot();
- el("inventoryValueLabel").textContent=summary.complete?"VALOR TOTAL DEL INVENTARIO PUBLICADO · 30% DESCONTADO":"SUBTOTAL DEL INVENTARIO CON PRECIO VERIFICADO · 30% DESCONTADO";
+ el("inventoryValueLabel").textContent=summary.complete?"VALOR TOTAL DEL INVENTARIO PUBLICADO":"SUBTOTAL DEL INVENTARIO CON PRECIO VERIFICADO";
  amountEl.textContent=summary.refs>0&&summary.unpriced===summary.refs?"Pendiente de cotización":moneyCOP(summary.total);
  detailEl.textContent=summary.refs.toLocaleString("es-CO")+" referencias · "+
   summary.units.toLocaleString("es-CO")+" unidades disponibles · "+
-  (summary.unpriced?summary.unpriced+" referencias ("+summary.unpricedUnits+" unidades) pendientes de precio; subtotal parcial":"Total de precios unitarios × unidades, con 30% de descuento");
+  (summary.unpriced?summary.unpriced+" referencias ("+summary.unpricedUnits+" unidades) pendientes de precio; subtotal parcial":"Total = precio unitario × unidades de cada referencia");
  el("openInventoryOffer").disabled=summary.units<=0;
 }
 function updateStats(){
