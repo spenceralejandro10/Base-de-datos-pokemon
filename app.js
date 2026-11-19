@@ -32,7 +32,7 @@ function japaneseOnly(cards){
  });
 }
 function activeCatalog(cards){
- return japaneseOnly(cards).filter(card=>!window.BovedaSold?.isSold(card)&&stock.get(card).quantity>0);
+ return japaneseOnly(cards);
 }
 let records=activeCatalog(base),editing=null,epoch=0,busy=false,initialized=true;
 let catalogSignature="";
@@ -97,6 +97,13 @@ function updateInventoryValue(){
   return;
  }
  const summary=inventorySnapshot();
+ if(summary.units===0){
+  el("inventoryValueLabel").textContent="COLECCIÓN VENDIDA";
+  amountEl.textContent="$0 COP";
+  detailEl.textContent=records.length.toLocaleString("es-CO")+" referencias vendidas · 0 unidades disponibles";
+  el("openInventoryOffer").disabled=true;
+  return;
+ }
  el("inventoryValueLabel").textContent=summary.complete?"VALOR TOTAL DEL INVENTARIO PUBLICADO":"SUBTOTAL DEL INVENTARIO CON PRECIO VERIFICADO";
  amountEl.textContent=summary.refs>0&&summary.unpriced===summary.refs?"Pendiente de cotización":moneyCOP(summary.total);
  detailEl.textContent=summary.refs.toLocaleString("es-CO")+" referencias · "+
@@ -669,13 +676,15 @@ function cartButton(c){
  return button;
 }
 function languageStockLabel(c,a){
+ if(a.soldVisual)return a.soldLabel||"Vendida";
  if(!c.languageQuantities)return a.soldVisual?a.soldLabel:a.available?"Disponible · "+a.quantity+" ud.":a.override&&a.quantity===0?"Vendida":"No disponible";
  const entries=Object.entries(c.languageQuantities).filter(([,q])=>Number(q)>0);
  const baseTotal=entries.reduce((sum,[,q])=>sum+Number(q),0);
  if(a.quantity!==baseTotal)return (a.available?"Disponible · "+a.quantity+" ud.":"No disponible")+" · Revisar desglose por idioma";
  return (a.available?"Disponible · "+a.quantity+" ud.":"No disponible")+" · "+entries.map(([lang,q])=>q+" "+lang.toLowerCase()).join(" + ");
 }
-function languageQuantityBadges(c) {
+function languageQuantityBadges(c,a) {
+ if(a.soldVisual)return "";
  const quantities=c.languageQuantities;
  if(!quantities)return "";
  const entries=Object.entries(quantities).filter(([,quantity])=>Number(quantity)>0);
@@ -695,7 +704,7 @@ function galleryCard(c,token) {
  '<div class="details"><h3>'+esc(c.name)+'</h3><div class="num">'+esc(c.number)+'</div>'+
  (details?'<div class="meta">'+esc(details)+'</div>':'')+
  '<div class="stock-status '+(a.available?"is-available":"is-soldout")+'">'+esc(a.available?'Disponible · '+a.quantity+' ud.':a.soldVisual?a.soldLabel:'No disponible')+'</div>'+
- languageQuantityBadges(c)+
+ languageQuantityBadges(c,a)+
  '<div class="links"></div></div>';
  const actions=item.querySelector(".links");
  actions.before(market.element(c));
@@ -711,7 +720,7 @@ function tableCard(c,token) {
  const tr=document.createElement("tr");
  if(a.soldVisual)tr.className="is-marked-sold";
  tr.innerHTML='<td class="thumbnail"><div class="mini-art"><img hidden loading="lazy" decoding="async" referrerpolicy="no-referrer"><span>—</span></div></td>'+
- [cardCode(c),c.name,c.number,c.set,c.languageQuantities?Object.entries(c.languageQuantities).map(([lang,qty])=>lang+": "+qty).join(" · "):c.language,a.quantity,languageStockLabel(c,a)]
+ [cardCode(c),c.name,c.number,c.set,c.languageQuantities?Object.entries(c.languageQuantities).map(([lang,qty])=>lang+": "+qty).join(" · "):c.language,a.soldVisual?0:a.quantity,languageStockLabel(c,a)]
  .map((x,i)=>'<td'+(i===2?' class="num-col"':"")+'>'+esc(x==null||x===""?"—":x)+'</td>').join("")+
  '<td class="table-market"></td><td class="table-action"></td>';
  tr.querySelector(".table-market").append(market.element(c),tcgLink(c));
