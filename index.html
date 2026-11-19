@@ -1,183 +1,31 @@
 <!doctype html>
 <html lang="es">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="robots" content="noindex,nofollow,noarchive">
-<meta name="theme-color" content="#17304f">
-<title>Bóveda TCG | Colección de cartas Pokémon</title>
-<meta name="description" content="Explora Bóveda TCG: colección Pokémon, disponibilidad y selección de cartas.">
-<link rel="preconnect" href="https://cnivcnexsqobipvqxero.supabase.co" crossorigin>
-<link rel="stylesheet" href="./styles.css?v=105">
-
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex,nofollow,noarchive">
+  <meta name="theme-color" content="#17304f">
+  <meta name="description" content="Bóveda TCG. Próximamente más artículos.">
+  <title>Bóveda TCG | Próximamente más artículos</title>
+  <style>
+    :root { color-scheme: light; font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+    * { box-sizing: border-box; }
+    body { margin: 0; min-height: 100vh; background: #f5f7fa; color: #17304f; }
+    header { background: #17304f; padding: 24px clamp(20px, 6vw, 72px); }
+    .brand { color: white; font-size: clamp(23px, 3vw, 30px); font-weight: 750; letter-spacing: -.02em; }
+    main { min-height: calc(100vh - 85px); display: grid; place-items: center; padding: 32px 20px; }
+    .message { width: min(100%, 720px); background: white; border: 1px solid #e3e9ef; border-radius: 22px; box-shadow: 0 12px 36px rgba(23, 48, 79, .06); padding: clamp(42px, 8vw, 92px) 24px; text-align: center; }
+    h1 { margin: 0; font-size: clamp(32px, 6vw, 52px); font-weight: 800; letter-spacing: -.035em; line-height: 1.15; }
+    .accent { height: 5px; width: 82px; margin: 28px auto 0; border-radius: 99px; background: #e4b455; }
+  </style>
 </head>
 <body>
-
-<header class="top">
- <div class="brand">
-  <div><p class="eyebrow">COLECCIÓN DE CARTAS POKÉMON</p><h1>Bóveda TCG</h1><p class="sub">Explora nuestra colección, revisa las cartas disponibles y guarda tus favoritas.</p></div>
-  <div class="header-actions">
-   <button id="managementEntry" type="button" class="manage-entry" aria-label="Modo administrador desactivado" aria-pressed="false" hidden disabled>Modo administrador</button>
-   <button id="orderOpen" class="cart-trigger order-entry" type="button">Consultar lista</button>
-   <button id="cartOpen" class="cart-trigger" type="button">Mi selección <span id="cartCount">0</span></button>
-  </div>
- </div>
-</header>
-<main class="wrap">
- <section class="inventory-worth" aria-label="Valor del inventario disponible">
-  <div>
-   <p id="inventoryValueLabel" class="inventory-worth-label">VALOR TOTAL DEL INVENTARIO PUBLICADO</p>
-   <strong id="inventoryTotal" class="inventory-worth-amount" aria-live="polite" aria-atomic="true">Calculando…</strong>
-   <p id="inventoryMeta" class="inventory-worth-meta">Cargando existencias y precios de las cartas disponibles…</p>
-  </div>
-  <div class="inventory-offer-cta">
-   <span class="inventory-worth-status">Actualización automática</span>
-   <h2>¿Te interesa toda la colección?</h2>
-   <p>Anímate a proponer un precio por <strong>todas las cartas disponibles</strong>. Guardaremos tu oferta en <strong>Mi selección</strong> con un código para compartirla.</p>
-   <button id="openInventoryOffer" class="inventory-offer-button" type="button" disabled>Realizar oferta por inventario total</button>
-  </div>
- </section>
- <section id="photoRecovery" class="photo-recovery" hidden aria-label="Recuperar fotografías anteriores">
-  <div>
-   <strong>Recuperación de fotografías anteriores</strong>
-   <p id="photoRecoveryStatus" role="status" aria-live="polite">Comprobando imágenes de este navegador…</p>
-  </div>
-  <button id="photoRecoveryButton" type="button" disabled>Restaurar fotos guardadas</button>
- </section>
- <section class="stats" aria-label="Inventario de la bóveda">
-  <div class="stat"><strong id="total">—</strong><small>Referencias</small></div>
-  <div class="stat"><strong id="copies">—</strong><small>Unidades en la colección</small></div>
-  <div class="stat"><strong id="shown">—</strong><small>Resultados</small></div>
-  <div class="stat" title="Visitantes únicos desde el 11 de noviembre de 2026. Cada navegador se cuenta una sola vez."><strong id="visitors">0</strong><small>Visitantes únicos</small></div>
- </section>
- <div class="toolbar" role="search">
-  <input id="q" type="search" placeholder="Buscar Pokémon, código de carta o colección…" aria-label="Buscar cartas" autocomplete="off">
-  <select id="set" aria-label="Colección"><option value="">Todas las colecciones</option></select>
-  <select id="lang" aria-label="Idioma"><option value="">Todos los idiomas</option></select>
-  <select id="availability" aria-label="Disponibilidad"><option value="all">Todas las cartas</option><option value="available">Solo disponibles</option></select>
-  <select id="view" aria-label="Vista"><option value="grid">Galería</option><option value="table">Tabla</option></select>
-  <button id="resetFilters" type="button">Limpiar filtros</button>
- </div>
- <p id="editingBanner" class="editing-banner" hidden>Modo administrador activo: en cada carta selecciona <strong>Editar imagen, cantidad e idioma</strong>. <button id="autoFillImages" type="button" class="primary">Buscar imágenes faltantes automáticamente</button> <span id="autoFillProgress" role="status" aria-live="polite"></span></p>
- <p class="notice simple-price-note"><strong>Cartas sin jugar, recién sacadas de sobre y protegidas en toploader</strong> (estado declarado por el propietario). Los precios son referencias de <strong>TCGplayer Market Price</strong>, convertidas a COP con la TRM vigente. <br><span id="exchangeRate"></span><br><span id="marketStatus" role="status" aria-live="polite">Consultando cotizaciones…</span> · <a href="https://help.tcgplayer.com/hc/en-us/articles/213588017-TCGplayer-Market-Price" target="_blank" rel="noopener noreferrer">Market Price</a> · Datos de <a href="https://tcgcsv.com" target="_blank" rel="noopener noreferrer">TCGCSV</a> · TRM de <a href="https://www.datos.gov.co/Econom-a-y-Finanzas/Tasa-de-Cambio-Representativa-del-Mercado-TRM/32sa-8pi3" target="_blank" rel="noopener noreferrer">Superfinanciera</a>. Si la TRM no responde, se identifica expresamente el cambio de mercado de <a href="https://www.exchangerate-api.com" target="_blank" rel="noopener noreferrer">ExchangeRate-API</a>.</p>
- <div id="results" class="grid" aria-live="polite"></div>
-</main>
-<dialog id="orderDialog" class="order-dialog" aria-labelledby="orderTitle">
-  <div class="order-header">
-    <div>
-      <span class="order-kicker">BÓVEDA TCG / CONSULTA DE CARTAS</span>
-      <h2 id="orderTitle">Listado del cliente</h2>
-      <p>Consulta las cartas, sus imágenes y los precios de referencia sin buscar una por una.</p>
-    </div>
-    <button id="orderClose" type="button" class="order-close" aria-label="Cerrar">×</button>
-  </div>
-  <section class="order-input-section" aria-label="Consultar lista del cliente">
-    <label for="orderPaste">Pega aquí el listado que te enviaron</label>
-    <textarea id="orderPaste" rows="4" spellcheck="false" placeholder="BTCG-0001 | Mewtwo | 52 | Scarlet & Violet Promo | Japonés | Referencia por carta: $ 116.914 COP | Unidades solicitadas: 1"></textarea>
-    <div class="order-form-actions">
-      <button type="button" id="orderImport" class="order-main-button">Consultar cartas</button>
-      <button type="button" id="orderClear" class="order-light-button">Nueva consulta</button>
-      <span class="order-readonly"><span aria-hidden="true">●</span> Solo consulta · Sin cambios al inventario</span>
-    </div>
-    <p id="orderMessage" class="order-message" role="status" aria-live="polite"></p>
-  </section>
-  <div id="orderWorkspace" hidden>
-    <div class="order-overview" aria-label="Resumen de la consulta">
-      <div class="order-metric"><span>Referencias encontradas</span><strong id="orderMatched">—</strong></div>
-      <div class="order-metric"><span>Unidades solicitadas</span><strong id="orderUnits">—</strong></div>
-      <div class="order-metric order-metric-highlight"><span>Total según mensaje</span><strong id="orderClientTotal">—</strong></div>
-      <div class="order-metric"><span>Valor de mercado estimado</span><strong id="orderMarketTotal">—</strong><small id="orderMarketNote">Referencia TCGplayer</small></div>
-    </div>
-    <div class="order-results-head">
-      <div><h3>Cartas del pedido</h3><p id="orderResultsDescription">Imágenes, cantidades y precios en un solo lugar.</p></div>
-      <label for="orderSort">Ordenar por
-        <select id="orderSort">
-          <option value="collection">Colección</option>
-          <option value="original">Orden del cliente</option>
-          <option value="name">Nombre</option>
-        </select>
-      </label>
-    </div>
-    <div id="orderCards" class="order-list" aria-live="polite"></div>
-    <p class="order-bottom-note">Los precios de mercado son referencias de TCGplayer procesadas desde TCGCSV, precios propios indicados o datos autorizados de Collectr cuando estén disponibles. Si falta un precio, se puede consultar la búsqueda de Collectr. Para confirmar el valor vigente, abre la ficha de su fuente. Las existencias son las registradas en Bóveda TCG y pueden diferir de las unidades físicas.</p>
-  </div>
-</dialog>
-<dialog id="inventoryOfferDialog" class="editor-dialog inventory-offer-dialog" aria-labelledby="inventoryOfferTitle">
- <div class="dialog-top">
-  <h2 id="inventoryOfferTitle">Tu oferta por toda la colección</h2>
-  <button id="closeInventoryOffer" class="icon-button" type="button" aria-label="Cerrar">×</button>
- </div>
- <p>Elige cuánto ofrecerías por <strong>todas las cartas disponibles</strong>. Te daremos un código para enviarnos tu propuesta.</p>
- <div class="offer-market-reference">
-  <small>Valor de referencia del inventario</small>
-  <strong id="offerReferenceTotal">—</strong>
-  <span id="offerReferenceUnits">—</span>
- </div>
- <form id="inventoryOfferForm">
-  <label for="offerAmount">Tu oferta (pesos colombianos)</label>
-  <div class="offer-input-wrap"><span aria-hidden="true">$</span><input id="offerAmount" type="number" min="1" step="1" placeholder="Ingresa tu oferta en COP" required inputmode="numeric" autocomplete="off"></div>
-  <p class="offer-preview" id="offerPreview" aria-live="polite"></p>
-  <p id="offerError" class="offer-error" role="alert" hidden></p>
-  <button id="saveInventoryOffer" class="primary offer-submit" type="submit">Agregar oferta a Mi selección</button>
- </form>
- <p class="offer-fineprint">La propuesta no es una compra ni reserva. Se confirmarán el precio y las existencias antes de aceptarla.</p>
-</dialog>
-<dialog id="cartDialog" class="editor-dialog cart-dialog">
- <div class="dialog-top"><h2>Mi selección de cartas</h2><button id="closeCart" class="icon-button" type="button" aria-label="Cerrar">×</button></div>
- <p>Aquí se guardan tus cartas y las ofertas por el inventario completo. Puedes copiar o enviar tu propuesta para que la revisemos.</p>
- <div id="cartItems"></div>
- <p id="cartSummary" class="cart-summary"></p>
- <button id="downloadCart" type="button" class="primary">Descargar lista .txt</button>
- <button id="copyCart" type="button">Copiar propuesta</button>
- <button id="shareCart" type="button" class="cart-share-button">Compartir por WhatsApp</button>
- <button id="clearCart" type="button" class="danger">Vaciar selección</button>
-</dialog>
-<dialog id="editorDialog" class="editor-dialog">
- <div class="dialog-top"><h2 id="editorTitle">Editar carta</h2><button id="closeEditor" class="icon-button" type="button" aria-label="Cerrar">×</button></div>
- <p id="editorMessage" class="editor-message" role="status"></p>
- <p id="editingCard"></p>
- <div id="adminCardFields">
-  <h3>Disponibilidad</h3>
-  <label for="adminQuantity">Unidades disponibles</label>
-  <input id="adminQuantity" type="number" min="0" max="100000" step="1">
-  <label class="inline-check"><input id="adminListed" type="checkbox"> Mostrar como disponible</label>
-  <button id="saveStock" type="button" class="primary">Guardar cantidad y disponibilidad</button>
-  <h3>Idioma</h3>
-  <label for="adminLanguage">Idioma de la carta</label>
-  <select id="adminLanguage"><option value="">Sin especificar</option><option>Inglés / Español</option><option>Inglés</option><option>Español</option><option>Japonés</option><option>Chino</option><option>Coreano</option><option>Francés</option><option>Alemán</option><option>Italiano</option><option>Portugués</option></select>
-  <button id="saveCardInfo" type="button" class="primary">Guardar idioma</button>
-  <h3>Imagen de la carta</h3>
-  <p class="hint">Busca la imagen por nombre, número, colección e idioma, y revisa que corresponda a la versión exacta.</p>
-  <div class="image-search-actions">
-   <button id="findCatalogImage" type="button" class="primary">Buscar imagen automáticamente</button>
-   <a id="searchCardImage" href="#" target="_blank" rel="noopener noreferrer" class="image-search-link">Buscar en Google Imágenes</a>
-  </div>
-  <div id="imageSearchResult" class="image-search-result" hidden>
-   <img id="imageSearchPreview" alt="Vista previa de la imagen encontrada" loading="lazy" referrerpolicy="no-referrer">
-   <p id="imageSearchInfo" class="hint"></p>
-   <button id="assignFoundImage" type="button" class="primary">Asignar esta imagen</button>
-  </div>
-  <label for="imageUrl">URL HTTPS de imagen</label><input id="imageUrl" type="url" placeholder="https://…/imagen.jpg">
-  <button id="saveImageUrl" type="button" class="primary">Guardar imagen para todos</button>
-  <div class="or-label">O subir fotografía</div>
-  <input id="imageUpload" type="file" accept="image/jpeg,image/png,image/webp">
-  <button id="saveImageFile" type="button" class="primary">Subir fotografía</button>
- </div>
-</dialog>
-<footer class="footer">Bóveda TCG · Colección Pokémon · Sin pagos en línea.</footer>
-
-<script src="./cards.js?v=105"></script>
-<script src="./shared-images-snapshot.js?v=105"></script>
-<script src="./shared-images.js?v=105"></script>
-<script src="./catalog-overrides.js?v=105"></script>
-<script src="./card-stock.js?v=105"></script>
-<script src="./card-images.js?v=105"></script>
-<script src="./pricing-core.js?v=105"></script>
-<script src="./market-snapshot.js?v=105"></script>
-<script src="./market-prices.js?v=105"></script>
-<script src="./sold-cards.js?v=107"></script>
-<script src="./app.js?v=107"></script>
-<script src="./order-panel.js?v=106"></script>
-<script src="./visitors.js?v=2"></script>
+  <header><div class="brand">Bóveda TCG</div></header>
+  <main>
+    <section class="message" aria-label="Aviso de próximos artículos">
+      <h1>Próximamente más artículos</h1>
+      <div class="accent" aria-hidden="true"></div>
+    </section>
+  </main>
 </body>
 </html>
