@@ -18,12 +18,34 @@ function sign(txt,x,y,z,w=13,h=2,col='#cb263f'){const c=document.createElement('
 cube(400,.2,400,0,-.18,0,colors.road);cube(120,.22,100,0,-.04,-17,M(0x9da6ac));
 for(let i=-65;i<65;i+=14){cube(6,.04,.35,i,.01,57,colors.white);cube(6,.04,.35,i,.01,-83,colors.white)}
 for(let i=0;i<45;i++){let a=i*2.4,r=110+(i%7)*17,x=Math.cos(a)*r,z=Math.sin(a)*r;cube(13+i%7*3,20+i%11*9,14+i%4*3,x,(20+i%11*9)/2,z,M([0x9ca9b6,0x687b91,0xb4bbc3][i%3]))}
-cube(110,19,77,0,9.5,-25,colors.wall);cube(35,130,28,27,84,-60,M(0x9eafbf));for(let y=26;y<150;y+=4)cube(35,.12,28.2,27,y,-60,colors.white);
+// Fachada hueca: antes había un cubo blanco macizo que ocultaba completamente la tienda.
+cube(110,.7,77,0,19.5,-25,colors.dark);
+cube(110,1.0,77,0,20.1,-25,colors.white);
+for(let side of [-1,1]){cube(2,20,77,side*54,10,-25,colors.dark);cube(1,20,77,side*55,10,-25,colors.white)}
+for(let level=0;level<3;level++){let y=level*6.4;
+  cube(110,.65,2,0,y+6.15,13.8,colors.red);
+  cube(110,.55,1.3,0,y+.25,13.8,colors.dark);
+  for(let x=-51;x<52;x+=6.5){if(level===0&&Math.abs(x)<7)continue;
+    cube(.28,5.4,.4,x,y+3.1,14.1,colors.dark);
+    cube(6.25,5.15,.12,x+3.2,y+3.05,14.0,colors.glass);
+  }
+}
+cube(108,1.3,3,0,17.9,15.1,colors.dark);
+cube(20,.7,4,0,6.9,16.3,colors.red);
+cube(18,6.2,.12,0,3.3,13.92,colors.glass);
+cube(35,130,28,27,84,-60,M(0x9eafbf));for(let y=26;y<150;y+=4)cube(35,.12,28.2,27,y,-60,colors.white);
 for(let x=-54;x<55;x+=5.5){cube(.28,9,.45,x,4.5,13,colors.dark);if(Math.abs(x)>6)cube(5.2,8.6,.1,x+2.75,4.5,13.1,colors.glass)}
-sign('BÓVEDA TCG · POKÉMON',0,12.5,13.2,41,3.9);sign('SUNSHINE CITY · TOKYO',-35,16,13.2,24,2);
-const doors=[cube(5.8,6,.15,-2.9,3,13.25,colors.glass),cube(5.8,6,.15,2.9,3,13.25,colors.glass)];
+sign('BÓVEDA TCG · POKÉMON',0,17.4,17.25,43,3.2);sign('CARTAS · COLECCIONABLES',0,8.25,17.1,28,1.6,'#154f80');sign('SUNSHINE CITY · TOKYO',-35,19.9,15.65,23,1.5,'#153251');
+// Iluminación y tótem de entrada visible desde la calle.
+for(let x of [-16,16]){cube(1.35,8,1.35,x,4.1,16.7,colors.red);cube(3,.45,2,x,8.1,16.7,colors.gold)}
+let emblem=new T.Group();scene.add(emblem);emblem.position.set(0,12,17.65);let up=new T.Mesh(new T.SphereGeometry(1.85,28,16,0,Math.PI*2,0,Math.PI/2),colors.red),down=new T.Mesh(new T.SphereGeometry(1.85,28,16,0,Math.PI*2,Math.PI/2,Math.PI/2),colors.white);emblem.add(up,down);cube(3.65,.2,.3,0,0,0,colors.dark,emblem);let circ=new T.Mesh(new T.CircleGeometry(.55,32),colors.white);circ.position.z=1.87;emblem.add(circ);
+const doors=[cube(5.8,5.4,.18,-2.9,3.1,14.25,colors.glass),cube(5.8,5.4,.18,2.9,3.1,14.25,colors.glass)];
 const cards=[],cardModels=[],wallPlanes=[];let items=[],currentFloor=0,camMode='third',yaw=0,pitch=0.18,zoom=7,drag=false,px=0,py=0;let pos=new T.Vector3(0,0,34),keys={};
+// Mostradores, máquinas de cápsulas, rótulos interiores y luminarias.
 for(let floor=0;floor<3;floor++){let y=floor*6.4;
+for(let x of [-47,-30,-13,13,30,47]){cube(9,.3,2,x,y+6.02,-28,colors.white);cube(7,.08,1.2,x,y+5.83,-28,M(0xfff4cc))}
+for(let z of [-48,-27,-6]){cube(7,1.3,2.2,-48,y+.75,z,colors.blue);cube(7,.2,2.2,-48,y+1.48,z,colors.white);cube(7,1.3,2.2,48,y+.75,z,colors.red);cube(7,.2,2.2,48,y+1.48,z,colors.white)}
+sign(['CARTAS DE COLECCIÓN','HISTORIA DE BÓVEDA TCG','COLECCIÓN JAPONESA'][floor],0,y+4.6,-61.48,35,2,'#d32949');
 cube(106,.4,73,0,y-.12,-25,colors.floor);
 for(let side of [-1,1])cube(.4,6.4,73,side*53,y+3.2,-25,colors.wall);
 cube(106,6.4,.5,0,y+3.2,-62,colors.wall);
